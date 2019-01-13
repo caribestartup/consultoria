@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="24"
+   height="24"
+   viewBox="0 0 24 24"
+   id="svg4304"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="whatapps.svg">
+  <defs
+     id="defs4306">
+    <radialGradient
+       id="SVGID_4_"
+       cx="-36.925499"
+       cy="-62.308498"
+       r="31.562099"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="9.693880e-002"
+         style="stop-color:#FFD879"
+         id="stop43" />
+      <stop
+         offset="0.1539"
+         style="stop-color:#FCCB76"
+         id="stop45" />
+      <stop
+         offset="0.2583"
+         style="stop-color:#F5AA6C"
+         id="stop47" />
+      <stop
+         offset="0.3976"
+         style="stop-color:#E9755E"
+         id="stop49" />
+      <stop
+         offset="0.449"
+         style="stop-color:#E45F58"
+         id="stop51" />
+      <stop
+         offset="0.6786"
+         style="stop-color:#D22A9C"
+         id="stop53" />
+      <stop
+         offset="1"
+         style="stop-color:#6968DF"
+         id="stop55" />
+    </radialGradient>
+    <radialGradient
+       id="SVGID_1_"
+       cx="11.2588"
+       cy="-59.330299"
+       r="30.6406"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0.2602"
+         style="stop-color:#36B649"
+         id="stop18" />
+      <stop
+         offset="0.7602"
+         style="stop-color:#57C965"
+         id="stop20" />
+    </radialGradient>
+    <radialGradient
+       id="SVGID_2_"
+       cx="8.7785997"
+       cy="-66.759102"
+       r="18.796499"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0.2194"
+         style="stop-color:#E7E7E7"
+         id="stop27" />
+      <stop
+         offset="0.8827"
+         style="stop-color:#FCFCFC"
+         id="stop29" />
+    </radialGradient>
+    <radialGradient
+       id="SVGID_3_"
+       cx="8.9771996"
+       cy="-70.696602"
+       r="8.4088001"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0.2194"
+         style="stop-color:#E7E7E7"
+         id="stop34" />
+      <stop
+         offset="0.8827"
+         style="stop-color:#FFFFFF"
+         id="stop36" />
+    </radialGradient>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="5.6"
+     inkscape:cx="9.4913548"
+     inkscape:cy="9.1265204"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     units="px"
+     inkscape:window-width="1366"
+     inkscape:window-height="705"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata4309">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Capa 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-1028.3622)">
+    <g
+       transform="translate(0,1116.3622)"
+       id="g15">
+      <radialGradient
+         id="radialGradient4958"
+         cx="11.2588"
+         cy="-59.330299"
+         r="30.6406"
+         gradientUnits="userSpaceOnUse">
+        <stop
+           offset="0.2602"
+           style="stop-color:#36B649"
+           id="stop4960" />
+        <stop
+           offset="0.7602"
+           style="stop-color:#57C965"
+           id="stop4962" />
+      </radialGradient>
+      <path
+         style="fill:url(#SVGID_1_)"
+         inkscape:connector-curvature="0"
+         d="m 24,-69 c 0,2.7 -2.2,4.9 -4.9,4.9 l -14.1,0 c -2.7,0 -4.9,-2.2 -4.9,-4.9 l 0,-14 c 0,-2.7 2.2,-4.9 4.9,-4.9 l 14,0 c 2.7,0 4.9,2.2 4.9,4.9 l 0,14 z"
+         id="path22" />
+      <g
+         id="g24">
+        <radialGradient
+           id="radialGradient4966"
+           cx="8.7785997"
+           cy="-66.759102"
+           r="18.796499"
+           gradientUnits="userSpaceOnUse">
+          <stop
+             offset="0.2194"
+             style="stop-color:#E7E7E7"
+             id="stop4968" />
+          <stop
+             offset="0.8827"
+             style="stop-color:#FCFCFC"
+             id="stop4970" />
+        </radialGradient>
+        <path
+           style="fill:url(#SVGID_2_)"
+           inkscape:connector-curvature="0"
+           d="m 12.2,-84.8 c -4.8,0 -8.7,3.9 -8.7,8.7 0,1.6 0.4,3.1 1.2,4.4 l -1.1,4.4 4.4,-1.2 c 1.2,0.7 2.7,1.1 4.2,1.1 4.8,0 8.7,-3.9 8.7,-8.7 0,-4.8 -3.9,-8.7 -8.7,-8.7 z m 0.1,15.9 c -1.5,0 -2.9,-0.5 -4.1,-1.3 l -2.5,0.7 0.7,-2.5 c -0.8,-1.2 -1.3,-2.6 -1.3,-4.1 0,-4 3.2,-7.2 7.2,-7.2 4,0 7.2,3.2 7.2,7.2 0,4 -3.2,7.2 -7.2,7.2 z"
+           id="path31" />
+        <radialGradient
+           id="radialGradient4973"
+           cx="8.9771996"
+           cy="-70.696602"
+           r="8.4088001"
+           gradientUnits="userSpaceOnUse">
+          <stop
+             offset="0.2194"
+             style="stop-color:#E7E7E7"
+             id="stop4975" />
+          <stop
+             offset="0.8827"
+             style="stop-color:#FFFFFF"
+             id="stop4977" />
+        </radialGradient>
+        <path
+           style="fill:url(#SVGID_3_)"
+           inkscape:connector-curvature="0"
+           d="m 10,-76.8 c 0.1,-0.1 0.2,-0.2 0.3,-0.3 0.2,-0.2 0.4,-0.4 0.4,-0.7 0,-0.3 -0.1,-0.5 -0.2,-0.8 -0.1,-0.2 -0.1,-0.3 -0.2,-0.5 -0.1,-0.3 -0.3,-0.7 -0.4,-0.9 -0.2,-0.2 -0.6,-0.3 -0.9,-0.1 0,0 -1.7,0.8 -1.2,2.5 0,0 1,4.6 6.1,5.6 0,0 1.8,0.3 2.3,-0.9 0.1,-0.2 0.2,-0.6 0.2,-0.8 0,-0.3 -0.2,-0.4 -0.4,-0.5 -0.3,-0.2 -0.5,-0.3 -0.8,-0.5 -0.3,-0.1 -0.6,-0.3 -0.9,-0.2 -0.2,0.1 -0.4,0.3 -0.5,0.4 -0.2,0.2 -0.4,0.4 -0.6,0.6 0.1,0 -2.5,-1 -3.2,-2.9 z"
+           id="path38" />
+      </g>
+    </g>
+  </g>
+</svg>

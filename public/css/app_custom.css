@@ -1,0 +1,15 @@
+.header-nav-bar {
+    background-color: #013C4F;
+}
+
+/*.header .header-container .nav-left>li>a, .header .header-container .nav-right>li>a {*/
+    /*color:red;*/
+/*}*/
+
+/*.header .header-container .nav-left>li>a, .header .header-container .nav-right>li>a:hover {*/
+    /*color:#fff;*/
+/*}*/
+
+.top-menu-item:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}

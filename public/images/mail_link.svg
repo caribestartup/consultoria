@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="8"
+   height="8"
+   viewBox="0 0 8 8"
+   id="svg4304"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="mail_link.svg">
+  <defs
+     id="defs4306">
+    <radialGradient
+       id="SVGID_4_"
+       cx="-36.925499"
+       cy="-62.308498"
+       r="31.562099"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="9.693880e-002"
+         style="stop-color:#FFD879"
+         id="stop43" />
+      <stop
+         offset="0.1539"
+         style="stop-color:#FCCB76"
+         id="stop45" />
+      <stop
+         offset="0.2583"
+         style="stop-color:#F5AA6C"
+         id="stop47" />
+      <stop
+         offset="0.3976"
+         style="stop-color:#E9755E"
+         id="stop49" />
+      <stop
+         offset="0.449"
+         style="stop-color:#E45F58"
+         id="stop51" />
+      <stop
+         offset="0.6786"
+         style="stop-color:#D22A9C"
+         id="stop53" />
+      <stop
+         offset="1"
+         style="stop-color:#6968DF"
+         id="stop55" />
+    </radialGradient>
+    <radialGradient
+       id="SVGID_1_"
+       cx="11.2588"
+       cy="-59.330299"
+       r="30.6406"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0.2602"
+         style="stop-color:#36B649"
+         id="stop18" />
+      <stop
+         offset="0.7602"
+         style="stop-color:#57C965"
+         id="stop20" />
+    </radialGradient>
+    <radialGradient
+       id="SVGID_2_"
+       cx="8.7785997"
+       cy="-66.759102"
+       r="18.796499"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0.2194"
+         style="stop-color:#E7E7E7"
+         id="stop27" />
+      <stop
+         offset="0.8827"
+         style="stop-color:#FCFCFC"
+         id="stop29" />
+    </radialGradient>
+    <radialGradient
+       id="SVGID_3_"
+       cx="8.9771996"
+       cy="-70.696602"
+       r="8.4088001"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0.2194"
+         style="stop-color:#E7E7E7"
+         id="stop34" />
+      <stop
+         offset="0.8827"
+         style="stop-color:#FFFFFF"
+         id="stop36" />
+    </radialGradient>
+    <radialGradient
+       id="SVGID_5_"
+       cx="56.154999"
+       cy="-58.766399"
+       r="32.0784"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0"
+         style="stop-color:#3B5998"
+         id="stop70" />
+      <stop
+         offset="0.301"
+         style="stop-color:#3B5998"
+         id="stop72" />
+      <stop
+         offset="1"
+         style="stop-color:#5F83CF"
+         id="stop74" />
+    </radialGradient>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="5.6"
+     inkscape:cx="9.4913548"
+     inkscape:cy="9.1265204"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     units="px"
+     inkscape:window-width="1366"
+     inkscape:window-height="705"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata4309">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Capa 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-1044.3622)">
+    <g
+       transform="translate(36.2,1036.3622)"
+       id="g7">
+      <path
+         style="fill:#f9a522"
+         inkscape:connector-curvature="0"
+         d="m -29.4,9.4 -5.6,0 c 0,0 2.4,1.9 2.5,2 0.1,0.1 0.3,0.1 0.5,0 0.2,-0.1 2.6,-2 2.6,-2 z"
+         id="path9" />
+      <path
+         style="fill:#f9a522"
+         inkscape:connector-curvature="0"
+         d="m -32,12.6 c -0.1,0 -0.1,0.1 -0.2,0.1 -0.1,0 -0.2,0 -0.2,-0.1 l -3.1,-2.4 0,4 c 0,0.2 0.2,0.4 0.4,0.4 l 5.8,0 c 0.2,0 0.4,-0.2 0.4,-0.4 l 0,-3.9 -3.1,2.3 z"
+         id="path11" />
+    </g>
+  </g>
+</svg>
