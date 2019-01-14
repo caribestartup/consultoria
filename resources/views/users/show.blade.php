@@ -53,7 +53,11 @@
 
                 </div>
                 <div class="col-sm-12 col-md-4 col-lg-3 d-flex justify-content-center">
-                    <img class="bdrs-50p w-100 mx-auto" src="{{ asset($user->avatar) }}" alt="{{ trans('users.user_avatar_alt') }}">
+                    @if($user->avatar)
+                        <img class="bdrs-50p h-100 w-100 mx-auto" src="{{ asset('/uploads/avatars/'.$user->avatar) }}" alt="{{ trans('users.user_avatar_alt') }}">
+                        @else
+                        <img class="bdrs-50p h-100 w-100 mx-auto" src="{{ asset('/uploads/avatars/unknown.png') }}" alt="{{ trans('users.user_avatar_alt') }}">
+                    @endif
                 </div>
             </div>
         </div>
@@ -69,9 +73,7 @@
                         <label class="col-sm-12 col-md-2 col-form-label fw-600">{{ trans('users.label_role') }}</label>
                         <div class="col-sm-12 col-md-10 col-form-label">
                             <label>
-                                @foreach($user->roles as $role)
-                                    {{ $role->name }}
-                                @endforeach
+                                {{ $user->rol }}
                             </label>
                         </div>
                     </div>

@@ -94,10 +94,10 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = Role::all();
+        // $roles = Role::all();
         $departments = Department::all();
         $groups = Group::all();
-        return view('users.create',compact('roles', 'departments', 'groups'));
+        return view('users.create',compact('departments', 'groups'));
     }
 
     /**
@@ -118,11 +118,11 @@ class UserController extends Controller
 
         $user = User::create($data);
 
-        DB::table('model_has_roles')->insert([
-            'role_id' => $data['role'],
-            'model_type' => 'App\User',
-            'model_id' => $user->id
-        ]);
+        // DB::table('model_has_roles')->insert([
+        //     'role_id' => $data['role'],
+        //     'model_type' => 'App\User',
+        //     'model_id' => $user->id
+        // ]);
 
         $user->groups()->sync($request->group);
         $user->departments()->sync($request->department);
@@ -139,12 +139,12 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::findOrFail($id);
-        $roles = Role::all();
-        $userRoleId = $user->roles[0]->id;
+        // $roles = Role::all();
+        // $userRoleId = $user->roles[0]->id;
         $departments = Department::all();
         $groups = Group::all();
 
-        return view('users.edit', compact('user', 'roles', 'userRoleId', 'departments', 'groups'));
+        return view('users.edit', compact('user', 'departments', 'groups'));
     }
 
     /**
@@ -204,7 +204,8 @@ class UserController extends Controller
             delete_avatar_file($user->avatar);
         }
 
-        User::destroy($id);
+        // User::destroy($id);
+        $user->delete();
 
         return back()->withSuccess(trans('users.user_success_delete'));
     }

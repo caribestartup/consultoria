@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->float('evaluation')->nullable();
             $table->string('email')->unique();
             $table->string('password');
+            $table->enum('rol', ['Empleado', 'Administrador', 'Jefe'])->defatul('Empleado');
             $table->string('avatar')->nullable();
             $table->integer('boss_id')->unsigned()->nullable();
             $table->boolean('is_coach')->defatul(false);

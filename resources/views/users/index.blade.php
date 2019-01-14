@@ -8,6 +8,15 @@
     <style>
         #create-bar {            width: 98%;
         }
+        .Administrador {
+            color: #EE6255;
+        }
+        .Jefe {
+            color: #79C944;
+        }
+        .Empleado {
+            color: #FFAD00;
+        }
     </style>
     @endsection
 
@@ -56,6 +65,11 @@
                                 <div class="card text-center card-action-plan border-form h-100 pT-15 pB-15">
 
                                     <img class="card-img-top w-5r bdrs-50p mx-auto" src="{{ $user->avatarUrl }}" alt="{{ config('app.user_avatar_alt') }}">
+                                    @if($user->avatar)
+                                        <img class="card-img-top w-5r bdrs-50p mx-auto" src="{{ asset('/uploads/avatars/'.$user->avatar) }}" alt="{{ trans('users.user_avatar_alt') }}">
+                                        @else
+                                        <img class="card-img-top w-5r bdrs-50p mx-auto" src="{{ asset('/uploads/avatars/unknown.png') }}" alt="{{ trans('users.user_avatar_alt') }}">
+                                    @endif
                                     <div class="card-body">
                                         <h5 class="card-title"> <a href="{{ route('users.show', $user->id) }}" title="{{ trans('common.data') }}" class="text-color-primary-header">{{ $user->name.' '.$user->last_name }}</a> </h5>
                                         <!-- @foreach($user->roles as $role)
@@ -63,6 +77,9 @@
                                                 {{ $role->name }}
                                             </p>
                                         @endforeach -->
+                                        <p class="card-subtitle {{ $user->rol }}">
+                                            {{ $user->rol }}
+                                        </p>
                                     </div>
 
                                     <ul class="list-inline list-group-flush">
@@ -101,13 +118,13 @@
 
 
 
-    <!-- @include('components.modal', [
+    @include('components.modal', [
         'modal_id'  => 'delete-modal',
         'title'     => __('common.attention!'),
         'content'   => __('users.delete_user_question'),
         'accept'    => __('common.yes'),
         'cancel'    => __('common.no')
-        ]) -->
+        ])
 
 @endsection
 

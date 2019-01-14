@@ -43,7 +43,12 @@
                     </div>
                     <div class="peer mR-10" style="padding-left: 10px">
                         <!-- <img class="w-2r bdrs-50p" src="{{ auth()->user()->avatarUrl }}" alt="">  -->
-                        <img class="w-2r bdrs-50p" src="{{ asset('/images/unknown.png') }}" alt="">
+                        @if(auth()->user()->avatar)
+                            <img class="w-2r bdrs-50p" src="{{ asset('/uploads/avatars/'.auth()->user()->avatar) }}" alt="{{ trans('users.user_avatar_alt') }}">
+                            @else
+                            <img class="w-2r bdrs-50p" src="{{ asset('/uploads/avatars/unknown.png') }}" alt="{{ trans('users.user_avatar_alt') }}">
+                        @endif
+                        <!-- <img class="w-2r bdrs-50p" src="{{ asset('/images/unknown.png') }}" alt=""> -->
                         <i class="fa fa-sort-down text-white"></i>
                     </div>
 

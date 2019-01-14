@@ -17,7 +17,15 @@ class CreateDepartmentUserTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->integer('user_id')->unsigned();
+            $table->foreign('user_id')
+                  ->references('id')
+                  ->on('users')
+                  ->onDelete('cascade');
             $table->integer('department_id')->unsigned();
+            $table->foreign('department_id')
+                  ->references('id')
+                  ->on('departments')
+                  ->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -42,7 +42,8 @@ class User extends Authenticatable
         'password',
         'is_coach',
         'avatar',
-        'boss_id'
+        'boss_id',
+        'rol'
     ];
 
     /**
@@ -58,16 +59,16 @@ class User extends Authenticatable
 //    {
 //        return $this->belongsToMany(Role::class);
 //    }
-    public function roles_custom()
-    {
-        return $this->morphToMany(
-            config('permission.models.role'),
-            'model',
-            config('permission.table_names.model_has_roles'),
-            'model_id',
-            'role_id'
-        )->select('id','name');
-    }
+    // public function roles_custom()
+    // {
+    //     return $this->morphToMany(
+    //         config('permission.models.role'),
+    //         'model',
+    //         config('permission.table_names.model_has_roles'),
+    //         'model_id',
+    //         'role_id'
+    //     )->select('id','name');
+    // }
 
     public function boss()
     {
@@ -131,7 +132,7 @@ class User extends Authenticatable
             'email'     => "required|email|unique:users,email,$id",
             'password'  => 'nullable|confirmed',
             'avatar'    => 'image',
-            'role'      => 'required',
+            'rol'      => 'required',
         ];
 
         if ($update) {
