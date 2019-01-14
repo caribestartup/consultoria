@@ -3,7 +3,7 @@
 
                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
-                </button>    
+                </button>
        <ul class="nav-left " role="navigation">
             <li class=" top-menu-item">
                 <a id='sidebar-toggle' class="sidebar-toggle  text-white" href="javascript:void(0);">
@@ -12,20 +12,20 @@
                 </a>
             </li>
         </ul>
-      
+
         @php
             $notifications = \App\Http\Controllers\NotificationController::unread();
         @endphp
-  
+
         <ul class="nav-right md-lg-12 collapse navbar-collapse navbar-nav " id="navbarSupportedContent">
-        
-            <li class="top-menu-item" style="padding-top: 15px"> 
-                <div class="form-group search-image">     
+
+            <li class="top-menu-item" style="padding-top: 15px">
+                <div class="form-group search-image">
                     <input class="search-text" type="search" placeholder="" >
                     <i class="fa fa-search fa-lg fa-fw"></i>
 
-                </div> 
-                    
+                </div>
+
             </li>
 
     <!--usuario-->
@@ -43,10 +43,10 @@
                     </div>
                     <div class="peer mR-10" style="padding-left: 10px">
                         <!-- <img class="w-2r bdrs-50p" src="{{ auth()->user()->avatarUrl }}" alt="">  -->
-                        <img class="w-2r bdrs-50p" src="{{ asset('/images/unknown.png') }}" alt=""> 
+                        <img class="w-2r bdrs-50p" src="{{ asset('/images/unknown.png') }}" alt="">
                         <i class="fa fa-sort-down text-white"></i>
                     </div>
-                    
+
                 </a>
                 <ul class="dropdown-menu fsz-sm">
                     <li>
@@ -69,7 +69,7 @@
                     </li>
                     <li role="separator" class="divider"></li>
                     <li>
-                        <a href="/logout" class="d-b td-n pY-5 bgcH-grey-100 c-grey-700">
+                        <a href="{{ route('logout') }}" class="d-b td-n pY-5 bgcH-grey-100 c-grey-700">
                             <i class="ti-power-off mR-10"></i>
                             <span>{{ __('login.logout') }}</span>
                         </a>
@@ -127,12 +127,12 @@
     <!--email-->
             <li class="notifications dropdown top-menu-item">
                 <span class="counter bgc-blue">3</span>
-                
+
                 <a href="" class="dropdown-toggle no-after text-white" data-toggle="dropdown">
                     <img src="{{ asset('/images/assets/top_email.png') }}" height="32px" width="32px"/>
                 </a>
-                    
-                
+
+
 
                 <ul class="dropdown-menu">
                     <li class="pX-20 pY-15 bdB">
@@ -221,14 +221,14 @@
 
             <li class="notifications dropdown top-menu-item">
                 <span class="counter bgc-blue">3</span>
-                
+
                 <a href="" class="dropdown-toggle no-after text-white" data-toggle="dropdown">
                     <img src="{{ asset('/images/assets/top_chat.png') }}" height="32px" width="32px"/>
                 </a>
              </li>
 
         </ul>
- 
+
     </div>
     </div>
 <!--
@@ -262,10 +262,10 @@
                         </span>
                     </div>
                     <div class="peer mR-10" style="padding-left: 10px">
-                        <img class="w-2r bdrs-50p" src="{{ auth()->user()->avatarUrl }}" alt=""> 
+                        <img class="w-2r bdrs-50p" src="{{ auth()->user()->avatarUrl }}" alt="">
                         <i class="fa fa-sort-down text-white"></i>
                     </div>
-                    
+
                      </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="#">
@@ -336,7 +336,7 @@
             <a class="nav-link disabled" href="#">Disabled</a>
           </li>
         </ul>
-        
+
       </div>
 </nav>
 

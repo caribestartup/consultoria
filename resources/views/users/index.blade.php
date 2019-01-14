@@ -19,9 +19,9 @@
                 'url'   => route('users.create'),
                 'create'=> __('users.new_user_header')
             ])
-            <div class="col-sm-12 col-md-12 col-lg-4 form-group  pT-70 pR-30 pL-40">
+            <!-- <div class="col-sm-12 col-md-12 col-lg-4 form-group  pT-70 pR-30 pL-40">
                 {!! Form::open(['method'=>'GET','url'=>'users','role'=>'search'])  !!}
-                    
+
                     <div class="row pt-3 d-flex justify-content-end">
                         <div class="col-12 float-right">
                             <p class="text-color-primary-header font-weight-bold ">{{ trans('users.filter_by_role') }}</p>
@@ -40,7 +40,7 @@
                         </div>
                     </div>
                 {!! Form::close() !!}
-            </div>
+            </div> -->
         </div>
             <div class="bdrs-3 mB-20">
                 @if(!empty($users))
@@ -58,11 +58,11 @@
                                     <img class="card-img-top w-5r bdrs-50p mx-auto" src="{{ $user->avatarUrl }}" alt="{{ config('app.user_avatar_alt') }}">
                                     <div class="card-body">
                                         <h5 class="card-title"> <a href="{{ route('users.show', $user->id) }}" title="{{ trans('common.data') }}" class="text-color-primary-header">{{ $user->name.' '.$user->last_name }}</a> </h5>
-                                        @foreach($user->roles as $role)
+                                        <!-- @foreach($user->roles as $role)
                                             <p class="card-subtitle" style="color:{{ $role->color }};">
                                                 {{ $role->name }}
                                             </p>
-                                        @endforeach
+                                        @endforeach -->
                                     </div>
 
                                     <ul class="list-inline list-group-flush">
@@ -97,17 +97,17 @@
 
         </div>
 
-    </div>
+    <!-- </div> -->
 
 
 
-    @include('components.modal', [
+    <!-- @include('components.modal', [
         'modal_id'  => 'delete-modal',
         'title'     => __('common.attention!'),
         'content'   => __('users.delete_user_question'),
         'accept'    => __('common.yes'),
         'cancel'    => __('common.no')
-        ])
+        ]) -->
 
 @endsection
 

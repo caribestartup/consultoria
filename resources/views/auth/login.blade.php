@@ -16,16 +16,16 @@
     </div>
     <div class="col-lg-8">
     <p class="parr">Bienvenido a<br>Rocket Learning</p>
-       
+
     </div>
   </div>
   </div>
- 
+
 
 <div class="text-center">
             <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}  " >
                 <input id="identity" type="identity" class=" input-text" name="identity" placeholder="{{ trans_choice('common.user', 1) }}" value="{{ old('email') }}" required autofocus>
-               
+
 
                 @if ($errors->has('email'))
                     <span class="form-text text-danger ">
@@ -36,7 +36,7 @@
 
             <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }} ">
                 <input id="password" type="password" class="input-text" name="password" placeholder="{{ __('common.password') }}" required>
-             
+
 
                 @if ($errors->has('password'))
                     <span class="form-text text-danger">
@@ -64,18 +64,18 @@
     <div class="col-lg-8">
     <p class="parr">No tiene cuenta todavía?<br>
     <a href="{{ route('register') }}" class="c-orange-800">{{ __('login.register_here') }} </a></p>
-       
+
     </div>
   </div>
   </div>
-                
-               
+
+
             </div>
             {{--<div class="peers ai-c jc-sb fxw-nw">--}}
             {{--<div class="peer">--}}
-            {{--<a class="btn btn-link" href="{{ route('password.request') }}">--}}
-            {{--Forgot Your Password?--}}
-            {{--</a>--}}
+            <a class="c-orange-800" href="{{ route('password.request') }}">
+            Olvidaste la contraseña?
+            </a>
             {{--</div>--}}
             {{--<div class="peer">--}}
             {{--<a href="/register" class="btn btn-link">Create new account</a>--}}

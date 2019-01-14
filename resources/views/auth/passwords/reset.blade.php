@@ -2,14 +2,14 @@
 
 @section('content')
 
-
-    <h4 class="fw-300 c-grey-900 mB-40">Reset Password</h4>
+<div class="bgc-white pos-a centerXY p-15 modal-home  fondo_transp " >
+    <h4 class="fw-300 c-grey-900 mB-40">Resetear password</h4>
     <form class="form-horizontal" method="POST" action="{{ route('password.request') }}">
         {{ csrf_field() }}
         <input type="hidden" name="token" value="{{ $token }}">
 
         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-            <label for="email" class="text-normal text-dark">E-Mail Address</label>
+            <label for="email" class="text-normal text-dark">Correo electrónico</label>
             <input id="email" type="email" class="form-control" name="email" value="{{ $email or old('email') }}" required autofocus>
 
             @if ($errors->has('email'))
@@ -32,7 +32,7 @@
         </div>
 
         <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-            <label for="password-confirm" class="text-normal text-dark">Confirm Password</label>
+            <label for="password-confirm" class="text-normal text-dark">Confirmar Password</label>
                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
 
                 @if ($errors->has('password_confirmation'))
@@ -44,9 +44,9 @@
 
         <div class="form-group">
                 <button type="submit" class="btn btn-primary">
-                    Reset Password
+                    Resetear Password
                 </button>
         </div>
     </form>
-    
+    </div>
 @endsection

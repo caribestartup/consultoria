@@ -35,40 +35,43 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $users = new User();
-        $roles = Role::all();
-        $selectedRoles = [];
+        // $users = new User();
+        $users = User::orderBy('id', 'desc')->paginate(12);
+        // $roles = Role::all();
+        // $selectedRoles = [];
 
         // dd($roles);
 
-        foreach ($roles as $role)
-        {
-            if($request->has('role_search_check_'.$role->id) && strcmp($request->get('role_search_check_'.$role->id),"on") == 0)
-            {
-                array_push($selectedRoles, $role->id);
-                $request->session()->put('role_search_check_'.$role->id, $request->get('role_search_check_'.$role->id));
-            }
-            else {
-                $request->session()->remove('role_search_check_'.$role->id);
-            }
-        }
+        // foreach ($roles as $role)
+        // {
+        //     if($request->has('role_search_check_'.$role->id) && strcmp($request->get('role_search_check_'.$role->id),"on") == 0)
+        //     {
+        //         array_push($selectedRoles, $role->id);
+        //         $request->session()->put('role_search_check_'.$role->id, $request->get('role_search_check_'.$role->id));
+        //     }
+        //     else {
+        //         $request->session()->remove('role_search_check_'.$role->id);
+        //     }
+        // }
 
 
-        $request->session()->put('search', $request->has('search') ? $request->get('search') : ($request->session()->has('search') ? $request->session()->get('search') : ''));
-
-
-        if(count($selectedRoles) > 0) {
-            $users = $users
-                ->join('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
-                ->join('roles', 'roles.id', '=', 'model_has_roles.role_id')
-                ->whereRaw('CONCAT(users.name," ", users.last_name) like \'%' . $request->session()->get('search') . '%\'')
-                ->whereIn('roles.id', $selectedRoles)
-                ->paginate(12);
-        }
-        else {
-            $users = $users->whereRaw('CONCAT(users.name," ", users.last_name) like \'%' . $request->session()->get('search') . '%\'')->paginate(12);
-        }
+        // $request->session()->put('search', $request->has('search') ? $request->get('search') : ($request->session()->has('search') ? $request->session()->get('search') : ''));
+        //
+        //
+        // if(count($selectedRoles) > 0) {
+        //     $users = $users
+        //         ->join('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
+        //         ->join('roles', 'roles.id', '=', 'model_has_roles.role_id')
+        //         ->whereRaw('CONCAT(users.name," ", users.last_name) like \'%' . $request->session()->get('search') . '%\'')
+        //         ->whereIn('roles.id', $selectedRoles)
+        //         ->paginate(12);
+        // }
+        // else {
+        //     $users = $users->whereRaw('CONCAT(users.name," ", users.last_name) like \'%' . $request->session()->get('search') . '%\'')->paginate(12);
+        // }
+        $roles=array();
         return view('users.index', compact('users', 'roles'));
+        // return view('users.index', compact('users'));
     }
 
     /**
@@ -245,4 +248,3 @@ class UserController extends Controller
     }
 
 }
-
