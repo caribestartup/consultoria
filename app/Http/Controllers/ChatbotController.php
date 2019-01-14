@@ -36,6 +36,7 @@ class ChatbotController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'description' => 'required',
+            'default_response' => 'required',
             'approach' => 'required'
         ]);
 
@@ -44,6 +45,7 @@ class ChatbotController extends Controller
         $chatbot->name=$request->get('name');
         $chatbot->description=$request->get('description');
         $chatbot->approach=$request->get('approach');
+        $chatbot->default_response=$request->get('default_response');
 
         $chatbot->save();
 
@@ -62,7 +64,7 @@ class ChatbotController extends Controller
     {
         $approachOptions = ['Plan de acción',  'Intereses', 'Microcontenidos', 'Grupos', 'Reuniones'];
         $chatbot=Chatbot::find($id);
-        return view('chatbot.edit', compact('chatbot','id', 'eventsOptions'));
+        return view('chatbot.edit', compact('chatbot','id', 'approachOptions'));
     }
 
     public function show($id)

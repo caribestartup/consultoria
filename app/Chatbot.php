@@ -14,6 +14,7 @@ class Chatbot extends Model
         'name',
         'description',
         'automatic',
+        'default_response',
         'approach',
 
     ];

@@ -18,6 +18,7 @@ class CreateChatbotTable extends Migration
             $table->increments('id')->unsigned();
             $table->string('name');
             $table->text('description')->nullable();
+            $table->text('default_response')->nullable();
             $table->integer('automatic')->nullable();
             $table->string('approach');
             $table->timestamps();

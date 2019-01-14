@@ -67,11 +67,11 @@
 
                 </div>
                 <div class="col-md-4 d-flex flex-column">
-                    <label class=  "mb-3" style="margin-top: 98px">Respuesta de error predeterminada</label>
-                    <textarea class="mb-5 light-brown" style="border-radius: 35px"></textarea>
+                    <label class="mb-3" style="margin-top: 98px">Respuesta de error predeterminada</label>
+                    <textarea class="mb-5 light-brown" style="border-radius: 35px" name="default_response" id="default_response"></textarea>
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="dropdownCheck">
-                        <label class="form-check-label" for="dropdownCheck">
+                        <input type="checkbox" class="form-check-input" id="automatic" name="automatic">
+                        <label class="form-check-label" for="automatic">
                             Quiere que el chatbot inicie automáticamente
                         </label>
                     </div>
