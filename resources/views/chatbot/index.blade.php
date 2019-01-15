@@ -48,9 +48,21 @@
                             </a>
                         </div>
                         <div class="col-md-2">
-                             <span class="img-menu">
-                                <img src="{{ asset("images/trash.png") }}" height="30px" width="30px" />
-                            </span>
+                            {!! Form::open([
+                                    'class'=>'deletechatbotform',
+                                    'url'  => route('chatbot.destroy',$chat->id),
+                                    'method' => 'DELETE',
+                                    'id' => 'delete_form',
+                                    ])
+                                !!}
+                                <button type="submit" id="sendbtn" class="btn btn-light btn-sm fsz-md text-color-primary-header" title="{{ trans('common.delete') }}"><i class="ti-trash"></i></button>
+                                <a href="" type="button">
+                                    <span class="img-menu">
+                                        <img src="{{ asset("images/trash.png") }}" height="30px" width="30px" />
+                                    </span>
+                                </a>
+                            {!! Form::close() !!}
+                            
                         </div>
                         <div class="col-md-11 ml-3 ">
                             <label>{{$chat->description}}</label>

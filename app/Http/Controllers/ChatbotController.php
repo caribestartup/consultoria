@@ -26,6 +26,27 @@ class ChatbotController extends Controller
     }
 
     /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $approachOptions = ['Plan de acción', 'Intereses', 'Microcontenidos', 'Grupos', 'Reuniones'];
+        $chatbot=Chatbot::find($id);
+        return view('chatbot.edit', compact('chatbot','id', 'approachOptions'));
+    }
+
+    public function show($id)
+    {
+        //fetch post data
+        $chatbot =  Chatbot::find($id);
+        //pass posts data to view and load list view
+        return view('chatbot.show', compact('chatbot','id'));
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -55,27 +76,6 @@ class ChatbotController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $approachOptions = ['Plan de acción',  'Intereses', 'Microcontenidos', 'Grupos', 'Reuniones'];
-        $chatbot=Chatbot::find($id);
-        return view('chatbot.edit', compact('chatbot','id', 'approachOptions'));
-    }
-
-    public function show($id)
-    {
-        //fetch post data
-        $chatbot =  Chatbot::find($id);
-        //pass posts data to view and load list view
-        return view('chatbot.show', compact('chatbot','id'));
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -84,24 +84,18 @@ class ChatbotController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //validate post data
+        
         $this->validate($request, [
-            'name' => 'name',
+            'name' => 'required',
             'description' => 'required',
+            'default_response' => 'required',
             'approach' => 'required',
-
-
         ]);
+
+        $data = $request->all();
+
         $chatbot= Chatbot::find($id);
-        $chatbot->value=$request->get('name');
-        $chatbot->value=$request->get('description');
-        $chatbot->value=$request->get('approach');
-
-        $chatbot->save();
-
-
-        //store status message
-        Session::flash('success_msg', 'Chatbot updated successfully!');
+        $chatbot->update($data);
 
         return redirect()->route('chatbot.index')->with('success','Chatbot updated successfully');
     }
@@ -120,7 +114,7 @@ class ChatbotController extends Controller
 
         //store status message
 
-
+        // return redirect()->route('chatbot.index')->withSuccess(trans('app.success_store'));
         return redirect()->route('chatbot.index')->with('success','Chatbot deleted successfully');
     }
 }
