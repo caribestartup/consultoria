@@ -141,6 +141,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         // $roles = Role::all();
         // $userRoleId = $user->roles[0]->id;
+        $roles = array('' => 'Sin selecionar', 'Administrador' => 'Administrador', 'Jefe' => 'Jefe', 'Empleado' => 'Empleado');
         $departments = Department::all();
         $groups = Group::all();
 
@@ -185,7 +186,7 @@ class UserController extends Controller
 //            'model_id' => $user->id
 //        ]);
         // Los usuarios solo tienen un rol
-        DB::table('model_has_roles')->where('model_id', $user->id)->update(['role_id' => $data['role']]);
+        // DB::table('model_has_roles')->where('model_id', $user->id)->update(['role_id' => $data['role']]);
 
         return redirect()->route('users.index')->withSuccess(trans('users.user_success_update'));
     }

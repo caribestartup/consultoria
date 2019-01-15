@@ -115,7 +115,7 @@
 	trans_choice('common.user', 2),	__('common.edit')
 	]])
 
-	 
+
 
 	<div class="row " >
 		<div class="col-sm-12 col-md-12 col-lg-7">
@@ -295,17 +295,13 @@
 			<div class="row">
 				<div class="col-sm-12 col-md-9">
 					<div class="form-group row">
-						{{ Form::label("role", trans('users.label_role'), ["class"=>"col-sm-12 col-md-2 col-form-label fw-600"]) }}
+						<label for="rol">Rol</label>
 						<div class="col-sm-12 col-md-10">
-							{{--{!! Form::select("role",[$rolesNames],null,["placeholder" => trans('users.placeholder_role'), "class"=>"form-control custom-select", "optgroup"=>"false"]) !!}--}}
-							<select name="role" placeholder="{{ trans('users.placeholder_role') }}" class="form-control custom-select">
-								@foreach($roles as $role)
-									<option value="{{ $role->id }}"
-											@if($role->id==$userRoleId)
-											selected="true"
-											@endif
-									>{{ $role->name }}</option>
-								@endforeach
+							<select name="rol" placeholder="{{ trans('users.placeholder_role') }}" class="form-control custom-select">
+									<option value="">Sin selecionar</option>
+									<option value="Administrador">Administrador</option>
+									<option value="Jefe">Jefe</option>
+									<option value="Empleado">Empleado</option>
 							</select>
 						</div>
 					</div>
@@ -433,4 +429,3 @@
         });
 	</script>
 @stop
-
