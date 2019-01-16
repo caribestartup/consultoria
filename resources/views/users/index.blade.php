@@ -64,7 +64,6 @@
                             <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4 mB-5" id="items">
                                 <div class="card text-center card-action-plan border-form h-100 pT-15 pB-15">
 
-                                    <img class="card-img-top w-5r bdrs-50p mx-auto" src="{{ $user->avatarUrl }}" alt="{{ config('app.user_avatar_alt') }}">
                                     @if($user->avatar)
                                         <img class="card-img-top w-5r bdrs-50p mx-auto" src="{{ asset('/uploads/avatars/'.$user->avatar) }}" alt="{{ trans('users.user_avatar_alt') }}">
                                         @else
