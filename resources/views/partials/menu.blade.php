@@ -6,9 +6,10 @@
         </span>
         <span class="title pL-20">{{ __('common.dashboard') }}</span>
     </a>
-   
+
 </li>
 
+@if(auth()->check() && auth()->user()->rol == 'Administrador')
 <li class="nav-item {{ request()->is('users*') ? 'bgc-blue-50' : '' }} border " style="font-family:Comfortaa">
     <a class='sidebar-link ' href="{{ route('users.index') }}">
         <span class="img-menu">
@@ -47,7 +48,7 @@
             <img src="{{ asset('/images/Untitled-1.png') }}" height="32px" width="35px" />
         </span>
         <span class="title  pL-20">Chatbot</span>
-      
+
     </a>
 </li>
 
@@ -61,15 +62,15 @@
         <span class="title  pL-20">{{ trans_choice('common.setting', 2) }}
         </span>
         <i class="fa fa-sort-down text-blue title pL-20" ></i>
-    
+
     </a>
-   
+
     <span class="dropdown-menu dropdown-menu-right  ">
 
         <a class="dropdown-item" href="{{ action('DepartmentController@index') }}">{{ trans_choice('common.department', 2) }}</a>
         <a class="dropdown-item" href="{{ action('GroupController@index') }}">{{ trans_choice('common.group', 2) }}</a>
         <a class="dropdown-item" href="{{ action('TopicController@index') }}">{{ trans_choice('common.topic', 2) }}</a>
-        
+
     </span>
     <!--
     <ul class="sidebar-menu">
@@ -90,6 +91,6 @@
         </li>
     </ul>
     -->
-    
-</li>
 
+</li>
+@endif

@@ -16,14 +16,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/micro_contents/actionPlans', 'MicroContentController@ajaxActionPlans' );
     Route::post('/micro_contents/actions', 'MicroContentController@ajaxActions' );
 
-    Route::resource('interests', 'InterestController');
+    // Route::resource('interests', 'InterestController');
     // Route::resource('departments', 'DepartmentController');
     // Route::resource('groups', 'GroupController');
     // Route::resource('topics', 'TopicController');
 
-    Route::resource('action_plans', 'ActionPlanController');
+    // Route::resource('action_plans', 'ActionPlanController');
     Route::post('action_plans/{id}/update_assigned', 'ActionPlanController@updateAssigned');
-    Route::resource('chatbot', 'ChatbotController');
+    // Route::resource('chatbot', 'ChatbotController');
 
 });
 
@@ -34,4 +34,8 @@ Route::group(['middleware' => 'admin'], function () {
     Route::resource('departments', 'DepartmentController');
     Route::resource('groups', 'GroupController');
     Route::resource('topics', 'TopicController');
+
+    Route::resource('interests', 'InterestController');
+    Route::resource('action_plans', 'ActionPlanController');
+    Route::resource('chatbot', 'ChatbotController');
 });
