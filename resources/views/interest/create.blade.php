@@ -80,7 +80,7 @@
 @endsection
 
 @section('content')
-   
+
 
  @if(isset($actionPConfig))
         @include('components.index_top', ['indexes' => [
@@ -99,7 +99,13 @@
             {{ __('interest.create_interest') }}
         @endif
     </h2>
-   
+
+    {!! Form::open([
+                'action' => ['InterestController@store'],
+                'method' => 'post'
+                ])
+        !!}
+
     <div class="row">
         <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-2 ">
             <div class="bgc-white p-20 border-form">
@@ -233,7 +239,7 @@
                                                          @endif">
 
 
-                                                    
+
                                                 <div class="row">
 
                                                     @for($j=0;$j<$cantVer;$j++)

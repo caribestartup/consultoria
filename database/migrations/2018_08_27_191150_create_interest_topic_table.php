@@ -16,11 +16,17 @@ class CreateInterestTopicTable extends Migration
     {
         Schema::create('interest_topic', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->increments('id')->unsigned();
+            $table->increments('id');
             $table->integer('interest_id')->unsigned();
-//            $table->foreign('interest_id')->references('id')->on('interests');
+            $table->foreign('interest_id')
+                  ->references('id')
+                  ->on('interests')
+                  ->onDelete('cascade');
             $table->integer('topic_id')->unsigned();
-//            $table->foreign('topic_id')->references('id')->on('topics');
+            $table->foreign('topic_id')
+                  ->references('id')
+                  ->on('topics')
+                  ->onDelete('cascade');
             $table->timestamps();
         });
     }

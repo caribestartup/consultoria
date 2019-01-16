@@ -20,7 +20,7 @@
     </div>
     {!! Form::open([
                'action' => ['ChatbotController@store'],
-
+               'method' => 'post'
                ])
        !!}
     <div class="row">

@@ -15,11 +15,17 @@ class CreateUserInterestTable extends Migration
     {
         Schema::create('user_interest', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->increments('id')->unsigned();
+            $table->increments('id');
             $table->integer('user_id')->unsigned();
-//            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')
+                  ->references('id')
+                  ->on('users')
+                  ->onDelete('cascade');
             $table->integer('interest_id')->unsigned();
-//            $table->foreign('interest_id')->references('id')->on('interests');
+            $table->foreign('interest_id')
+                  ->references('id')
+                  ->on('interests')
+                  ->onDelete('cascade');
             $table->timestamps();
         });
     }
