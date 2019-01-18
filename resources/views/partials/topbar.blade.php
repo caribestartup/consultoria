@@ -1,6 +1,5 @@
 <div class="header navbar header-nav-bar navbar-dark navbar-fixed-top navbar navbar-expand-lg " role="navigation">
     <div class="header-container ">
-
                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
                 </button>
@@ -99,21 +98,21 @@
                     <li>
                         <ul class="ovY-a pos-r scrollable lis-n p-0 m-0 fsz-sm">
                             @foreach($notifications as $notification)
-                                <a href="{{ $notification->url() }}" class='peers fxw-nw td-n p-20 bdB c-grey-800 cH-blue bgcH-grey-100'>
+                                <a href="{{ $notification->url()['url'] }}" class='peers fxw-nw td-n p-20 bdB c-grey-800 cH-blue bgcH-grey-100'>
                                     <div class="peer mR-15">
                                         <img class="w-3r" src="{{ asset($notification->image()) }}" alt="" width="35px" height="35px">
                                     </div>
                                     <div class="peer peer-greed">
-                                        {{-- <span>
-                                            <span class="fw-500">John Doe</span>
-                                            <span class="c-grey-600">liked your <span class="text-dark">post</span>
+                                         <span>
+                                            <span class="fw-500">{{ $notification->message() }}</span>
+                                            <span class="c-grey-600">Inicia <span class="text-dark">{{ $notification->url()['inicio'] }}</span>
                                             </span>
                                         </span>
                                         <p class="m-0">
-                                            <small class="fsz-xs">5 mins ago</small>
+                                            <small class="fsz-xs">{{ $notification->url()['dias'] }} dias para el cierre</small>
                                         </p>
-                                        --}}
-                                        {{ $notification->message() }}
+
+
                                     </div>
                                 </a>
                             @endforeach

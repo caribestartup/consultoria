@@ -59,22 +59,38 @@ class Notification extends Model
                     break;
             }
 
-            $entityName = strtolower($entityName);
-            $message = __('notification.new_notification_m', ['name' => $entityName]);
+            // $entityName = strtolower($entityName);
+            // $message = __('notification.new_notification_m', ['name' => $entityName]);
+            $message = $entityName;
         }
 
         return $message;
     }
 
     public function url() {
-        $url = '';
+        $url = array();
         if($this->type == self::NEW){
             switch ($this->entity_type) {
                 case ActionPlanConfiguration::class :
-                    $url = action('ActionPlanController@show', ['id' => $this->entity_id]);
+                    $url['url'] = action('ActionPlanController@show', ['id' => $this->entity_id]);
+                    $fin = ActionPlanConfiguration::find($this->entity_id);
+
+                    // $fecha1 = date("Y-m-d");
+
+                    // $dias = (strtotime($fecha1)-strtotime($fin->ending_date))/86400;
+                    // $dias = abs($dias); $dias = floor($dias);
+
+                    $dias = (strtotime($fin->ending_date)-strtotime(date("Y-m-d")))/86400;
+                    $dias = abs($dias); $dias = floor($dias);
+
+                    // $dias = (strtotime(date("Y-m-d")) - strtotime(date_create($fin->ending_date)))/86400;
+                    // $dias = abs($dias); $dias = floor($dias);
+                    $url['dias'] = $dias;
+
+                    $url['inicio'] = $fin->start_date;
                     break;
                 case Interest::class :
-                    $url = action('InterestController@show', ['id' => $this->entity_id]);
+                    $url['url'] = action('InterestController@show', ['id' => $this->entity_id]);
                     break;
             }
         }
