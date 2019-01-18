@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Chatbot;
+use App\Topic;
 use Illuminate\Http\Request;
 
 class ChatbotController extends Controller

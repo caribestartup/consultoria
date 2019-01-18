@@ -32,7 +32,7 @@
 @endsection
 
 @section('content')
-<div class="row orange-row d-flex align-items-start mb-5">
+    <div class="row orange-row d-flex align-items-start mb-5">
         <h1 class=" ml-3 text-white" >
           @if(isset($microContent))
             {{ __('micro_content.edit_micro_content') . ': ' . $microContent->title }}
@@ -42,11 +42,6 @@
         </h1>
 
     </div>
-
-   
-
-
-    
 
     @include('micro_content.form.form')
 
