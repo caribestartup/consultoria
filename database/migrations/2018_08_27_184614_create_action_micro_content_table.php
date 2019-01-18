@@ -15,10 +15,16 @@ class CreateActionMicroContentTable extends Migration
     {
         Schema::create('action_micro_content', function (Blueprint $table) {
             $table->increments('id')->unsigned();
-            $table->integer('action_id')->unsigned();
-//            $table->foreign('action_id')->references('id')->on('actions');
             $table->integer('micro_content_id')->unsigned();
-//            $table->foreign('micro_content_id')->references('id')->on('micro_contents');
+            $table->foreign('micro_content_id')
+                  ->references('id')
+                  ->on('micro_contents')
+                  ->onDelete('cascade');
+            $table->integer('action_id')->unsigned();
+            $table->foreign('action_id')
+                  ->references('id')
+                  ->on('actions')
+                  ->onDelete('cascade');
             $table->timestamps();
         });
     }

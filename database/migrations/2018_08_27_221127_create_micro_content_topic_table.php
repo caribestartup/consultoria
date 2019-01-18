@@ -15,11 +15,17 @@ class CreateMicroContentTopicTable extends Migration
     {
         Schema::create('micro_content_topic', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->increments('id')->unsigned();
+            $table->increments('id');
             $table->integer('micro_content_id')->unsigned();
-//            $table->foreign('micro_content_id')->references('id')->on('micro_contents');
+            $table->foreign('micro_content_id')
+                  ->references('id')
+                  ->on('micro_contents')
+                  ->onDelete('cascade');
             $table->integer('topic_id')->unsigned();
-//            $table->foreign('topic_id')->references('id')->on('topics');
+            $table->foreign('topic_id')
+                  ->references('id')
+                  ->on('topics')
+                  ->onDelete('cascade');
             $table->timestamps();
         });
     }

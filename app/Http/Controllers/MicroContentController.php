@@ -108,14 +108,14 @@ class MicroContentController extends Controller
         if($microContent->id) {
             if ($microContent->userCanAnswer(Auth::user())) {
                 foreach ($data as $question_id => $answer_id) {
-                    // DB::table('answer_user_question')->insert(
-                    //     compact('question_id', 'answer_id', 'user_id')
-                    // );
+                    DB::table('answer_user_question')->insert(
+                        compact('question_id', 'answer_id', 'user_id')
+                    );
                 }
 
                // $result = 'success';
             }
-            
+
             $result1 = DB::table('micro_contents')
             ->join('questions', 'micro_contents.id', '=', 'questions.micro_content_id')
             ->join('answers', 'questions.id', '=', 'answers.question_id')
@@ -124,7 +124,7 @@ class MicroContentController extends Controller
             ->where('micro_contents.id', 8)
             ->distinct()
             ->sum('questions.points');
-        
+
             $result = 'Aprobaste: '.$result1;
         }
 
