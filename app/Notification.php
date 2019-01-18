@@ -75,17 +75,20 @@ class Notification extends Model
                     $url['url'] = action('ActionPlanController@show', ['id' => $this->entity_id]);
                     $fin = ActionPlanConfiguration::find($this->entity_id);
 
-                    // $fecha1 = date("Y-m-d");
-
-                    // $dias = (strtotime($fecha1)-strtotime($fin->ending_date))/86400;
-                    // $dias = abs($dias); $dias = floor($dias);
-
                     $dias = (strtotime($fin->ending_date)-strtotime(date("Y-m-d")))/86400;
                     $dias = abs($dias); $dias = floor($dias);
-
-                    // $dias = (strtotime(date("Y-m-d")) - strtotime(date_create($fin->ending_date)))/86400;
-                    // $dias = abs($dias); $dias = floor($dias);
                     $url['dias'] = $dias;
+
+                    if ($fin->ending_date > date("Y-m-d")) {
+                        $url['mgs'] = 'días para el cierre';
+                        $url['style'] = '#2EFE2E';
+                    } else if ($fin->ending_date == date("Y-m-d")) {
+                        $url['mgs'] = 'cierra hoy';
+                        $url['style'] = '#FFBF00';
+                    } else {
+                        $url['mgs'] = 'días de atraso';
+                        $url['style'] = '#FF0000';
+                    }
 
                     $url['inicio'] = $fin->start_date;
                     break;

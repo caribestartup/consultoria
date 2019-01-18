@@ -109,7 +109,7 @@
                                             </span>
                                         </span>
                                         <p class="m-0">
-                                            <small class="fsz-xs">{{ $notification->url()['dias'] }} dias para el cierre</small>
+                                            <small class="fsz-xs" style="color:{{$notification->url()['style']}};">{{ $notification->url()['dias'] }} {{$notification->url()['mgs']}} </small>
                                         </p>
 
 
