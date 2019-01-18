@@ -17,6 +17,11 @@
                 />
             </div>
 
+            <div class="form-group col-xs-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
+                <label>{{ trans_choice('common.point', 2) }}</label>
+                <input class="form-control points-i" name="micro_content[approve]" required type="number" />
+            </div>
+
             <div class="row">
                 <div class="col-xs-12 col-sm-6 col-md-4">
                     @include('components.topic_select', ['parent' => isset($microContent) ? $microContent: null])

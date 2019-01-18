@@ -121,11 +121,18 @@ class MicroContentController extends Controller
             ->join('answers', 'questions.id', '=', 'answers.question_id')
             ->join('answer_user_question', 'answers.id', '=', 'answer_user_question.answer_id')
             ->where('answers.is_correct', true)
-            ->where('micro_contents.id', 8)
+            ->where('micro_contents.id', $microContent->id)
             ->distinct()
             ->sum('questions.points');
 
-            $result = 'Aprobaste: '.$result1;
+            $total = DB::table('micro_contents')
+            ->join('questions', 'micro_contents.id', '=', 'questions.micro_content_id')
+            ->where('micro_contents.id', $microContent->id)
+            ->sum('questions.points');
+
+            
+
+            $result = 'Tu resultado es: '.$result1.' de '.$total.' y el aprovado minimo es: '.$microContent->approve;
         }
 
         return ['state' => $result];

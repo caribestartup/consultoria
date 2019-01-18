@@ -12,6 +12,7 @@ class MicroContent extends Model
 
     protected $fillable = [
         'title',
+        'approve',
         'public',
         'type',
         'user_id'
