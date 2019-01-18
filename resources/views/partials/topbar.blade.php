@@ -108,10 +108,11 @@
                                             <span class="c-grey-600">Inicia <span class="text-dark">{{ $notification->url()['inicio'] }}</span>
                                             </span>
                                         </span>
+                                        <span class="{{$notification->url()['class']}}">
                                         <p class="m-0">
-                                            <small class="fsz-xs" style="color:{{$notification->url()['style']}};">{{ $notification->url()['dias'] }} {{$notification->url()['mgs']}} </small>
+                                            <small class="fsz-xs">{{ $notification->url()['dias'] }} {{$notification->url()['mgs']}} </small>
                                         </p>
-
+                                        </span>
 
                                     </div>
                                 </a>

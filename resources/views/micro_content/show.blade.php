@@ -87,7 +87,7 @@
                     <a href="#{{ strtolower(trans_choice('common.question', 2)) }}">{{trans_choice('common.question', 2)}}</a>
                 </li>
                 <li>
-                    <a href="#{{ strtolower(trans_choice('common.evaluation', 1)) }}">{{ trans_choice('common.evaluation', 1) }}</a>
+                    <a href="#{{ mb_strtolower(trans_choice('common.evaluation', 1), 'UTF-8') }}">{{trans_choice('common.evaluation', 1)}}</a>
                 </li>
             @endif
             {{-- @endif --}}
@@ -104,7 +104,12 @@
 
             @if($showQuestions)
                 <div id="{{ strtolower(trans_choice('common.question', 2)) }}" class="p-20">
-                    <form method="post" action="{{ action('MicroContentController@evaluate') }}" id="question-form">
+                    {!! Form::open([
+                            'id' => 'question-form',
+                            'action' => ['MicroContentController@evaluate'],
+                            'method' => 'post'
+                        ])
+                    !!}
                         <div class="row">
                             @foreach($microContent->questions as $question)
                                 <div class="col-sm-6 col-md-3 col-lg-4 col-xl-4">
@@ -127,12 +132,12 @@
                             @endforeach
                         </div>
                         @csrf
-                    </form>
+                    {!! Form::close() !!}
                 </div>
             @endif
-            <div id="{{ strtolower(trans_choice('common.evaluation', 1)) }}">
+            <div id="{{ mb_strtolower(trans_choice('common.evaluation', 1), 'UTF-8') }}">
                 <div class="text-center mT-60">
-                    <h2>{{ __('micro_content.evaluation_message') }}</h2>
+                    <h2 id='result'></h2>
                 </div>
             </div>
         </div>
@@ -175,7 +180,7 @@
                         form.prop('action'),
                         form.serialize(),
                         function (result) {
-
+                            $('#result').html(result.state);
                         });
                 }
 

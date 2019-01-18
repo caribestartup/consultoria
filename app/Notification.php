@@ -81,13 +81,13 @@ class Notification extends Model
 
                     if ($fin->ending_date > date("Y-m-d")) {
                         $url['mgs'] = 'días para el cierre';
-                        $url['style'] = '#2EFE2E';
+                        $url['class'] = 'badge badge-success';
                     } else if ($fin->ending_date == date("Y-m-d")) {
                         $url['mgs'] = 'cierra hoy';
-                        $url['style'] = '#FFBF00';
+                        $url['class'] = 'badge badge-warning';
                     } else {
                         $url['mgs'] = 'días de atraso';
-                        $url['style'] = '#FF0000';
+                        $url['class'] = 'badge badge-danger';
                     }
 
                     $url['inicio'] = $fin->start_date;
