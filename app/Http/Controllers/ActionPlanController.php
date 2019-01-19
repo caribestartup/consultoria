@@ -12,11 +12,13 @@ use App\MicroContent;
 use App\Notification;
 use App\PlanAnswer;
 use App\PlanQuestion;
+use App\UserMicroContent;
 use App\PlanQuestionOption;
 use App\Question;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ActionPlanController extends Controller
 {
@@ -302,6 +304,7 @@ class ActionPlanController extends Controller
             }
         }
 
+        $actions = $request->action;
         //Envio notificaciones
         foreach ($configuration->users as $user) {
             $notification = new Notification();
@@ -310,7 +313,33 @@ class ActionPlanController extends Controller
             $notification->entity_type = ActionPlanConfiguration::class;
             $notification->type = Notification::NEW;
             $notification->save();
+
+            if($actions) {
+                foreach ($actions as $key => $data) {
+
+                    $microContents = [];
+                    if(array_key_exists('micro_content', $data)) {
+                        $microContents = $data['micro_content'];
+                    }
+
+                    for ($i=0; $i < sizeof($microContents) ; $i++) {
+                        $exist = DB::table('micro_content_user')->where(array('micro_content_id' => $microContents[$i], 'user_id' => $user->id))->first();
+
+                        if (!$exist) {
+
+                            DB::table('micro_content_user')->insert(
+                                [
+                                    'micro_content_id' => $microContents[$i],
+                                    'user_id' => $user->id
+                                ]
+                            );
+                        }
+                    }
+                    // $user->microContents()->sync($microContents);
+                }
+            }
         }
+
 
         return $configuration;
     }

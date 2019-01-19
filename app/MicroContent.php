@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\MicroContent;
 
 class MicroContent extends Model
 {
@@ -58,6 +59,11 @@ class MicroContent extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function users()
+    {
+        return $this->belongsToMany(MicroContent::class);
+    }
+
     public function userResults(User $user){
         $result = 0;
         foreach ($this->questions as $question) {
@@ -77,4 +83,3 @@ class MicroContent extends Model
         return $result;
     }
 }
-
