@@ -18,6 +18,7 @@ class CreateNotificationsTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->integer('entity_id')->unsigned()->default(null);
             $table->string('entity_type');
+            $table->integer('micro_content_id')->default(0);
             $table->boolean('read')->default(true);
             $table->string('type');
             $table->timestamps();

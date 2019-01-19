@@ -26,23 +26,18 @@ class MicroContentController extends Controller
      */
     public function index()
     {
-        $microContents = MicroContent::paginate(15);
+        $microContents = null;
 
-        $coach = DB::table('micro_contents')
-                ->join('action_micro_content', 'micro_contents.id', '=', 'action_micro_content.micro_content_id')
-                ->join('actions', 'action_micro_content.action_id', '=', 'actions.id')
-                ->join('action_plan_configurations', 'actions.action_plan_id', '=', 'action_plan_configurations.action_plan_id')
-                ->where('micro_contents.id', 8)
-                ->select('action_plan_configurations.coach_id')
-                ->get();
-
-                $notification = new Notification();
-                $notification->user_id = $coach[0]->coach_id;
-                $notification->entity_id = 7;
-                $notification->entity_type = User::class;
-                $notification->type = Notification::NEW;
-                $notification->save();
-
+        if (Auth::user()->rol == "Administrador") {
+            $microContents = MicroContent::paginate(15);
+        }
+        else {
+            $microContents = MicroContent::join('micro_content_user', 'micro_contents.id', '=', 'micro_content_user.micro_content_id')
+                                ->where('micro_content_user.user_id', Auth::user()->id)
+                                ->where('micro_content_user.approve_coach', 0)
+                                ->select('micro_contents.id')
+                                ->simplePaginate(1);
+        }
         return view('micro_content.index', ['microContents' => $microContents]);
     }
 
@@ -157,14 +152,15 @@ class MicroContentController extends Controller
                 ->join('action_micro_content', 'micro_contents.id', '=', 'action_micro_content.micro_content_id')
                 ->join('actions', 'action_micro_content.action_id', '=', 'actions.id')
                 ->join('action_plan_configurations', 'actions.action_plan_id', '=', 'action_plan_configurations.action_plan_id')
-                ->where('micro_contents.id', $microContent->id)
+                ->where('micro_contents.id', 8)
                 ->select('action_plan_configurations.coach_id')
                 ->get();
 
                 $notification = new Notification();
-                $notification->user_id = $coach->coach_id;
-                $notification->entity_id = $user_id;
+                $notification->user_id = $coach[0]->coach_id;
+                $notification->entity_id = 7;
                 $notification->entity_type = User::class;
+                $notification->micro_content_id = $microContent->id;
                 $notification->type = Notification::NEW;
                 $notification->save();
             }

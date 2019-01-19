@@ -29,7 +29,32 @@ class ActionPlanController extends Controller
      */
     public function index()
     {
-        $actionPConfigs = ActionPlanConfiguration::paginate(15);
+        
+        $actionPConfigs = null;
+
+        if (Auth::user()->rol == "Administrador") {
+            $actionPConfigs = ActionPlanConfiguration::paginate(15);
+        }
+        else {
+            $actionPConfigs = ActionPlanConfiguration::join('action_plan_configuration_user', 'action_plan_configuration_user.action_plan_configuration_id', '=', 'action_plan_configurations.id')
+                                ->where('action_plan_configuration_user.user_id', Auth::user()->id)
+                                ->select('action_plan_configurations.id',
+                                        'action_plan_configurations.has_coach',
+                                        'action_plan_configurations.coach_functions',
+                                        'action_plan_configurations.public',
+                                        'action_plan_configurations.tracing',
+                                        'action_plan_configurations.reminders',
+                                        'action_plan_configurations.reminders_period',
+                                        'action_plan_configurations.reminders_value',
+                                        'action_plan_configurations.user_id',
+                                        'action_plan_configurations.action_plan_id',
+                                        'action_plan_configurations.coach_id',
+                                        'action_plan_configurations.start_date',
+                                        'action_plan_configurations.ending_date')
+                                ->paginate(15);
+
+            // $actionPConfigs = ActionPlanConfiguration::find($microContents1->id)->simplePaginate(1);
+        }
         return view('action_plan.index', ['actionPConfigs' => $actionPConfigs]);
     }
 

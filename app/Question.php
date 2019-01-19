@@ -42,12 +42,8 @@ class Question extends Model
         return $points;
     }
 
-
-
     public function userCanAnswer(User $user) {
-        return
-            $this->userAnswers()->
-        where('user_id', $user->id)->count() < 2;
+        return $this->userAnswers()->where('user_id', $user->id)->count() < 1;
     }
 }
 

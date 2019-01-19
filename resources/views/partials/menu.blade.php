@@ -9,6 +9,24 @@
 
 </li>
 
+<li class="nav-item {{ request()->is('micro_contents*') ? 'bgc-blue-50' : '' }} border " style="font-family:Comfortaa">
+    <a class='sidebar-link' href="{{ route('micro_contents.index') }}">
+        <span class="img-menu">
+            <img src="{{ asset('/images/assets/micro_contents.png') }}" height="35px" width="35px" />
+        </span>
+        <span class="title  pL-20">{{ trans_choice('common.micro_content', 2) }}</span>
+    </a>
+</li>
+
+<li class="nav-item {{ request()->is('action_plans*') ? 'bgc-blue-50' : '' }} border " style="font-family:Comfortaa">
+    <a class='sidebar-link' href="{{ route('action_plans.index') }}">
+        <span class="img-menu">
+            <img src="{{ asset('/images/assets/action_plan.png') }}" height="32px" width="35px" />
+        </span>
+        <span class="title  pL-20">{{ trans_choice('common.action_plan', 2) }}</span>
+    </a>
+</li>
+
 @if(auth()->check() && auth()->user()->rol == 'Administrador')
 <li class="nav-item {{ request()->is('users*') ? 'bgc-blue-50' : '' }} border " style="font-family:Comfortaa">
     <a class='sidebar-link ' href="{{ route('users.index') }}">
@@ -18,14 +36,7 @@
         <span class="title  pL-20">{{ trans_choice('common.user', 2) }}</span>
     </a>
 </li>
-<li class="nav-item {{ request()->is('micro_contents*') ? 'bgc-blue-50' : '' }} border " style="font-family:Comfortaa">
-    <a class='sidebar-link' href="{{ route('micro_contents.index') }}">
-        <span class="img-menu">
-            <img src="{{ asset('/images/assets/micro_contents.png') }}" height="35px" width="35px" />
-        </span>
-        <span class="title  pL-20">{{ trans_choice('common.micro_content', 2) }}</span>
-    </a>
-</li>
+
 <li class="nav-item {{ request()->is('interests*') ? 'bgc-blue-50' : '' }} border " style="font-family:Comfortaa">
     <a class='sidebar-link' href="{{ route('interests.index') }}">
         <span class="img-menu">
@@ -34,14 +45,7 @@
         <span class="title  pL-20">{{ trans_choice('interest.interest', 2) }}</span>
     </a>
 </li>
-<li class="nav-item {{ request()->is('action_plans*') ? 'bgc-blue-50' : '' }} border " style="font-family:Comfortaa">
-    <a class='sidebar-link' href="{{ route('action_plans.index') }}">
-        <span class="img-menu">
-            <img src="{{ asset('/images/assets/action_plan.png') }}" height="32px" width="35px" />
-        </span>
-        <span class="title  pL-20">{{ trans_choice('common.action_plan', 2) }}</span>
-    </a>
-</li>
+
 <li class="nav-item {{ request()->is('chatbot*') ? 'bgc-blue-50' : '' }} border " style="font-family:Comfortaa">
     <a class='sidebar-link' href="{{ route('chatbot.index') }}">
         <span class="img-menu">

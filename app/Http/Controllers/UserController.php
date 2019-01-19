@@ -7,6 +7,7 @@ use App\Group;
 use Illuminate\Http\Request;
 use App\User;
 use App\Image;
+use App\Notification;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\ImageManager;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -85,6 +87,29 @@ class UserController extends Controller
         $user = User::find($id);
 
         return view('users.show', compact('user'));
+    }
+
+    public function approve($id, $micro_content_id, $notificarion_id)
+    {
+        $all = DB::table('micro_content_user')
+                    ->join('micro_contents', 'micro_content_user.micro_content_id', '=', 'micro_contents.id')
+                    ->join('users', 'micro_content_user.user_id', '=', 'users.id')
+                    ->where('micro_content_user.user_id', $id)
+                    ->where('micro_content_user.micro_content_id', $micro_content_id)
+                    ->where('micro_content_user.approve_coach', false)
+                    ->get();
+
+        $total = DB::table('micro_contents')
+                    ->join('questions', 'micro_contents.id', '=', 'questions.micro_content_id')
+                    ->where('micro_contents.id', $micro_content_id)
+                    ->sum('questions.points');
+
+        if (Notification::find($notificarion_id)->user_id == Auth::user()->id) {
+            return view('users.coach.show', compact('all', 'total', 'notificarion_id'));
+        }
+        else {
+            return abort(404);
+        }
     }
 
     /**

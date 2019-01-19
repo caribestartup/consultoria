@@ -102,7 +102,7 @@ class Notification extends Model
                     $url['url'] = action('InterestController@show', ['id' => $this->entity_id]);
                     break;
                 case User::class :
-                    $url['url'] = action('UserController@show', ['id' => $this->entity_id]);
+                    $url['url'] = action('UserController@approve', ['id' => $this->entity_id, 'micro_content_id' => $this->micro_content_id, 'notificarion_id' => $this->id]);
                     $url['mgs'] = 'Usuario aprobó micro contenido';
                     $url['dias'] = null;
                     $url['class'] = 'badge badge-success';
