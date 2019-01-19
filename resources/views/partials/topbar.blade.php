@@ -108,12 +108,13 @@
                                             <span class="c-grey-600">Inicia <span class="text-dark">{{ $notification->url()['inicio'] }}</span>
                                             </span>
                                         </span>
-                                        <span class="{{$notification->url()['class']}}">
-                                        <p class="m-0">
-                                            <small class="fsz-xs">{{ $notification->url()['dias'] }} {{$notification->url()['mgs']}} </small>
-                                        </p>
-                                        </span>
-
+                                        @if($notification->url()['dias'] != null) 
+                                            <span class="{{$notification->url()['class']}}">
+                                            <p class="m-0">
+                                                <small class="fsz-xs">{{ $notification->url()['dias'] }} {{$notification->url()['mgs']}} </small>
+                                            </p>
+                                            </span>
+                                        @endif
                                     </div>
                                 </a>
                             @endforeach

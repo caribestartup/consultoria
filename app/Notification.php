@@ -43,6 +43,8 @@ class Notification extends Model
             return 'images/micro_contents.svg';
         elseif($this->entity_type == ActionPlanConfiguration::class)
             $image = 'images/action_plan.svg';
+        elseif($this->entity_type == User::class)
+            $image = 'images/action_plan.svg';
 
         return $image;
     }
@@ -56,6 +58,9 @@ class Notification extends Model
                     break;
                 case Interest::class :
                     $entityName = trans_choice( 'common.interest', 1);
+                    break;
+                case User::class :
+                    $entityName = 'Usuario aprobo micro contenido';
                     break;
             }
 
@@ -76,7 +81,8 @@ class Notification extends Model
                     $fin = ActionPlanConfiguration::find($this->entity_id);
 
                     $dias = (strtotime($fin->ending_date)-strtotime(date("Y-m-d")))/86400;
-                    $dias = abs($dias); $dias = floor($dias);
+                    $dias = abs($dias); 
+                    $dias = floor($dias);
                     $url['dias'] = $dias;
 
                     if ($fin->ending_date > date("Y-m-d")) {
@@ -94,6 +100,13 @@ class Notification extends Model
                     break;
                 case Interest::class :
                     $url['url'] = action('InterestController@show', ['id' => $this->entity_id]);
+                    break;
+                case User::class :
+                    $url['url'] = action('UserController@show', ['id' => $this->entity_id]);
+                    $url['mgs'] = 'Usuario aprobó micro contenido';
+                    $url['dias'] = null;
+                    $url['class'] = 'badge badge-success';
+                    $url['inicio'] = date_format($this->created_at, 'Y-m-d');
                     break;
             }
         }

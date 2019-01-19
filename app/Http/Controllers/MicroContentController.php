@@ -12,6 +12,7 @@ use App\Page;
 use App\Question;
 use App\Topic;
 use App\User;
+use App\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -26,6 +27,22 @@ class MicroContentController extends Controller
     public function index()
     {
         $microContents = MicroContent::paginate(15);
+
+        $coach = DB::table('micro_contents')
+                ->join('action_micro_content', 'micro_contents.id', '=', 'action_micro_content.micro_content_id')
+                ->join('actions', 'action_micro_content.action_id', '=', 'actions.id')
+                ->join('action_plan_configurations', 'actions.action_plan_id', '=', 'action_plan_configurations.action_plan_id')
+                ->where('micro_contents.id', 8)
+                ->select('action_plan_configurations.coach_id')
+                ->get();
+
+                $notification = new Notification();
+                $notification->user_id = $coach[0]->coach_id;
+                $notification->entity_id = 7;
+                $notification->entity_type = User::class;
+                $notification->type = Notification::NEW;
+                $notification->save();
+
         return view('micro_content.index', ['microContents' => $microContents]);
     }
 
@@ -132,7 +149,25 @@ class MicroContentController extends Controller
 
             DB::table('micro_content_user')
                 ->where(array('micro_content_id' => $microContent->id, 'user_id' => $user_id))
-                ->update(array('approve'=> ($result1 >= $microContent->approve) ? true : false));
+                ->update(array('approve'=> ($result1 >= $microContent->approve) ? true : false, 'nota'=>$result1));
+
+            if ($result1 >= $microContent->approve) {
+
+                $coach = DB::table('micro_contents')
+                ->join('action_micro_content', 'micro_contents.id', '=', 'action_micro_content.micro_content_id')
+                ->join('actions', 'action_micro_content.action_id', '=', 'actions.id')
+                ->join('action_plan_configurations', 'actions.action_plan_id', '=', 'action_plan_configurations.action_plan_id')
+                ->where('micro_contents.id', $microContent->id)
+                ->select('action_plan_configurations.coach_id')
+                ->get();
+
+                $notification = new Notification();
+                $notification->user_id = $coach->coach_id;
+                $notification->entity_id = $user_id;
+                $notification->entity_type = User::class;
+                $notification->type = Notification::NEW;
+                $notification->save();
+            }
 
             $result = 'Tu resultado es: '.$result1.' de '.$total.' y el aprovado minimo es: '.$microContent->approve;
         }

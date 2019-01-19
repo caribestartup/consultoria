@@ -27,6 +27,7 @@ class CreateMicroContentUserTable extends Migration
                   ->onDelete('cascade');
             $table->float('nota', 8, 2)->default(0);
             $table->boolean('approve')->default(false);
+            $table->boolean('approve_coach')->default(false);
             $table->timestamps();
         });
     }
