@@ -130,7 +130,9 @@ class MicroContentController extends Controller
             ->where('micro_contents.id', $microContent->id)
             ->sum('questions.points');
 
-            
+            DB::table('micro_content_user')
+                ->where(array('micro_content_id' => $microContent->id, 'user_id' => $user_id))
+                ->update(array('approve'=> ($result1 >= $microContent->approve) ? true : false));
 
             $result = 'Tu resultado es: '.$result1.' de '.$total.' y el aprovado minimo es: '.$microContent->approve;
         }
