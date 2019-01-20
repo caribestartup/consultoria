@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Image;
 use App\Notification;
+use App\MicroContent;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -91,21 +92,39 @@ class UserController extends Controller
 
     public function approve($id, $micro_content_id, $notificarion_id)
     {
-        $all = DB::table('micro_content_user')
-                    ->join('micro_contents', 'micro_content_user.micro_content_id', '=', 'micro_contents.id')
+        $microContents = MicroContent::join('micro_content_user', 'micro_content_user.micro_content_id', '=', 'micro_contents.id')
                     ->join('users', 'micro_content_user.user_id', '=', 'users.id')
                     ->where('micro_content_user.user_id', $id)
                     ->where('micro_content_user.micro_content_id', $micro_content_id)
                     ->where('micro_content_user.approve_coach', false)
-                    ->get();
+                    ->select('micro_contents.id',
+                            'micro_contents.title',
+                            'micro_contents.approve',
+                            'micro_contents.public',
+                            'micro_contents.type',
+                            'micro_contents.user_id')
+                    ->paginate(15);
+
+        $user = User::find($id);
+
+        $result = DB::table('micro_contents')
+            ->join('questions', 'micro_contents.id', '=', 'questions.micro_content_id')
+            ->join('answers', 'questions.id', '=', 'answers.question_id')
+            ->join('answer_user_question', 'answers.id', '=', 'answer_user_question.answer_id')
+            ->where('answers.is_correct', true)
+            ->where('micro_contents.id', $micro_content_id)
+            ->distinct()
+            ->sum('questions.points');
 
         $total = DB::table('micro_contents')
                     ->join('questions', 'micro_contents.id', '=', 'questions.micro_content_id')
                     ->where('micro_contents.id', $micro_content_id)
                     ->sum('questions.points');
 
+        $result = 8;
+
         if (Notification::find($notificarion_id)->user_id == Auth::user()->id) {
-            return view('users.coach.show', compact('all', 'total', 'notificarion_id'));
+            return view('users.coach.show', compact('microContents', 'total', 'result', 'notificarion_id', 'user'));
         }
         else {
             return abort(404);

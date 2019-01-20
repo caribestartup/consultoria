@@ -59,6 +59,7 @@
     <script src="{{ asset('/plugins/jquery/jquery-3.3.1.min.js') }}"></script>
     <script src="{{ asset('/js/ratingstart.js') }}"></script>
     <script src="{{ asset('/js/jquery-clockpicker.min.js') }}"></script>
+    <script src="{{ asset('/js/progressbar.min.js') }}"></script>
     @yield('js')
 
     </body>
