@@ -121,8 +121,6 @@ class UserController extends Controller
                     ->where('micro_contents.id', $micro_content_id)
                     ->sum('questions.points');
 
-        $result = 8;
-
         if (Notification::find($notificarion_id)->user_id == Auth::user()->id) {
             return view('users.coach.show', compact('microContents', 'total', 'result', 'notificarion_id', 'user'));
         }
