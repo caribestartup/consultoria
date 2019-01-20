@@ -45,6 +45,7 @@ return [
     'message'           => 'Mensaje|Mensajes',
     'middle'            => 'Medio',
     'micro_content'     => 'Micro contenido|Micro contenidos',
+    'min_approve'       => 'Mínimo de puntos para aprovar',
     'monday'            => 'Lunes',
     'monthly'           => 'Mensual',
     'multiple'          => 'Múltiple',

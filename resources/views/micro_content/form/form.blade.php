@@ -18,7 +18,7 @@
             </div>
 
             <div class="form-group col-xs-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
-                <label>{{ trans_choice('common.point', 2) }}</label>
+                <label>{{ trans('common.min_approve') }}</label>
                 <input class="form-control points-i" name="micro_content[approve]" required type="number" />
             </div>
 
