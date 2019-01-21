@@ -26,10 +26,8 @@
 @section('content')
     <div class="row title-page-buttom">
         <div class="col-xs-12 col-sm-6">
-            @include('components.index_create', [
-            'title' => 'Aprovado micro contenido',
-            'url'   => route('micro_contents.create'),
-            'create'=> __('micro_content.create_micro_content')
+            @include('components.index_show', [
+            'title' => 'Aprovado micro contenido'
             ])
         </div>
     </div>
@@ -45,16 +43,18 @@
                                 {{ $microContent->title }}
                             </div>
 
-                            <div class="row flex-fill card-text m-10">
-                                <h4 class="contenido-title-microcontent-font">Informacion:</h4><br/>
+                            <div class=" flex-fill card-text m-10">
+                                <h3 class="contenido-title-microcontent-show-notification-font">Informacion:</h3>
                                 <!-- <p class="contenido-body-microcontent-font">
                                     Puntos todales: {{$total}}
                                 </p> -->
-                                <ul>
-                                    <li>Puntos totales: {{$total}}</li>
-                                    <li>Aprovado: {{$microContent->approve}}</li>
-                                    <li>Resultado: {{$result}}</li>
-                                </ul>
+                                <div>Puntos totales: <span class="badge badge-primary">{{$total}}</span></div>
+                                <div>Aprovado: <span class="badge badge-warning">{{$microContent->approve}}</span></div>
+                                @if($result >= $microContent->approve)
+                                    <div>Resultado: <span class="badge badge-success">{{$result}}</span></div>
+                                @else
+                                    <div>Resultado: <span class="badge badge-danger">{{$result}}</span></div>
+                                @endif
                             </div>
 
                             <div id="graphics"></div>
@@ -77,7 +77,7 @@
                             </div> --}}
 
 
-                            <div class="row text-center">
+                            <div class="row d-flex justify-content-center">
 
                                 {!! Form::open([
                                         'class'=>'deletenotificacionform',
@@ -101,7 +101,7 @@
                                         ])
                                     !!}
                                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 mT-15 mB-10">
-                                    <button type="submit" id="sendbtn" class="card-buttom-delete mB-10 pl-4 pr-4" title="{{ trans('common.delete') }}"><i class="ti-trash"></i></button>
+                                    <button type="submit" id="sendbtn" class="card-buttom-delete mB-10 pl-4 pr-4" title="{{ trans('common.delete') }}">Eliminar</button>
                                 </div>
 
                                 {!! Form::close() !!}
@@ -118,15 +118,15 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mT-15">
                                         <img style="margin-top: 5px" src="{{ asset('images/assets/ASSET-25.png') }}" height="42px"/><br>
                                     <h4 class="question-cont-label">{{ $microContent->questions->count() }}</h4>
-                                    <p class="contenido-title-microcontent-font">
+                                    {{--<p class="contenido-title-microcontent-font">
                                         Cantidad
-                                    </p>
+                                    </p>--}}
                                 </div>
-                                {{-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mT-15 mB-10">
-                                        <a href="{{ route('micro_contents.show', ['id' => $microContent->id]) }}"
-                                                class="card-buttom-edit mB-10 pl-4 pr-4">Editar</a>
-
-                                </div> --}}
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mT-15">
+                                    <a href="{{ route('micro_contents.show', ['id' => $microContent->id]) }}" class="mB-10">
+                                        <img class="mB-10" src="{{ asset('images/assets/ASSET-01.png') }}" height="42px"/>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                         {{-- <div class="

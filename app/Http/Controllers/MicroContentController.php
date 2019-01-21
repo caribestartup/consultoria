@@ -142,11 +142,11 @@ class MicroContentController extends Controller
             ->where('micro_contents.id', $microContent->id)
             ->sum('questions.points');
 
-            DB::table('micro_content_user')
+            $confirm = DB::table('micro_content_user')
                 ->where(array('micro_content_id' => $microContent->id, 'user_id' => $user_id))
                 ->update(array('approve'=> ($result1 >= $microContent->approve) ? true : false, 'nota'=>$result1));
 
-            if ($result1 >= $microContent->approve) {
+            if ($result1 >= $microContent->approve && $confirm) {
 
                 $coach = DB::table('micro_contents')
                 ->join('action_micro_content', 'micro_contents.id', '=', 'action_micro_content.micro_content_id')

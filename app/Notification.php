@@ -44,7 +44,7 @@ class Notification extends Model
         elseif($this->entity_type == ActionPlanConfiguration::class)
             $image = 'images/action_plan.svg';
         elseif($this->entity_type == User::class)
-            $image = 'images/action_plan.svg';
+            $image = 'images/user_notification.png';
 
         return $image;
     }

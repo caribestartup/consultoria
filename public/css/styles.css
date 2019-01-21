@@ -931,6 +931,18 @@ a.card-buttom-delete:hover {
     letter-spacing: 1px;
 }
 
+.list {
+    height: 300px;
+    overflow: auto;
+}
+
+.contenido-title-microcontent-show-notification-font {
+    font-family: 'Comfortaa';
+    font-size: 22px;
+    color: #68bde7 !important;
+    letter-spacing: 1px;
+}
+
 .contenido-body-microcontent-font {
     font-family: 'Comfortaa';
     font-size: 11px;

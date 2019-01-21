@@ -95,12 +95,12 @@
                         <i class="ti-bell pR-10"></i>
                         <span class="fsz-sm fw-600 c-grey-900">{{ trans_choice('common.notification', 2) }}</span>
                     </li>
-                    <li>
+                    <li class="list">
                         <ul class="ovY-a pos-r scrollable lis-n p-0 m-0 fsz-sm">
                             @foreach($notifications as $notification)
                                 <a href="{{ $notification->url()['url'] }}" class='peers fxw-nw td-n p-20 bdB c-grey-800 cH-blue bgcH-grey-100'>
                                     <div class="peer mR-15">
-                                        <img class="w-3r" src="{{ asset($notification->image()) }}" alt="" width="35px" height="35px">
+                                        <img class="" src="{{ asset($notification->image()) }}" alt="" width="35px" height="35px">
                                     </div>
                                     <div class="peer peer-greed">
                                          <span>
@@ -120,13 +120,13 @@
                             @endforeach
                         </ul>
                     </li>
-                    <li class="pX-20 pY-15 ta-c bdT">
+                    {{--<li class="pX-20 pY-15 ta-c bdT">
                         <span>
                             <a href="" class="c-grey-600 cH-blue fsz-sm td-n">{{ __('notification.view_all') }}
                                 <i class="ti-angle-right fsz-xs mL-10"></i>
                             </a>
                         </span>
-                    </li>
+                    </li>--}}
                 </ul>
             </li>
         </ul>
@@ -145,7 +145,7 @@
                         <i class="ti-email pR-10"></i>
                         <span class="fsz-sm fw-600 c-grey-900">Emails</span>
                     </li>
-                    <li>
+                    <li id="list">
                         <ul class="ovY-a pos-r scrollable lis-n p-0 m-0 fsz-sm">
                             <li>
                                 <a href="" class='peers fxw-nw td-n p-20 bdB c-grey-800 cH-blue bgcH-grey-100'>
