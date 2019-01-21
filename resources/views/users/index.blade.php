@@ -28,28 +28,7 @@
                 'url'   => route('users.create'),
                 'create'=> __('users.new_user_header')
             ])
-            <!-- <div class="col-sm-12 col-md-12 col-lg-4 form-group  pT-70 pR-30 pL-40">
-                {!! Form::open(['method'=>'GET','url'=>'users','role'=>'search'])  !!}
 
-                    <div class="row pt-3 d-flex justify-content-end">
-                        <div class="col-12 float-right">
-                            <p class="text-color-primary-header font-weight-bold ">{{ trans('users.filter_by_role') }}</p>
-                        <div>
-                        @foreach($roles as $role)
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="role_search_check_{{ $role->id }}" name="role_search_check_{{ $role->id }}"
-                                       @if(request()->session()->has('role_search_check_'.$role->id) && strcmp(request()->session()->get('role_search_check_'.$role->id), "on") == 0)
-                                       checked
-                                        @endif
-                                >
-                                <label class="custom-control-label" for="role_search_check_{{ $role->id }}">{{ $role->name }}</label>
-                            </div>
-                        @endforeach
-                    </div>
-                        </div>
-                    </div>
-                {!! Form::close() !!}
-            </div> -->
         </div>
             <div class="bdrs-3 mB-20">
                 @if(!empty($users))
@@ -71,11 +50,7 @@
                                     @endif
                                     <div class="card-body">
                                         <h5 class="card-title"> <a href="{{ route('users.show', $user->id) }}" title="{{ trans('common.data') }}" class="text-color-primary-header">{{ $user->name.' '.$user->last_name }}</a> </h5>
-                                        <!-- @foreach($user->roles as $role)
-                                            <p class="card-subtitle" style="color:{{ $role->color }};">
-                                                {{ $role->name }}
-                                            </p>
-                                        @endforeach -->
+
                                         <p class="card-subtitle {{ $user->rol }}">
                                             {{ $user->rol }}
                                         </p>

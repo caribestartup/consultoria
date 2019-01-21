@@ -17,7 +17,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/micro_contents/actions', 'MicroContentController@ajaxActions' );
 
     Route::post('/micro_contents/actionPlans', 'MicroContentController@ajaxActionPlans' );
-   
+
     Route::resource('action_plans', 'ActionPlanController');
 
     // Route::resource('interests', 'InterestController');
@@ -39,9 +39,9 @@ Route::group(['middleware' => 'admin'], function () {
     Route::resource('groups', 'GroupController');
     Route::resource('topics', 'TopicController');
 
-    
+
 
     Route::resource('interests', 'InterestController');
-    
+
     Route::resource('chatbot', 'ChatbotController');
 });

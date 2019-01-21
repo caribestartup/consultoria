@@ -27,7 +27,7 @@
     <div class="row title-page-buttom">
         <div class="col-xs-12 col-sm-6">
             @include('components.index_create', [
-            'title' => trans_choice('common.micro_content', 2),
+            'title' => 'Aprovado micro contenido',
             'url'   => route('micro_contents.create'),
             'create'=> __('micro_content.create_micro_content')
             ])
@@ -46,10 +46,15 @@
                             </div>
 
                             <div class="row flex-fill card-text m-10">
-                                <h4 class="contenido-title-microcontent-font">Contenido:</h4>
-                                <p class="contenido-body-microcontent-font">
-                                    Para conseguir nuestros objetivos para conseguir nuestros para conseguir nuestros para conseguir nuestros Para conseguir nuestros objetivos.
-                                </p>
+                                <h4 class="contenido-title-microcontent-font">Informacion:</h4><br/>
+                                <!-- <p class="contenido-body-microcontent-font">
+                                    Puntos todales: {{$total}}
+                                </p> -->
+                                <ul>
+                                    <li>Puntos totales: {{$total}}</li>
+                                    <li>Aprovado: {{$microContent->approve}}</li>
+                                    <li>Resultado: {{$result}}</li>
+                                </ul>
                             </div>
 
                             <div id="graphics"></div>
@@ -73,15 +78,33 @@
 
 
                             <div class="row text-center">
+
+                                {!! Form::open([
+                                        'class'=>'deletenotificacionform',
+                                        'url'  => route('notifications.update', $notificarion_id),
+                                        'method' => 'PUT',
+                                        'id' => 'delete_form',
+                                        ])
+                                    !!}
                                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 mT-15 mB-10">
-                                    <a href="{{ route('micro_contents.show', ['id' => $microContent->id]) }}"
-                                            class="card-buttom-approve mB-10 pl-4 pr-4">Aprovar</a>
+
+                                    <button type="submit" id="sendbtn" class="card-buttom-approve mB-10 pl-4 pr-4" title="Aprovar al estudiante">Aprovar</button>
                                 </div>
 
+                                {!! Form::close() !!}
+
+                                {!! Form::open([
+                                        'class'=>'deletenotificacionform',
+                                        'url'  => route('notifications.destroy', $notificarion_id),
+                                        'method' => 'DELETE',
+                                        'id' => 'delete_form',
+                                        ])
+                                    !!}
                                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 mT-15 mB-10">
-                                    <a href="{{ route('micro_contents.show', ['id' => $microContent->id]) }}"
-                                            class="card-buttom-delete mB-10 pl-4 pr-4">Eliminar</a>
+                                    <button type="submit" id="sendbtn" class="card-buttom-delete mB-10 pl-4 pr-4" title="{{ trans('common.delete') }}"><i class="ti-trash"></i></button>
                                 </div>
+
+                                {!! Form::close() !!}
                             </div>
 
                         </div>
@@ -95,6 +118,9 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mT-15">
                                         <img style="margin-top: 5px" src="{{ asset('images/assets/ASSET-25.png') }}" height="42px"/><br>
                                     <h4 class="question-cont-label">{{ $microContent->questions->count() }}</h4>
+                                    <p class="contenido-title-microcontent-font">
+                                        Cantidad
+                                    </p>
                                 </div>
                                 {{-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mT-15 mB-10">
                                         <a href="{{ route('micro_contents.show', ['id' => $microContent->id]) }}"
@@ -110,7 +136,7 @@
                                 bgc-green-500
                             @endif
                                 pT-20">
-                                
+
                         </div> --}}
 
 
@@ -165,7 +191,7 @@
     bar.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
     bar.text.style.fontSize = '2rem';
 
-    bar.animate({{$result/$total}});  // Number from 0.0 to 1.0 
+    bar.animate({{$result/$total}});  // Number from 0.0 to 1.0
 </script>
 
 @endsection
