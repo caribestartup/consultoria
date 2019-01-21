@@ -24,6 +24,7 @@ return [
     'data'				=> 'Datos',
     'delete'            => 'Eliminar',
     'delete_question'   => '¿Está seguro que desea eliminar esta pregunta?',
+    'delete_entity'     => '¿Está seguro que desea eliminar?',
     'department'        => 'Departmento|Departmentos',
     'edit'              => 'Editar',
     'enable_reminders'  => 'Habilitar recordatorio',

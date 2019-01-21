@@ -1,4 +1,5 @@
 @extends('default')
+
 @section('title')
     {{ trans_choice('common.action_plan', 2) }}
 @endsection
@@ -29,10 +30,10 @@
             ])
         </div>
     </div>
-    <div class="row items ">
+    <div class="row items">
         @foreach($actionPConfigs as $actionPConfig)
             @php
-            $isActive = $actionPConfig->startDate() >= now() and now() <= $actionPConfig->endingDate();
+                $isActive = $actionPConfig->startDate() >= now() and now() <= $actionPConfig->endingDate();
             @endphp
 
             <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 mT-20">

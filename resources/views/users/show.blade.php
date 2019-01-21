@@ -7,7 +7,7 @@
 @section('content')
     @include('components.index_top', ['indexes' => [
         trans_choice('common.user', 2),	$user->fullName()
-        ]])
+    ]])
 
     <div class="row">
         <div class="col-sm-12 col-md-12 col-lg-7">
@@ -50,12 +50,11 @@
                             <label>{{ $user->email }}</label>
                         </div>
                     </div>
-
                 </div>
                 <div class="col-sm-12 col-md-4 col-lg-3 d-flex justify-content-center">
                     @if($user->avatar)
                         <img class="bdrs-50p h-100 w-100 mx-auto" src="{{ asset('/uploads/avatars/'.$user->avatar) }}" alt="{{ trans('users.user_avatar_alt') }}">
-                        @else
+                    @else
                         <img class="bdrs-50p h-100 w-100 mx-auto" src="{{ asset('/uploads/avatars/unknown.png') }}" alt="{{ trans('users.user_avatar_alt') }}">
                     @endif
                 </div>
@@ -81,5 +80,4 @@
             </div>
         </div>
     </div>
-
-@stop
+@endsection

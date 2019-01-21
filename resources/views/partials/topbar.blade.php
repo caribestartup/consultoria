@@ -1,13 +1,12 @@
 <div class="header navbar header-nav-bar navbar-dark navbar-fixed-top navbar navbar-expand-lg " role="navigation">
     <div class="header-container ">
-               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-                </button>
-       <ul class="nav-left " role="navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <ul class="nav-left " role="navigation">
             <li class=" top-menu-item">
                 <a id='sidebar-toggle' class="sidebar-toggle  text-white" href="javascript:void(0);">
                     <i class="fa fa-sort-down text-white"></i>
-
                 </a>
             </li>
         </ul>
@@ -20,21 +19,19 @@
 
             <li class="top-menu-item" style="padding-top: 15px">
                 <div class="form-group search-image">
-                    <input class="search-text" type="search" placeholder="" >
+                    <input class="search-text" style="width: 100%;" type="search" placeholder="" >
                     <i class="fa fa-search fa-lg fa-fw"></i>
-
                 </div>
-
             </li>
 
-    <!--usuario-->
+            <!--usuario-->
             <li class="dropdown top-menu-item font" >
                 <a href="" class="dropdown-toggle no-after peers fxw-nw ai-c lh-1" data-toggle="dropdown" >
-                <div class="peer ml-1" style="text-align: right ">
+                    <div class="peer ml-1" style="text-align: right ">
                         <span class="fsz-sm c-grey-50">{{ auth()->user()->name .' '. auth()->user()->last_name }}</span>
-                       <br>
+                        <br>
                         <span class="fsz-sm c-grey-500" >
-                           @foreach(auth()->user()->roles as $role)
+                            @foreach(auth()->user()->roles as $role)
                                 {{ $role->name }}
                             @endforeach
 
@@ -50,7 +47,6 @@
                         <!-- <img class="w-2r bdrs-50p" src="{{ asset('/images/unknown.png') }}" alt=""> -->
                         <i class="fa fa-sort-down text-white"></i>
                     </div>
-
                 </a>
                 <ul class="dropdown-menu fsz-sm">
                     <li>
@@ -80,65 +76,63 @@
                     </li>
                 </ul>
             </li>
-    <!--notificaciones-->
+            
+            <!--notificaciones-->
 
-        <ul class="nav-right">
-            <li class="notifications dropdown top-menu-item">
-                @if($notifications->count() > 0)
-                    <span class="counter bgc-red">{{ $notifications->count() }}</span>
-                @endif
-                <a href="" class="dropdown-toggle no-after text-white" data-toggle="dropdown">
-                    <img src="{{ asset('/images/assets/top_notif.png') }}" height="32px" width="32px"/>
-                </a>
-                <ul class="dropdown-menu">
-                    <li class="pX-20 pY-15 bdB">
-                        <i class="ti-bell pR-10"></i>
-                        <span class="fsz-sm fw-600 c-grey-900">{{ trans_choice('common.notification', 2) }}</span>
-                    </li>
-                    <li class="list">
-                        <ul class="ovY-a pos-r scrollable lis-n p-0 m-0 fsz-sm">
-                            @foreach($notifications as $notification)
-                                <a href="{{ $notification->url()['url'] }}" class='peers fxw-nw td-n p-20 bdB c-grey-800 cH-blue bgcH-grey-100'>
-                                    <div class="peer mR-15">
-                                        <img class="" src="{{ asset($notification->image()) }}" alt="" width="35px" height="35px">
-                                    </div>
-                                    <div class="peer peer-greed">
-                                         <span>
-                                            <span class="fw-500">{{ $notification->message() }}</span>
-                                            <span class="c-grey-600">Inicia <span class="text-dark">{{ $notification->url()['inicio'] }}</span>
+            <ul class="nav-right">
+                <li class="notifications dropdown top-menu-item">
+                    @if($notifications->count() > 0)
+                        <span class="counter bgc-red">{{ $notifications->count() }}</span>
+                    @endif
+                    <a href="" class="dropdown-toggle no-after text-white" data-toggle="dropdown">
+                        <img src="{{ asset('/images/assets/top_notif.png') }}" height="32px" width="32px"/>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="pX-20 pY-15 bdB">
+                            <i class="ti-bell pR-10"></i>
+                            <span class="fsz-sm fw-600 c-grey-900">{{ trans_choice('common.notification', 2) }}</span>
+                        </li>
+                        <li class="list">
+                            <ul class="ovY-a pos-r scrollable lis-n p-0 m-0 fsz-sm">
+                                @foreach($notifications as $notification)
+                                    <a href="{{ $notification->url()['url'] }}" class='peers fxw-nw td-n p-20 bdB c-grey-800 cH-blue bgcH-grey-100'>
+                                        <div class="peer mR-15">
+                                            <img class="" src="{{ asset($notification->image()) }}" alt="" width="35px" height="35px">
+                                        </div>
+                                        <div class="peer peer-greed">
+                                            <span>
+                                                <span class="fw-500">{{ $notification->message() }}</span>
+                                                <span class="c-grey-600">Inicia <span class="text-dark">{{ $notification->url()['inicio'] }}</span></span>
                                             </span>
-                                        </span>
-                                        @if($notification->url()['dias'] != null) 
-                                            <span class="{{$notification->url()['class']}}">
-                                            <p class="m-0">
-                                                <small class="fsz-xs">{{ $notification->url()['dias'] }} {{$notification->url()['mgs']}} </small>
-                                            </p>
-                                            </span>
-                                        @endif
-                                    </div>
+                                            @if($notification->url()['dias'] != null) 
+                                                <span class="{{$notification->url()['class']}}">
+                                                    <p class="m-0">
+                                                        <small class="fsz-xs">{{ $notification->url()['dias'] }} {{$notification->url()['mgs']}} </small>
+                                                    </p>
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </a>
+                                @endforeach
+                            </ul>
+                        </li>
+                        {{--<li class="pX-20 pY-15 ta-c bdT">
+                            <span>
+                                <a href="" class="c-grey-600 cH-blue fsz-sm td-n">{{ __('notification.view_all') }}
+                                    <i class="ti-angle-right fsz-xs mL-10"></i>
                                 </a>
-                            @endforeach
-                        </ul>
-                    </li>
-                    {{--<li class="pX-20 pY-15 ta-c bdT">
-                        <span>
-                            <a href="" class="c-grey-600 cH-blue fsz-sm td-n">{{ __('notification.view_all') }}
-                                <i class="ti-angle-right fsz-xs mL-10"></i>
-                            </a>
-                        </span>
-                    </li>--}}
-                </ul>
-            </li>
-        </ul>
-    <!--email-->
+                            </span>
+                        </li>--}}
+                    </ul>
+                </li>
+            </ul>
+            <!--email-->
             <li class="notifications dropdown top-menu-item">
                 <span class="counter bgc-blue">3</span>
 
                 <a href="" class="dropdown-toggle no-after text-white" data-toggle="dropdown">
                     <img src="{{ asset('/images/assets/top_email.png') }}" height="32px" width="32px"/>
                 </a>
-
-
 
                 <ul class="dropdown-menu">
                     <li class="pX-20 pY-15 bdB">
@@ -223,20 +217,16 @@
                     </li>
                 </ul>
             </li>
-
-
             <li class="notifications dropdown top-menu-item">
                 <span class="counter bgc-blue">3</span>
-
                 <a href="" class="dropdown-toggle no-after text-white" data-toggle="dropdown">
                     <img src="{{ asset('/images/assets/top_chat.png') }}" height="32px" width="32px"/>
                 </a>
              </li>
-
         </ul>
 
     </div>
-    </div>
+</div>
 <!--
 
 <nav class="navbar navbar-expand-lg navbar-light  " style="background-color: #003C4F">

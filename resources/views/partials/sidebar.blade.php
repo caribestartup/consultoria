@@ -9,7 +9,6 @@
 							<div class="peer">
 								<div class="logo">
 									<img src="{{ asset('/images/assets/logo.png') }}" alt="">
-
 								</div>
 							</div>
 							<div class="peer peer-greed">
@@ -17,7 +16,6 @@
 							</div>
 						</div>
 					</a>
-					
 				</div>
 			
 				<div class="peer">

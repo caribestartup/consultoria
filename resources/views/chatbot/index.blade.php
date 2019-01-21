@@ -6,8 +6,6 @@
 
 @section('css')
 
-
-
 @endsection
 
 @section('content-chatbot')
@@ -16,9 +14,7 @@
         <h1 class="text-white ml-3">
             Chatbots
         </h1>
-
-        <a  href="{{'chatbot/create' }}" class="btn btn-app-primary p-10 border-bot mt-3 ml-3">{{ __('Crear nuevo') }}</a>
-
+        <a href="{{'chatbot/create' }}" class="btn btn-app-primary p-10 border-bot mt-3 ml-3">{{ __('Crear nuevo') }}</a>
     </div>
 
     <div class="row ">
@@ -54,7 +50,7 @@
                                     'method' => 'DELETE',
                                     'id' => 'delete_form',
                                     ])
-                                !!}
+                            !!}
                                 <button type="submit" id="sendbtn" class="btn btn-light btn-sm fsz-md text-color-primary-header" title="{{ trans('common.delete') }}"><i class="ti-trash"></i></button>
                                 <a href="" type="button">
                                     <span class="img-menu">
@@ -62,7 +58,6 @@
                                     </span>
                                 </a>
                             {!! Form::close() !!}
-                            
                         </div>
                         <div class="col-md-11 ml-3 ">
                             <label>{{$chat->description}}</label>
@@ -89,21 +84,44 @@
                             <label class="d-flex justify-content-center">{{$chat->approach}}</label>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
-
         @endforeach
-
-
     </div>
 
-
+    @include('components.modal', [
+        'modal_id'  => 'delete-modal',
+        'title'     => __('common.attention!'),
+        'content'   => __('common.delete_entity'),
+        'accept'    => __('common.yes'),
+        'cancel'    => __('common.no')
+    ])
 @endsection
 
 @section('js')
-    <script src="{{ asset('/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript">
+        var currentForm;
+        $(document).on('click', 'form.deletechatbotform button', function() {
+                alertify.defaults.transition = "slide";
+                alertify.defaults.theme.ok = "btn btn-primary";
+                alertify.defaults.theme.cancel = "btn btn-danger";
+                alertify.defaults.theme.input = "form-control";
 
+                var header = document.createElement('modal-title');
+                header.appendChild(document.getElementsByClassName('modal-title')[0]);
 
+                var body = document.createElement('modal-content-alert');
+                body.appendChild(document.getElementsByClassName('modal-content-alert')[0]);
+
+                alertify.confirm(header, body, function(){
+                        alertify.success('Eliminado');
+                        currentForm = $('#delete_form')
+                        currentForm = $('#delete_form').closest("form")
+                        currentForm.submit();
+                    },function(){
+                        alertify.error('Cancelado');
+                    }).set({labels:{ok:'Elimanar', cancel: 'Cancelar'}, padding: false});
+        });
+    </script>
 @endsection

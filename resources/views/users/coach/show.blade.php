@@ -150,48 +150,48 @@
 @endsection
 
 @section('js')
-<script>
+    <script>
 
-    var bar = new ProgressBar.Circle(graphics, {
-        color: '#aaa',
-        // This has to be the same size as the maximum width to
-        // prevent clipping
-        strokeWidth: 4,
-        trailWidth: 1,
-        easing: 'easeInOut',
-        duration: 1400,
-        text: {
-            autoStyleContainer: false
-        },
-        from: { color: '#F15A21', width: 4 },
-        to: { color: '#007B5E', width: 4 },
-        // Set default step function for all animate calls
-        step: function(state, circle) {
-            circle.path.setAttribute('stroke', state.color);
-            circle.path.setAttribute('stroke-width', state.width);
+        var bar = new ProgressBar.Circle(graphics, {
+            color: '#aaa',
+            // This has to be the same size as the maximum width to
+            // prevent clipping
+            strokeWidth: 4,
+            trailWidth: 1,
+            easing: 'easeInOut',
+            duration: 1400,
+            text: {
+                autoStyleContainer: false
+            },
+            from: { color: '#F15A21', width: 4 },
+            to: { color: '#007B5E', width: 4 },
+            // Set default step function for all animate calls
+            step: function(state, circle) {
+                circle.path.setAttribute('stroke', state.color);
+                circle.path.setAttribute('stroke-width', state.width);
 
-            var value = Math.round({{ $result/$total}} * 100);
-            if (value === 0) {
-            circle.setText('');
-            } else {
-            circle.setText(value+"%");
+                var value = Math.round({{ $result/$total}} * 100);
+                if (value === 0) {
+                circle.setText('');
+                } else {
+                circle.setText(value+"%");
+                }
+
             }
+        });
 
-        }
-    });
+        @if($result >= $microContent->approve)
+            bar._opts.from.color = '#007B5E';
+            bar._opts.to.color = '#007B5E';
+        @else
+            bar._opts.from.color = '#F15A21';
+            bar._opts.to.color = '#F15A21';
+        @endif
 
-    @if($result >= $microContent->approve)
-        bar._opts.from.color = '#007B5E';
-        bar._opts.to.color = '#007B5E';
-    @else
-        bar._opts.from.color = '#F15A21';
-        bar._opts.to.color = '#F15A21';
-    @endif
+        bar.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
+        bar.text.style.fontSize = '2rem';
 
-    bar.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
-    bar.text.style.fontSize = '2rem';
-
-    bar.animate({{$result/$total}});  // Number from 0.0 to 1.0
-</script>
+        bar.animate({{$result/$total}});  // Number from 0.0 to 1.0
+    </script>
 
 @endsection
