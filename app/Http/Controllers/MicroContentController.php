@@ -30,6 +30,15 @@ class MicroContentController extends Controller
 
         $microContents = null;
 
+        $result1 = DB::table('micro_contents')
+        ->join('questions', 'micro_contents.id', '=', 'questions.micro_content_id')
+        ->join('answers', 'questions.id', '=', 'answers.question_id')
+        ->where(array('answers.is_correct' => true, 'micro_contents.id' => 10))
+        ->distinct('answer.question_id')
+        ->sum('quesstions.points');
+dd($result1);
+
+
         if (Auth::user()->rol == "Administrador") {
            $microContents = MicroContent::paginate(15);
         }
@@ -48,14 +57,14 @@ class MicroContentController extends Controller
                                     ->join('micro_content_user', 'micro_content_user.micro_content_id', '=', 'micro_contents.id')
                                     ->where('action_plans.id', $value->action_plan_configuration_id)
                                     ->where('micro_content_user.doit', 0)
-                                    ->select('micro_contents.id', 
+                                    ->select('micro_contents.id',
                                             'micro_contents.title',
                                             'micro_contents.approve',
                                             'micro_contents.public',
                                             'micro_contents.type',
                                             'micro_contents.user_id')
                                     ->first();
-                
+
                 if ($microContent) {
                     if (!in_array($microContent->id, $ids)) {
                         array_push($ids, $microContent->id);
@@ -75,9 +84,14 @@ class MicroContentController extends Controller
      */
     public function create()
     {
-        $topics = Topic::all(['id', 'value']);
-        $actionPlans = ActionPlan::all(['id', 'title']);
-        return view('micro_content.create', compact('topics', 'actionPlans'));
+        if (Auth::user()->rol == "Administrador" || Auth::user()->rol == "Jefe") {
+            $topics = Topic::all(['id', 'value']);
+            $actionPlans = ActionPlan::all(['id', 'title']);
+            return view('micro_content.create', compact('topics', 'actionPlans'));
+        }
+        else {
+            return view('error.403');
+        }
     }
 
     /**
@@ -95,8 +109,13 @@ class MicroContentController extends Controller
          ]);
             */
 
-        $this->processForm($request, $microContent = new MicroContent());
-        return redirect(action('MicroContentController@show', ['id' => $microContent->id]));
+        if (Auth::user()->rol == "Administrador" || Auth::user()->rol == "Jefe") {
+            $this->processForm($request, $microContent = new MicroContent());
+            return redirect(action('MicroContentController@show', ['id' => $microContent->id]));
+        }
+        else {
+            return view('error.403');
+        }
     }
 
     private function findDOMNodeAttr($node, $name) {
@@ -143,6 +162,7 @@ class MicroContentController extends Controller
         $user_id = Auth::user()->id;
         $microContentId = Question::find(array_keys($data)[0])->microContent->id;
         $microContent = MicroContent::find($microContentId);
+
         $result = 'failure';
         if($microContent->id) {
             if ($microContent->userCanAnswer(Auth::user())) {
@@ -150,18 +170,19 @@ class MicroContentController extends Controller
                     DB::table('answer_user_question')->insert(
                         compact('question_id', 'answer_id', 'user_id')
                     );
-
                 }
-                
                // $result = 'success';
+
             }
 
+            // MAL************************
             $result1 = DB::table('micro_contents')
             ->join('questions', 'micro_contents.id', '=', 'questions.micro_content_id')
             ->join('answers', 'questions.id', '=', 'answers.question_id')
-            ->where('answers.is_correct', true)
-            ->where('micro_contents.id', $microContent->id)
+            ->where(array('answers.is_correct' => true, 'micro_contents.id' => $microContent->id))
+            ->distinct('answer.question_id')
             ->sum('questions.points');
+            // *****************************
 
             $total = DB::table('micro_contents')
             ->join('questions', 'micro_contents.id', '=', 'questions.micro_content_id')
@@ -170,21 +191,21 @@ class MicroContentController extends Controller
 
             $confirm = DB::table('micro_content_user')
                 ->where(array('micro_content_id' => $microContent->id, 'user_id' => $user_id))
-                ->update(array('approve'=> ($result1 >= $microContent->approve) ? true : false, 'nota'=>$result1, 'doit'=>true));
+                ->update(array('approve'=> ($result1 >= $microContent->approve) ? true : false, 'nota' => $result1, 'doit' => true));
 
-            if ($result1 >= $microContent->approve && $confirm) {
+            if ($confirm) {
 
                 $coach = DB::table('micro_contents')
                 ->join('action_micro_content', 'micro_contents.id', '=', 'action_micro_content.micro_content_id')
                 ->join('actions', 'action_micro_content.action_id', '=', 'actions.id')
                 ->join('action_plan_configurations', 'actions.action_plan_id', '=', 'action_plan_configurations.action_plan_id')
-                ->where('micro_contents.id', 8)
+                ->where('micro_contents.id', $microContent->id)
                 ->select('action_plan_configurations.coach_id')
                 ->get();
 
                 $notification = new Notification();
                 $notification->user_id = $coach[0]->coach_id;
-                $notification->entity_id = 7;
+                $notification->entity_id = $user_id;
                 $notification->entity_type = User::class;
                 $notification->micro_content_id = $microContent->id;
                 $notification->type = Notification::NEW;
@@ -350,14 +371,18 @@ class MicroContentController extends Controller
      */
     public function edit($id)
     {
-        $microContent = MicroContent::find($id);
-        if($microContent) {
-            $topics = Topic::all();
-            $actionPlans = ActionPlan::all(['id', 'title']);
-            return view('micro_content.create', compact('microContent', 'topics', 'actionPlans'));
+        if (Auth::user()->rol == "Administrador" || Auth::user()->rol == "Jefe") {
+            $microContent = MicroContent::find($id);
+            if($microContent) {
+                $topics = Topic::all();
+                $actionPlans = ActionPlan::all(['id', 'title']);
+                return view('micro_content.create', compact('microContent', 'topics', 'actionPlans'));
+            }
+            else
+                return view('error.404');
         }
         else {
-            abort(404);
+            return view('error.403');
         }
     }
 
@@ -370,14 +395,19 @@ class MicroContentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $microContent = MicroContent::find($id);
+        if (Auth::user()->rol == "Administrador" || Auth::user()->rol == "Jefe") {
+            $microContent = MicroContent::find($id);
 
-        if($microContent) {
-            $this->processForm($request, $microContent);
-            return redirect(action('MicroContentController@show', ['id' => $microContent->id]));
+            if($microContent) {
+                $this->processForm($request, $microContent);
+                return redirect(action('MicroContentController@show', ['id' => $microContent->id]));
+            }
+            else
+                return view('error.404');
         }
-        else
-            abort(404);
+        else {
+            return view('error.403');
+        }
     }
 
     /**
@@ -388,13 +418,18 @@ class MicroContentController extends Controller
      */
     public function destroy($id)
     {
-        $microContent = MicroContent::find($id);
-        $microContent->pages()->each(function ($page) {
-            $page->delete();
-        });
+        if (Auth::user()->rol == "Administrador" || Auth::user()->rol == "Jefe") {
+            $microContent = MicroContent::find($id);
+            $microContent->pages()->each(function ($page) {
+                $page->delete();
+            });
 
-        $microContent->delete();
+            $microContent->delete();
 
-        return redirect(action('MicroContentController@index'));
+            return redirect(action('MicroContentController@index'));
+            }
+        else {
+            return view('error.403');
+        }
     }
 }

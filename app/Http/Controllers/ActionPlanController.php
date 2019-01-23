@@ -29,7 +29,7 @@ class ActionPlanController extends Controller
      */
     public function index()
     {
-        
+
         $actionPConfigs = null;
 
         if (Auth::user()->rol == "Administrador") {
@@ -65,8 +65,13 @@ class ActionPlanController extends Controller
      */
     public function create()
     {
-        $microContents = MicroContent::all();
-        return view('action_plan.create', compact('microContents'));
+        if (Auth::user()->rol == "Administrador" || Auth::user()->rol == "Jefe") {
+            $microContents = MicroContent::all();
+            return view('action_plan.create', compact('microContents'));
+        }
+        else {
+            return view('error.403');
+        }
     }
 
     /**
@@ -77,8 +82,13 @@ class ActionPlanController extends Controller
      */
     public function store(Request $request)
     {
-        $actionPConfig = $this->processForm($request, $actionPlan = new ActionPlan());
-        return redirect(action('ActionPlanController@show', ['id' => $actionPConfig->id]));
+        if (Auth::user()->rol == "Administrador" || Auth::user()->rol == "Jefe") {
+            $actionPConfig = $this->processForm($request, $actionPlan = new ActionPlan());
+            return redirect(action('ActionPlanController@show', ['id' => $actionPConfig->id]));
+        }
+        else {
+            return view('error.403');
+        }
     }
 
     private function processForm(Request $request, $actionPlan, $configuration = null)
@@ -404,12 +414,17 @@ class ActionPlanController extends Controller
      */
     public function edit($id)
     {
-        $actionPConfig = ActionPlanConfiguration::find($id);
-        if($actionPConfig) {
-            $microContents = MicroContent::all();
-            return view('action_plan.create', compact('actionPConfig', 'microContents'));
-        }else
-            abort(404);
+        if (Auth::user()->rol == "Administrador" || Auth::user()->rol == "Jefe") {
+            $actionPConfig = ActionPlanConfiguration::find($id);
+            if($actionPConfig) {
+                $microContents = MicroContent::all();
+                return view('action_plan.create', compact('actionPConfig', 'microContents'));
+            }else
+                return view('error.404');
+        }
+        else {
+            return view('error.403');
+        }
     }
 
     /**
@@ -421,13 +436,18 @@ class ActionPlanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $configuration = ActionPlanConfiguration::find($id);
-        if($configuration) {
-            $this->processForm($request, $configuration->actionPlan, $configuration);
-            return redirect(action('ActionPlanController@index'));
+        if (Auth::user()->rol == "Administrador" || Auth::user()->rol == "Jefe") {
+            $configuration = ActionPlanConfiguration::find($id);
+            if($configuration) {
+                $this->processForm($request, $configuration->actionPlan, $configuration);
+                return redirect(action('ActionPlanController@index'));
+            }
+            else
+                return view('error.404');
         }
-        else
-            abort(404);
+        else {
+            return view('error.403');
+        }
     }
 
     /**
@@ -438,17 +458,22 @@ class ActionPlanController extends Controller
      */
     public function destroy($id)
     {
-        $configuration = ActionPlanConfiguration::find($id);
-        if($configuration) {
-            $actionPlan = $configuration->actionPlan;
-            $configuration->delete();
-            if ($actionPlan->configurations()->count() == 0)
-                $actionPlan->delete();
+        if (Auth::user()->rol == "Administrador" || Auth::user()->rol == "Jefe") {
+            $configuration = ActionPlanConfiguration::find($id);
+            if($configuration) {
+                $actionPlan = $configuration->actionPlan;
+                $configuration->delete();
+                if ($actionPlan->configurations()->count() == 0)
+                    $actionPlan->delete();
 
-            return redirect(action('ActionPlanController@index'));
+                return redirect(action('ActionPlanController@index'));
+            }
+            else
+                return view('error.404');
         }
-        else
-            abort(404);
+        else {
+            return view('error.403');
+        }
     }
 
     /**

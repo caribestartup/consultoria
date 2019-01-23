@@ -69,24 +69,6 @@
             <a class="dropdown-item" href="{{ action('GroupController@index') }}">{{ trans_choice('common.group', 2) }}</a>
             <a class="dropdown-item" href="{{ action('TopicController@index') }}">{{ trans_choice('common.topic', 2) }}</a>
         </span>
-        <!--
-        <ul class="sidebar-menu">
-            <li class="nav-item pL-70 ">
-                <a class='sidebar-link' href="{{ route('departments.index') }}">
-                    <span class="title  pL-20">{{ trans_choice('common.department', 2) }}</span>
-                </a>
-            </li>
-            <li class="nav-item pL-70 ">
-                <a class='sidebar-link' href="{{ route('groups.index') }}">
-                    <span class="title  pL-20">{{ trans_choice('common.group', 2) }}</span>
-                </a>
-            </li>
-            <li class="nav-item pL-70 ">
-                <a class='sidebar-link' href="{{ route('topics.index') }}">
-                    <span class="title  pL-20">{{ trans_choice('common.topic', 2) }}</span>
-                </a>
-            </li>
-        </ul>
-        -->
+
     </li>
 @endif
