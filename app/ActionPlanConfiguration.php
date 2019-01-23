@@ -41,7 +41,6 @@ class ActionPlanConfiguration extends Model
             $actions = $actionP->actions();
 
             foreach ($actions->get() as $action) {
-                // return($microContens);
                 $microContens = $action->microContents();
 
                 $total = sizeof($microContens->get());
@@ -52,9 +51,9 @@ class ActionPlanConfiguration extends Model
                     // }
                     // else {
                     $micro = DB::table('micro_content_user')
-                    ->join('micro_contents', 'micro_contents'.'id', '=', 'micro_content_user'.'micro_content_id')
-                    ->where('micro_contents'.'id', $microContent->id)
-                    ->where('micro_content_user'.'approve_coach', true)
+                    ->join('micro_contents', 'micro_contents.id', '=', 'micro_content_user.micro_content_id')
+                    ->where('micro_contents.id', $microContent->id)
+                    ->where('micro_content_user.approve_coach', true)
                     ->get();
 
                     if($micro){

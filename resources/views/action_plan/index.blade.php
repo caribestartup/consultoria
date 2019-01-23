@@ -61,8 +61,8 @@
                                             {{date('d-m-Y', strtotime($actionPConfig->start_date)) }}
                                         </div>
                                         <div class="col-6 ">
-                                            <div class="c100 p{{ $actionPConfig->completedPercent() }} center green">
-                                        <span>{{ dd($actionPConfig->compliment()) }}%</span>
+                                            <div class="c100 p{{ $actionPConfig->compliment() }} center green">
+                                        <span>{{ $actionPConfig->compliment() }}%</span>
                                         <div class="slice">
                                             <div class="bar"></div>
                                             <div class="fill"></div>
