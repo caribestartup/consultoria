@@ -1,9 +1,8 @@
 <div class="bd panel-wrapper mT-10 mB-10 "
      @isset($microContent)
-     id="question-{{ $question->id }}"
-        @endif
+         id="question-{{ $question->id }}"
+    @endif
 >
-
     <div class="layers">
         <div class="layer w-100 bgc-grey-200 p-15">
             <strong>

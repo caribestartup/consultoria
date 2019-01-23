@@ -8,21 +8,21 @@
     </div>
     <div class="col-xs-12 col-sm-4 col-md-4 col-lg-3 col-xl-3 form-group">
         <div class="custom-control custom-radio mr-2 custom-control-inline">
-            <input type="radio" id="correct-{{ $index }}" name="question[{{$question_index}}][is_correct]"
-                   class="custom-control-input correct-i"
-                   @isset($answer)
-                   value="{{ $index }}"
-                   @if($answer->is_correct)
-                   checked
-                   @endif
-                   @endisset
+            <input type="radio" id="correct-{{ $index + 1 }}0" question="1" name="question[{{$question_index }}][is_correct]" 
+            		class="custom-control-input correct-i"
+                    @isset($answer)
+                        value="{{ $index }}"
+                        @if($answer->is_correct)
+                            checked
+                        @endif
+                    @endisset
 
-                   @empty($answer)
-                   value="{{ $index }}"
-                   checked
+                    @empty($answer)
+                        value="{{ $index }}"
+                        checked
                     @endempty
             >
-            <label class="custom-control-label" for="correct-{{ $index }}">{{ __('common.correct') }}</label>
+            <label class="custom-control-label" for="correct-{{ $index  + 1 }}0">{{ __('common.correct') }}</label>
         </div>
         <i class="fa fa-minus-circle cur-p remove-answer"
            @isset($answer)

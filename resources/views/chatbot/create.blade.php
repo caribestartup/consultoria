@@ -174,8 +174,8 @@
             {{-- Evento borrar pregunta --}}
             $('#question-delete-modal .accept-button').click(function () {
 
-                        {{-- Guardo el id de la respuesta a eliminar --}}
-                        @isset($microContent)
+                {{-- Guardo el id de la respuesta a eliminar --}}
+                @isset($microContent)
                 let id = currentQuestion.prop('id').replace('question-', '');
                 if(id != ""){
                     deletedQuestions.val(id + ',' + deletedQuestions.val());

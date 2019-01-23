@@ -79,6 +79,7 @@
     <script src="{{ asset('/plugins/bootstrap-multiselect/js/bootstrap-multiselect.js') }}"></script>
     <script>
         $(document).ready(function () {
+            
             {{-- Evento para paginas --}}
             function createPageEvents() {
                 let textEditor = $('.text-editor:visible');
@@ -165,22 +166,25 @@
 
                 let index = $(this).closest('.answers').find('.answer').length;
                 let correct = newAnswer.find('.correct-i');
+                let id = correct.attr('question');
                 correct.val(index);
-                correct.prop('id', 'correct-' + index);
-                correct.closest('.form-group').find('label').prop('for', 'correct-' + index);
+                correct.prop('id', 'correct-' + id + index);
+                correct.closest('.form-group').find('label').prop('for', 'correct-' + id + index);
                 $(this).closest('.answers').append(newAnswer);
             }
 
             {{-- Evento borrar respuestas --}}
             function removeAnswerEvents() {
+                let questionCount = $('#question-form .panel-wrapper').length;
                 if($(this).closest('.panel-wrapper').find('.answer').length > 1) {
-                            {{-- Guardo el id de la respuesta a eliminar --}}
-                            @isset($microContent)
-                    let id = $(this).prop('id').replace('answer-', '');
-                    if(id != ""){
-                        deletedAnswers.val(id + ',' + deletedAnswers.val());
-                    }
-                            @endif
+            
+                    {{-- Guardo el id de la respuesta a eliminar --}}
+                    @isset($microContent)
+                        let id = $(this).prop('id').replace('answer-', '');
+                        if(id != ""){
+                            deletedAnswers.val(id + ',' + deletedAnswers.val());
+                        }
+                    @endif
 
                     let answers = $(this).closest('.answers');
                     let checked = $(this).closest('.answer').find('.correct-i:checked');
@@ -190,8 +194,8 @@
                     correctAnswers.each(function (index) {
                         let item = $(this);
                         item.val(index);
-                        item.prop('id', 'correct-' + index);
-                        item.closest('.form-group').find('label').prop('for', 'correct-' + index);
+                        item.prop('id', 'correct-' + questionCount + index);
+                        item.closest('.form-group').find('label').prop('for', 'correct-' + questionCount + index);
                     });
 
                     if(checked.length) {
@@ -202,6 +206,7 @@
 
             const Question = $('#question-form .panel-wrapper').eq(0)[0].outerHTML;
             var currentQuestion;
+
             {{-- Evento añadir pregunta --}}
             $('#new-question').click(function() {
                 let newQuestion = $(Question);
@@ -226,6 +231,11 @@
                 newQuestion.find('.correct-i').attr('name', 'question[' + questionCount + '][is_correct]');
                 newQuestion.find('.correct-i').eq(0).click();
 
+                let id = questionCount + 1;
+                newQuestion.find('.correct-i').attr('id', 'correct-' + id +'0');
+                newQuestion.find('.correct-i').attr('question', id);
+                newQuestion.find('.custom-control-label').attr('for', 'correct-' + id +'0');
+                
                 newQuestion.removeAttr('id');
                 $('#question-form').append(newQuestion);
                 createQuestionEvents(newQuestion);
@@ -237,8 +247,8 @@
             {{-- Evento borrar pregunta --}}
             $('#question-delete-modal .accept-button').click(function () {
 
-                        {{-- Guardo el id de la respuesta a eliminar --}}
-                        @isset($microContent)
+                {{-- Guardo el id de la respuesta a eliminar --}}
+                @isset($microContent)
                 let id = currentQuestion.prop('id').replace('question-', '');
                 if(id != ""){
                     deletedQuestions.val(id + ',' + deletedQuestions.val());

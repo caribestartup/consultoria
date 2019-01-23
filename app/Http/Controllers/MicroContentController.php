@@ -26,6 +26,7 @@ class MicroContentController extends Controller
      */
     public function index()
     {
+
         $microContents = null;
 
         if (Auth::user()->rol == "Administrador") {
@@ -131,10 +132,8 @@ class MicroContentController extends Controller
             $result1 = DB::table('micro_contents')
             ->join('questions', 'micro_contents.id', '=', 'questions.micro_content_id')
             ->join('answers', 'questions.id', '=', 'answers.question_id')
-            ->join('answer_user_question', 'answers.id', '=', 'answer_user_question.answer_id')
             ->where('answers.is_correct', true)
             ->where('micro_contents.id', $microContent->id)
-            ->distinct()
             ->sum('questions.points');
 
             $total = DB::table('micro_contents')
