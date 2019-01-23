@@ -46,6 +46,7 @@ class MicroContentController extends Controller
                                     ->join('action_micro_content', 'action_micro_content.action_id', '=', 'actions.id')
                                     ->join('micro_contents', 'micro_contents.id', '=', 'action_micro_content.micro_content_id')
                                     ->join('micro_content_user', 'micro_content_user.micro_content_id', '=', 'micro_contents.id')
+                                    ->where('micro_content_user.user_id', Auth::user()->id)
                                     ->where('action_plans.id', $value->action_plan_configuration_id)
                                     ->where('micro_content_user.doit', 0)
                                     ->select('micro_contents.id',
@@ -169,7 +170,7 @@ class MicroContentController extends Controller
             $result1 = DB::table('micro_contents')
             ->join('questions', 'micro_contents.id', '=', 'questions.micro_content_id')
             ->join('answer_user_question', 'questions.id', '=', 'answer_user_question.question_id')
-            ->where(array('answer_user_question.is_correct' => true, 'micro_contents.id' => $microContent->id))
+            ->where(array('answer_user_question.is_correct' => true, 'answer_user_question.user_id' => $user_id, 'micro_contents.id' => $microContent->id))
             ->sum('questions.points');
 
             $total = DB::table('micro_contents')

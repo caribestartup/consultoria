@@ -62,15 +62,15 @@ class UserController extends Controller
                             'micro_contents.public',
                             'micro_contents.type',
                             'micro_contents.user_id')
-                    ->paginate(15);
+                    ->first();
 
         $user = User::find($id);
 
-        $result1 = DB::table('micro_contents')
-            ->join('questions', 'micro_contents.id', '=', 'questions.micro_content_id')
-            ->join('answer_user_question', 'questions.id', '=', 'answer_user_question.question_id')
-            ->where(array('answer_user_question.is_correct' => true, 'micro_contents.id' => $microContent->id))
-            ->sum('questions.points');
+        $result = DB::table('micro_contents')
+        ->join('questions', 'micro_contents.id', '=', 'questions.micro_content_id')
+        ->join('answer_user_question', 'questions.id', '=', 'answer_user_question.question_id')
+        ->where(array('answer_user_question.is_correct' => true, 'answer_user_question.user_id' => $id, 'micro_contents.id' => $microContents->id))
+        ->sum('questions.points');
 
         $total = DB::table('micro_contents')
                     ->join('questions', 'micro_contents.id', '=', 'questions.micro_content_id')
@@ -81,7 +81,7 @@ class UserController extends Controller
             return view('users.coach.show', compact('microContents', 'total', 'result', 'notificarion_id', 'user'));
         }
         else {
-            return abort(404);
+            return view('error.404');
         }
     }
 

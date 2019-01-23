@@ -34,13 +34,12 @@
 
 
     <div class="row">
-        @foreach($microContents as $microContent)
             <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 mT-20">
                 <div class="card-action-plan card h-100">
                     <div class="row">
                         <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-9">
                             <div class="pR-15 pL-15 pB-10 pT-10 flex-fill title-microcontent-font title-microcontent-div">
-                                {{ $microContent->title }}
+                                {{ $microContents->title }}
                             </div>
 
                             <div class=" flex-fill card-text m-10">
@@ -49,8 +48,8 @@
                                     Puntos todales: {{$total}}
                                 </p> -->
                                 <div>Puntos totales: <span class="badge badge-primary">{{$total}}</span></div>
-                                <div>Aprovado: <span class="badge badge-warning">{{$microContent->approve}}</span></div>
-                                @if($result >= $microContent->approve)
+                                <div>Aprovado: <span class="badge badge-warning">{{$microContents->approve}}</span></div>
+                                @if($result >= $microContents->approve)
                                     <div>Resultado: <span class="badge badge-success">{{$result}}</span></div>
                                 @else
                                     <div>Resultado: <span class="badge badge-danger">{{$result}}</span></div>
@@ -95,17 +94,18 @@
 
                                 {!! Form::open([
                                         'class'=>'deletenotificacionform',
-                                        'url'  => route('notifications.restart', $notificarion_id),
-                                        'method' => 'DELETE',
-                                        'id' => 'delete_form',
+                                        'url'  => route('notifications.show', $notificarion_id),
+                                        'method' => 'GET',
+                                        'id' => 'restart_form',
                                         ])
                                     !!}
+
                                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 mT-15 mB-10">
                                         <button type="submit" id="sendbtn" class="card-buttom-delete mB-10 pl-4 pr-4" title="{{ trans('common.delete') }}">Reiniciar</button>
                                     </div>
 
                                     {!! Form::close() !!}
-                                </div>
+
 
                                 {!! Form::open([
                                         'class'=>'deletenotificacionform',
@@ -131,20 +131,20 @@
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mT-15">
                                         <img style="margin-top: 5px" src="{{ asset('images/assets/ASSET-25.png') }}" height="42px"/><br>
-                                    <h4 class="question-cont-label">{{ $microContent->questions->count() }}</h4>
+                                    <h4 class="question-cont-label">{{ $microContents->questions->count() }}</h4>
                                     {{--<p class="contenido-title-microcontent-font">
                                         Cantidad
                                     </p>--}}
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mT-15">
-                                    <a href="{{ route('micro_contents.show', ['id' => $microContent->id]) }}" class="mB-10">
+                                    <a href="{{ route('micro_contents.show', ['id' => $microContents->id]) }}" class="mB-10">
                                         <img class="mB-10" src="{{ asset('images/assets/ASSET-01.png') }}" height="42px"/>
                                     </a>
                                 </div>
                             </div>
                         </div>
                         {{-- <div class="
-                            @if($microContent->type == 0)
+                            @if($microContents->type == 0)
                                 bgc-orange-400
                             @else
                                 bgc-green-500
@@ -157,10 +157,8 @@
 
                 </div>
             </div>
-        @endforeach
     </div>
 
-    {{ $microContents->links() }}
 @endsection
 
 @section('js')
@@ -194,7 +192,7 @@
             }
         });
 
-        @if($result >= $microContent->approve)
+        @if($result >= $microContents->approve)
             bar._opts.from.color = '#007B5E';
             bar._opts.to.color = '#007B5E';
         @else

@@ -28,6 +28,7 @@
 
 
     <div class="row">
+        @if(sizeof($microContents) > 0)
         @foreach($microContents as $microContent)
              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 mT-20">
                 <div class="card-action-plan card h-100">
@@ -84,8 +85,22 @@
                 </div>
             </div>
         @endforeach
+
+        @else
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 mT-20">
+               <div class="card-action-plan card h-100">
+                   <div class="row">
+                       <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-9">
+                           <div class="pR-15 pL-15 pB-10 pT-10 flex-fill title-microcontent-font title-microcontent-div">
+                       <p>No tienes micro contenidos asignados aún</p>
+                   </div>
+               </div>
+           </div>
+           </div>
+           </div>
+        @endif
     </div>
-    @if(auth()->check() && auth()->user()->rol == 'Administrador') 
+    @if(auth()->check() && auth()->user()->rol == 'Administrador')
         {{ $microContents->links() }}
      @endif
 @endsection
