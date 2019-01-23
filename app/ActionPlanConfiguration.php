@@ -4,6 +4,7 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class ActionPlanConfiguration extends Model
 {
@@ -28,6 +29,40 @@ class ActionPlanConfiguration extends Model
 
     public function actionPlan(){
         return $this->belongsTo(ActionPlan::class);
+    }
+
+    public function compliment() {
+        $rol = Auth::user()->rol;
+        $actions = $this->actionPlan();
+        $totalPercent = 0;
+        foreach ($actions->get() as $action) {
+            return($action->get()->ver());
+            $microContens = $action->microContents();
+           
+            $total = sizeof($microContens->get());
+            $count = 0;
+            foreach ($microContens->get() as $microContent) {
+                // if ($rol == "Administrador") {
+
+                // }
+                // else {
+                    $micro = DB::table('micro_content_user')
+                            ->join('micro_contents', 'micro_contents.id', '=', 'micro_content_user'.'micro_content_id')
+                            ->where('micro_contents.id', $microContent->id)
+                            ->where('micro_content_user.approve_coach', true)
+                            ->get();
+
+                    if($micro){
+                        $count++;
+                    }
+
+                // }
+            }
+            if($count == $total){
+                $totalPercent += $action->objectives_percent;
+            }
+        }
+        return $totalPercent;
     }
 
     public function user(){

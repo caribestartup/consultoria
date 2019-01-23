@@ -63,9 +63,6 @@ class Notification extends Model
                     $entityName = 'Usuario aprobo micro contenido';
                     break;
             }
-
-            // $entityName = strtolower($entityName);
-            // $message = __('notification.new_notification_m', ['name' => $entityName]);
             $message = $entityName;
         }
 

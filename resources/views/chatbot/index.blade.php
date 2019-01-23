@@ -90,7 +90,7 @@
         @endforeach
     </div>
 
-    @include('components.modal', [
+    @include('components.modal_delete', [
         'modal_id'  => 'delete-modal',
         'title'     => __('common.attention!'),
         'content'   => __('common.delete_entity'),

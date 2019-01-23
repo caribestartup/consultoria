@@ -62,7 +62,7 @@
                                         </div>
                                         <div class="col-6 ">
                                             <div class="c100 p{{ $actionPConfig->completedPercent() }} center green">
-                                        <span>{{ $actionPConfig->completedPercent() }}%</span>
+                                        <span>{{ dd($actionPConfig->compliment()) }}%</span>
                                         <div class="slice">
                                             <div class="bar"></div>
                                             <div class="fill"></div>
@@ -118,7 +118,7 @@
 
 
 
-                            </div>
+                        </div>
                         </div>
                         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3 card-div-right">
                             <div class="row text-center">

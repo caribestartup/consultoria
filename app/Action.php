@@ -28,6 +28,11 @@ class Action extends Model
         return $this->hasMany(ActionConfiguration::class);
     }
 
+    public function ver()
+    {
+        return 'ver';
+    }
+
     public function microContents()
     {
         return $this->belongsToMany(MicroContent::class);

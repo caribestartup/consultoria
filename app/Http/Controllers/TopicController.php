@@ -119,15 +119,7 @@ class TopicController extends Controller
     public function destroy($id)
     {
         $topic =  Topic::find($id);
-        $topic->micro_contents()->detach();
-        $topic->interests()->detach();
-
-        echo ($topic->value);
         $topic->delete();
-
-        //store status message
-
-
         return redirect()->route('topics.index')->with('success','Product deleted successfully');
     }
 }

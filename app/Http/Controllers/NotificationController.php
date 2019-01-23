@@ -22,7 +22,7 @@ class NotificationController extends Controller
                         ->where('micro_content_user.micro_content_id', $notificacion->micro_content_id)
                         ->first();
 
-             $answerUserQuestion = DB::table('micro_contents')
+            $answerUserQuestion = DB::table('micro_contents')
                  ->join('questions', 'micro_contents.id', '=', 'questions.micro_content_id')
                  ->join('answers', 'questions.id', '=', 'answers.question_id')
                  ->join('answer_user_question', 'answers.id', '=', 'answer_user_question.answer_id')
@@ -31,15 +31,18 @@ class NotificationController extends Controller
                  ->select('answer_user_question.id')
                  ->get();
 
-            //ver
-            // $actionPlanConfigurationContent = DB::table('micros_contents')
-            //     ->join('action_micro_content', 'action_micro_content.micro_content_id', '=', 'micro_contents.id')
-            //     ->join('actions', 'actions.id', '=', 'action_micro_content.action_id')
-            //     ->join('action_plan_configuration_user', 'action_plan_configuration_user.action_plan_configuration_id', '=', 'actions.id')
-            //     ->where('action_plan_configuration_user.user_id', Auth::user()->id)
-            //     ->where('micro_contents', $microContentUser->micro_content_id)
-            //     ->select('action_plan_configuration_user.action_plan_configuration_id')
-            //     ->get();
+            $actionPlanConfigurationContent = DB::table('micro_contents')
+                ->join('action_micro_content', 'action_micro_content.micro_content_id', '=', 'micro_contents.id')
+                ->join('actions', 'actions.id', '=', 'action_micro_content.action_id')
+                ->join('action_plan_configuration_user', 'action_plan_configuration_user.action_plan_configuration_id', '=', 'actions.action_plan_id')
+                ->where('action_plan_configuration_user.user_id', $notificacion->entity_id)
+                ->where('micro_contents.id', $microContentUser->micro_content_id)
+                ->select('action_plan_configuration_user.action_plan_configuration_id', 'action_plan_configuration_user.user_id')
+                ->get();
+
+            foreach ($actionPlanConfigurationContent as $plan) {
+                DB::table('action_plan_configuration_user')->where(array('action_plan_configuration_id'=>$plan->action_plan_configuration_id, 'user_id'=>$plan->user_id))->delete();
+             }
 
              $microContentUser = DB::table('micro_content_user')
                          ->where('micro_content_user.user_id', $notificacion->entity_id)

@@ -28,36 +28,67 @@
                 <tbody>
 
                 @foreach($topics as $topic)
-                    <form  action="{{route('topics.destroy',$topic->id)}}" method="post" data-toggle = "modal"
-                           data-target  ="#delete-modal">
-                        @csrf
-                        @method('DELETE')
-
-                        <tr>
+                    
+                    {!! Form::open([
+                        'class'=>'deletetopicform',
+                        'url'  => route('topics.destroy', $topic->id),
+                        'method' => 'DELETE',
+                        'id' => 'delete_form_'.$topic->id,
+                        ])
+                    !!}
+                           
+                        <tr class="tr_form">
                             <td>{{$topic->id}}</td>
                             <td>{{$topic->value}}</td>
-                            <td>
+                            <td class="td_form">
                                 <a href="{{ route('topics.show',$topic->id) }}"><i class="fa fa-eye"></i></a>
                                 <a href="{{ route('topics.edit',$topic->id) }}"><i class="fa fa-edit"></i></a>
-                                <button class="border-0 bg-transparent" style="cursor: pointer" type="submit"><i class="fa fa-trash"></i></button>
+                                <button id= {{$topic->id}} class="border-0 bg-transparent" style="cursor: pointer" type="button"><i class="fa fa-trash"></i></button>
                             </td>
                         </tr>
+                    {!! Form::close() !!}
 
-                        @endforeach
-                    </form>
+                    @endforeach
 
                 </tbody>
             </table>
         </div>
     </div>
 
-    @include('components.modal', [
+    @include('components.modal_delete', [
         'modal_id'  => 'delete-modal',
         'title'     => __('common.attention!'),
-        'content'   => __('users.delete_user_question'),
+        'content'   => __('common.delete_entity'),
         'accept'    => __('common.yes'),
         'cancel'    => __('common.no')
         ])
+@endsection
+
+@section('js')
+
+    <script type="text/javascript">
+        var currentForm;
+        $('.border-0').on('click', function() {
+            currentForm = ($('#delete_form_'+this.id[0]));
+            alertify.defaults.transition = "slide";
+            alertify.defaults.theme.ok = "btn btn-primary";
+            alertify.defaults.theme.cancel = "btn btn-danger";
+            alertify.defaults.theme.input = "form-control";
+
+            var header = document.createElement('modal-title');
+            header.appendChild(document.getElementsByClassName('modal-title')[0]);
+
+            var body = document.createElement('modal-content-alert');
+            body.appendChild(document.getElementsByClassName('modal-content-alert')[0]);
+
+            alertify.confirm(header, body, function(){
+                    alertify.success('Eliminado');
+                    currentForm.submit();
+                },function(){
+                    alertify.error('Cancelado');
+                }).set({labels:{ok:'Elimanar', cancel: 'Cancelar'}, padding: false});
+        });
+    </script>
 @endsection
 
 
