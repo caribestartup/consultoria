@@ -85,9 +85,9 @@
             </div>
         @endforeach
     </div>
-    @if(auth()->check() && auth()->user()->rol == 'Administrador')
+    @if(auth()->check() && auth()->user()->rol == 'Administrador') 
         {{ $microContents->links() }}
-    @endif
+     @endif
 @endsection
 
 @section('js')

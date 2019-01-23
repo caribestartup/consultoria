@@ -16,6 +16,7 @@ use App\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Collection;
 
 class MicroContentController extends Controller
 {
@@ -30,14 +31,39 @@ class MicroContentController extends Controller
         $microContents = null;
 
         if (Auth::user()->rol == "Administrador") {
-            $microContents = MicroContent::paginate(15);
+           $microContents = MicroContent::paginate(15);
         }
         else {
-            $microContents = MicroContent::join('micro_content_user', 'micro_contents.id', '=', 'micro_content_user.micro_content_id')
-                                ->where('micro_content_user.user_id', Auth::user()->id)
-                                ->where('micro_content_user.approve_coach', 0)
-                                ->select('micro_contents.id')
-                                ->simplePaginate(1);
+            $actionPlan = DB::table('action_plan_configuration_user')
+                            ->where('action_plan_configuration_user.user_id', Auth::user()->id)
+                            ->get();
+
+            $micro = array();
+            $ids = array();
+            foreach ($actionPlan as $value) {
+                $microContent = DB::table('action_plans')
+                                    ->join('actions', 'actions.action_plan_id', '=', 'action_plans.id')
+                                    ->join('action_micro_content', 'action_micro_content.action_id', '=', 'actions.id')
+                                    ->join('micro_contents', 'micro_contents.id', '=', 'action_micro_content.micro_content_id')
+                                    ->join('micro_content_user', 'micro_content_user.micro_content_id', '=', 'micro_contents.id')
+                                    ->where('action_plans.id', $value->action_plan_configuration_id)
+                                    ->where('micro_content_user.doit', 0)
+                                    ->select('micro_contents.id', 
+                                            'micro_contents.title',
+                                            'micro_contents.approve',
+                                            'micro_contents.public',
+                                            'micro_contents.type',
+                                            'micro_contents.user_id')
+                                    ->first();
+                
+                if ($microContent) {
+                    if (!in_array($microContent->id, $ids)) {
+                        array_push($ids, $microContent->id);
+                        array_push($micro, $microContent);
+                    }
+                }
+            }
+            $microContents = MicroContent::hydrate($micro);
         }
         return view('micro_content.index', ['microContents' => $microContents]);
     }
@@ -124,8 +150,9 @@ class MicroContentController extends Controller
                     DB::table('answer_user_question')->insert(
                         compact('question_id', 'answer_id', 'user_id')
                     );
-                }
 
+                }
+                
                // $result = 'success';
             }
 
@@ -143,7 +170,7 @@ class MicroContentController extends Controller
 
             $confirm = DB::table('micro_content_user')
                 ->where(array('micro_content_id' => $microContent->id, 'user_id' => $user_id))
-                ->update(array('approve'=> ($result1 >= $microContent->approve) ? true : false, 'nota'=>$result1));
+                ->update(array('approve'=> ($result1 >= $microContent->approve) ? true : false, 'nota'=>$result1, 'doit'=>true));
 
             if ($result1 >= $microContent->approve && $confirm) {
 

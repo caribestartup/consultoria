@@ -39,9 +39,12 @@ Route::group(['middleware' => 'admin'], function () {
     Route::resource('groups', 'GroupController');
     Route::resource('topics', 'TopicController');
 
-
-
     Route::resource('interests', 'InterestController');
 
     Route::resource('chatbot', 'ChatbotController');
+});
+
+Route::group(['middleware' => 'advance'], function () {
+
+    
 });

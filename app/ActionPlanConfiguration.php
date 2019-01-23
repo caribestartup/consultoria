@@ -56,8 +56,6 @@ class ActionPlanConfiguration extends Model
         return $amount;
     }
 
-
-
     public function coach() {
         return $this->belongsTo(User::class, 'coach_id');
     }

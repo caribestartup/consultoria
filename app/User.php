@@ -161,7 +161,6 @@ class User extends Authenticatable
         if (!$value) {
             return config('variables.avatar.public').'/'.config('variables.avatar.default');
         }
-
         return config('variables.avatar.public').$value;
     }
 

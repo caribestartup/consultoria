@@ -24,7 +24,7 @@
         @if($actionPConfig->has_coach and $actionPConfig->coach_id != null)
             <strong>{{ __('action_plan.assigned_coach') }}</strong>
             <div class="align-items-center mT-10">
-                <img src="{{ asset($actionPConfig->coach->avatar) }}" class="bdrs-50p mR-10 " width="45px" height="45px"/>
+                <img src="{{ asset($actionPConfig->coach->getAvatarUrlAttribute()) }}" class="bdrs-50p mR-10 " width="45px" height="45px"/>
                 <span>{{ $actionPConfig->coach->fullName()  }}</span>
             </div>
 
