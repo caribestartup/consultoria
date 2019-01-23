@@ -95,6 +95,20 @@
 
                                 {!! Form::open([
                                         'class'=>'deletenotificacionform',
+                                        'url'  => route('notifications.restart', $notificarion_id),
+                                        'method' => 'DELETE',
+                                        'id' => 'delete_form',
+                                        ])
+                                    !!}
+                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 mT-15 mB-10">
+                                        <button type="submit" id="sendbtn" class="card-buttom-delete mB-10 pl-4 pr-4" title="{{ trans('common.delete') }}">Reiniciar</button>
+                                    </div>
+
+                                    {!! Form::close() !!}
+                                </div>
+
+                                {!! Form::open([
+                                        'class'=>'deletenotificacionform',
                                         'url'  => route('notifications.destroy', $notificarion_id),
                                         'method' => 'DELETE',
                                         'id' => 'delete_form',
