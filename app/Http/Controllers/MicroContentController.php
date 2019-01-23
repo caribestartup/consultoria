@@ -30,15 +30,6 @@ class MicroContentController extends Controller
 
         $microContents = null;
 
-        $result1 = DB::table('micro_contents')
-        ->join('questions', 'micro_contents.id', '=', 'questions.micro_content_id')
-        ->join('answers', 'questions.id', '=', 'answers.question_id')
-        ->where(array('answers.is_correct' => true, 'micro_contents.id' => 10))
-        ->distinct('answer.question_id')
-        ->sum('quesstions.points');
-dd($result1);
-
-
         if (Auth::user()->rol == "Administrador") {
            $microContents = MicroContent::paginate(15);
         }
@@ -167,22 +158,19 @@ dd($result1);
         if($microContent->id) {
             if ($microContent->userCanAnswer(Auth::user())) {
                 foreach ($data as $question_id => $answer_id) {
+                    $var = Answer::find($answer_id);
+                    $is_correct = $var->is_correct;
                     DB::table('answer_user_question')->insert(
-                        compact('question_id', 'answer_id', 'user_id')
+                        compact('question_id', 'answer_id', 'user_id', 'is_correct')
                     );
                 }
-               // $result = 'success';
-
             }
 
-            // MAL************************
             $result1 = DB::table('micro_contents')
             ->join('questions', 'micro_contents.id', '=', 'questions.micro_content_id')
-            ->join('answers', 'questions.id', '=', 'answers.question_id')
-            ->where(array('answers.is_correct' => true, 'micro_contents.id' => $microContent->id))
-            ->distinct('answer.question_id')
+            ->join('answer_user_question', 'questions.id', '=', 'answer_user_question.question_id')
+            ->where(array('answer_user_question.is_correct' => true, 'micro_contents.id' => $microContents->id))
             ->sum('questions.points');
-            // *****************************
 
             $total = DB::table('micro_contents')
             ->join('questions', 'micro_contents.id', '=', 'questions.micro_content_id')

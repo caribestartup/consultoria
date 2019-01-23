@@ -19,6 +19,7 @@ class CreateAnswerUserQuestionTable extends Migration
             $table->integer('user_id')->unsigned()->default(null);
             $table->integer('question_id')->unsigned();
             $table->integer('answer_id')->unsigned();
+            $table->boolean('is_correct');
             $table->timestamps();
         });
     }

@@ -66,11 +66,10 @@ class UserController extends Controller
 
         $user = User::find($id);
 
-        $result = DB::table('micro_contents')
+        $result1 = DB::table('micro_contents')
             ->join('questions', 'micro_contents.id', '=', 'questions.micro_content_id')
-            ->join('answers', 'questions.id', '=', 'answers.question_id')
-            ->where('answers.is_correct', true)
-            ->where('micro_contents.id', $microContent->id)
+            ->join('answer_user_question', 'questions.id', '=', 'answer_user_question.question_id')
+            ->where(array('answer_user_question.is_correct' => true, 'micro_contents.id' => $microContents->id))
             ->sum('questions.points');
 
         $total = DB::table('micro_contents')
