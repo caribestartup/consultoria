@@ -17,9 +17,15 @@ class CreateActionPlanConfigurationUserTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id')->unsigned();
             $table->integer('action_plan_configuration_id')->unsigned();
-//            $table->foreign('action_plan_configuration_id')->references('id')->on('action_plan_configurations');
+            $table->foreign('action_plan_configuration_id')
+                  ->references('id')
+                  ->on('action_plan_configurations')
+                  ->onDelete('cascade');
             $table->integer('user_id')->unsigned();
-//            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')
+                  ->references('id')
+                  ->on('users')
+                  ->onDelete('cascade');
             $table->timestamps();
         });
     }

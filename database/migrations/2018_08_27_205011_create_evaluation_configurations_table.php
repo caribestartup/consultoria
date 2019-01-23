@@ -17,11 +17,18 @@ class CreateEvaluationConfigurationsTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id')->unsigned();
             $table->integer('action_test_id')->unsigned();
-//            $table->foreign('action_test_id')->references('id')->on('action_tests');
+            $table->foreign('action_test_id')
+                  ->references('id')
+                  ->on('action_tests')
+                  ->onDelete('cascade');
             $table->integer('action_configuration_id')->unsigned();
-//            $table->foreign('action_configuration_id')->references('id')->on('action_configurations');
+            $table->foreign('action_configuration_id')
+                  ->references('id')
+                  ->on('action_configurations')
+                  ->onDelete('cascade');
             $table->integer('value');
             $table->timestamps();
+
         });
     }
 

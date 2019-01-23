@@ -14,11 +14,18 @@ class CreateActionPlanTopicTable extends Migration
     public function up()
     {
         Schema::create('action_plan_topic', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->increments('id')->unsigned();
             $table->integer('action_plan_id')->unsigned();
-//            $table->foreign('action_plan_id')->references('id')->on('action_plans');
+            $table->foreign('action_plan_id')
+                  ->references('id')
+                  ->on('action_plans')
+                  ->onDelete('cascade');
             $table->integer('topic_id')->unsigned();
-//            $table->foreign('topic_id')->references('id')->on('topics');
+            $table->foreign('topic_id')
+                  ->references('id')
+                  ->on('topics')
+                  ->onDelete('cascade');
             $table->timestamps();
         });
     }
