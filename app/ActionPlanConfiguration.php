@@ -34,6 +34,7 @@ class ActionPlanConfiguration extends Model
 
     public function compliment() {
         $rol = Auth::user()->rol;
+        $user_id = Auth::user()->id;
         $actionPs = $this->actionPlan();
         $totalPercent = 0;
         foreach ($actionPs->get() as $actionP) {
@@ -50,13 +51,16 @@ class ActionPlanConfiguration extends Model
 
                     // }
                     // else {
+
                     $micro = DB::table('micro_content_user')
                     ->join('micro_contents', 'micro_contents.id', '=', 'micro_content_user.micro_content_id')
                     ->where('micro_contents.id', $microContent->id)
+                    ->where('micro_content_user.user_id', $user_id)
                     ->where('micro_content_user.approve_coach', true)
                     ->get();
+                    // return $micro;
 
-                    if($micro){
+                    if(sizeof($micro) > 0){
                         $count++;
                     }
 
