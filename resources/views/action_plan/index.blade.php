@@ -129,7 +129,7 @@
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mT-20">
                                      <img style="margin-top: 5px" src="{{ asset('images/assets/ASSET-20.png') }}" height="42px"/><br>
-                                    <h4 class="user-label">Sin coach</h4>
+                                    <h4 class="user-label">{{ $actionPConfig->coach()->get()[0]->fullName() }}</h4>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mT-60">
                                     @if(\Illuminate\Support\Facades\Auth::user()->id === $actionPConfig->user->id)
