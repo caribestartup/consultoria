@@ -18,6 +18,6 @@ class AdminMiddleware
         if (auth()->check() && auth()->user()->rol == 'Administrador')
             return $next($request);
 
-        return redirect('/');
+        return redirect('error403');
     }
 }

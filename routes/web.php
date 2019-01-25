@@ -2,6 +2,10 @@
 
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 Auth::routes();
+Route::get('error403', function ()
+{
+    return view( 'error.403');
+});
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/', 'DashboardController@index')->name('dash');
@@ -17,8 +21,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/micro_contents/actions', 'MicroContentController@ajaxActions' );
 
     Route::post('/micro_contents/actionPlans', 'MicroContentController@ajaxActionPlans' );
-    Route::get('/training/{id}', 'TrainingController@show' );
+
     Route::post('/training', 'TrainingController@create' );
+    Route::get('/training/create/{id}', 'TrainingController@show_training' );
+    Route::post('training/{id}/evaluation', 'TrainingController@evaluation' );
 
     Route::resource('action_plans', 'ActionPlanController');
 
@@ -35,6 +41,8 @@ Route::group(['middleware' => 'auth'], function () {
 
 Route::group(['middleware' => 'admin'], function () {
 
+    Route::get('/training/{id}', 'TrainingController@show' );
+
     Route::resource('users', 'UserController');
 
     Route::resource('departments', 'DepartmentController');
@@ -48,5 +56,5 @@ Route::group(['middleware' => 'admin'], function () {
 
 Route::group(['middleware' => 'advance'], function () {
 
-    
+
 });
