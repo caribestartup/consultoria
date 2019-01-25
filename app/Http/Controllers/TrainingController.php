@@ -20,6 +20,8 @@ use App\Image;
 use App\MicroContent;
 use App\UserMicroContent;
 use App\Question;
+use Illuminate\Encryption\Encrypter;
+use Illuminate\Support\Facades\Hash;
 
 class TrainingController extends Controller
 {
@@ -60,16 +62,18 @@ class TrainingController extends Controller
                 // crear usuario nuevo
                 $string = mb_split('@', $email);
                 $name = $string[0];
-                $pass = bcrypt($name);
+                $pass = $name;
                 $rol = 'Evaluador';
 
 
-                $dataUser = new User();
-                $dataUser->name= $name;
-                $dataUser->email = $email;
-                $dataUser->password = $pass;
-                $dataUser->rol = $rol;
-                $dataUser->save();
+                // $dataUser = new User();
+                $dataUser = array();
+                $dataUser['name']= $name;
+                $dataUser['email'] = $email;
+                $dataUser['password'] = $pass;
+                $dataUser['rol'] = $rol;
+                // $dataUser->save();
+                $user = User::create($dataUser);
 
                 Mail::send('mail.index', ['email' => $email, 'name' => $name, 'url' => $url, 'id' => $id], function ($m) use ($email) {
                     $m->from('carmec634@gmail.com', 'Your Application');
