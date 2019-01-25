@@ -43,7 +43,7 @@ class TrainingController extends Controller
     {
         $emails = mb_split(',', $request->emails);
         $id = $request->id;
-        $url = '/training/create/'.$id;
+        $url = $id;
 
         foreach ($emails as $email) {
 
@@ -82,7 +82,7 @@ class TrainingController extends Controller
             }
         }
 
-
+        return ;
     }
 
     public function show_training($id)

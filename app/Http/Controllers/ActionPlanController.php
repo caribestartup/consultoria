@@ -89,7 +89,7 @@ class ActionPlanController extends Controller
             $actions = $request->action;
             // if($actions) {
             //     $arr = new Request;
-                
+
             //     $arr->sum = 0;
             //     // $val = Validator::make($arr, [
             //     //     "sum" => "required_if:sum,==,100",
@@ -102,11 +102,11 @@ class ActionPlanController extends Controller
             //     foreach ($actions as $key => $data) {
             //         $arr['sum'] += $data['objectives_percent'];
             //     }
-                
+
             //     $this->validate($arr, $val);
             //     // $this->validate($val);
             // }
-            
+
             $actionPConfig = $this->processForm($request, $actionPlan = new ActionPlan());
             return redirect(action('TrainingController@show', ['id' => $actionPConfig->id]));
         }
@@ -422,7 +422,7 @@ class ActionPlanController extends Controller
     public function show($id)
     {
         $actionPConfig = ActionPlanConfiguration::find($id);
-        if(sizeof($actionPConfig) > 0){
+        if(sizeof($actionPConfig->get()) > 0){
             if (Auth::user()->rol == "Administrador" || $actionPConfig->coach_id == Auth::user()->id) {
                 return view('action_plan.assigned.assigned', compact('actionPConfig'));
             }

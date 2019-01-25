@@ -108,7 +108,7 @@
                                     <figcaption>
 
                                         <div class="c-blue-800 mT-10">
-                                            <strong>0</strong>
+                                            <strong>{{ $actionPConfig->notePorcent() }}</strong>
                                         </div>
                                     </figcaption>
                                 </figure>
@@ -121,8 +121,8 @@
                             <div class="row text-center">
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mT-15">
                                     <img class="user-thumbail" src="{{ auth()->user()->avatarUrl }}" alt="">
-                                    <h4 class="user-label">{{$actionPConfig->user->name . ' ' . $actionPConfig->user->last_name}}</h4>
-                                    <h4 class="rol-label">Admin</h4>
+                                    <h4 class="user-label">{{$actionPConfig->user->fullName()}}</h4>
+                                    <h4 class="rol-label">{{$actionPConfig->user->rol}}</h4>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mT-20">
                                     <img style="margin-top: 5px" src="{{ asset('images/assets/ASSET-20.png') }}" height="42px"/><br>

@@ -125,7 +125,7 @@ class UserController extends Controller
         $user->groups()->sync($request->group);
         $user->departments()->sync($request->department);
 
-        return redirect()->route('users.index')->withSuccess(trans('users.user_success_create'));
+        return redirect()->route('action_plan.index')->withSuccess(trans('users.user_success_create'));
     }
 
     /**

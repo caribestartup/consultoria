@@ -80,7 +80,7 @@ class Notification extends Model
                     $fin = ActionPlanConfiguration::find($this->entity_id);
 
                     $dias = (strtotime($fin->ending_date)-strtotime(date("Y-m-d")))/86400;
-                    $dias = abs($dias); 
+                    $dias = abs($dias);
                     $dias = floor($dias);
                     $url['dias'] = $dias;
 
@@ -119,13 +119,17 @@ class Notification extends Model
 
     public function checkStatus($change)
     {
-        $actionPlan = ActionPlanConfiguration::where(array('action_plan_id' => $this->entity_id, 'user_id' => Auth::user()->id))->get();
-        $total = $actionPlan[0]->compliment();
-        if($total == 100){
-            $change = true;
-            $this->read = 0;
-            $this->type = 'removed';
-            $this->save();
+        $actionPlan = ActionPlanConfiguration::join('action_plan_configuration_user', 'action_plan_configuration_user.action_plan_configuration_id', '=', 'action_plan_configurations.id')
+                    ->where(array('action_plan_configuration_user.action_plan_configuration_id' => $this->entity_id, 'action_plan_configuration_user.user_id' => Auth::user()->id))->get();
+
+        if(sizeof($actionPlan) > 0) {
+            $total = $actionPlan[0]->compliment();
+            if($total == 100){
+                $change = true;
+                $this->read = 0;
+                $this->type = 'removed';
+                $this->save();
+            }
         }
         return $change;
     }

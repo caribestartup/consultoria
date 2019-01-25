@@ -33,10 +33,10 @@
                     {{ Form::button(__('common.finalize'),["class" => "btn btn-app-primary", "id" => "submit", 'onClick' => "submitFrom()"]) }}
                 </div>
             </div>
-            
+
         </div>
-        
-        
+
+
 
     {!! Form::close() !!}
 
@@ -60,7 +60,7 @@
                     id: document.getElementById('id').value
                 },
                 function (result) {
-                    console.log(result);
+                    location.href="{{ action('ActionPlanController@index') }}"
                 }
             );
 

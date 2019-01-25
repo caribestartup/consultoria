@@ -47,7 +47,7 @@ class ActionPlanConfiguration extends Model
                 $total = sizeof($microContens->get());
                 $count = 0;
                 foreach ($microContens->get() as $microContent) {
-                    
+
                     $micro = DB::table('micro_content_user')
                     ->join('micro_contents', 'micro_contents.id', '=', 'micro_content_user.micro_content_id')
                     ->where('micro_contents.id', $microContent->id)
@@ -92,6 +92,29 @@ class ActionPlanConfiguration extends Model
         }
 
         return $amount;
+    }
+
+    public function notePorcent(){
+        $actions = $this->actionPlan->actions;
+        $nCant = 0;
+        $suma = 0.0;
+        foreach ($actions as $action){
+            $microContens = $action->microContents;
+
+            foreach ($microContens as $microConten) {
+                $empty = DB::table('micro_content_user')
+                    ->where(array('micro_content_user.micro_content_id' => $microConten->id, 'micro_content_user.approve_coach' => true, 'micro_content_user.user_id' => Auth::user()->id))
+                    ->select('micro_content_user.nota')
+                    ->get();
+
+                if(sizeof($empty) > 0) {
+                    $suma += $empty[0]->nota;
+                    $nCant++;
+                }
+            }
+        }
+
+        return $nCant == 0 ? 0 : $suma/$nCant;
     }
 
     public function coach() {

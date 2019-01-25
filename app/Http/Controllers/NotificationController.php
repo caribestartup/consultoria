@@ -12,11 +12,9 @@ class NotificationController extends Controller
     public static function unread(){
         $notifications = Notification::where('read', true)->where('user_id', Auth::user()->id)->get();
         $change = false;
-        // dd($notifications);
+
         if (sizeof($notifications) > 0){
-            // dd($notifications);
             foreach ($notifications as $notification) {
-                // dd($notification);
                 if ($notification->entity_type == 'App\ActionPlanConfiguration') {
                     $change = $notification->checkStatus($change);
                 }

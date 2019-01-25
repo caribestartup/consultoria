@@ -76,7 +76,7 @@
                     </li>
                 </ul>
             </li>
-            
+
             <!--notificaciones-->
 
             <ul class="nav-right">
@@ -104,7 +104,7 @@
                                                 <span class="fw-500">{{ $notification->message() }}</span>
                                                 <span class="c-grey-600">Inicia <span class="text-dark">{{ $notification->url()['inicio'] }}</span></span>
                                             </span>
-                                            @if($notification->url()['dias'] != null) 
+                                            @if($notification->url()['dias'] != null)
                                                 <span class="{{$notification->url()['class']}}">
                                                     <p class="m-0">
                                                         <small class="fsz-xs">{{ $notification->url()['dias'] }} {{$notification->url()['mgs']}} </small>
