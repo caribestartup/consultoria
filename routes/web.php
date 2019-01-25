@@ -17,6 +17,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/micro_contents/actions', 'MicroContentController@ajaxActions' );
 
     Route::post('/micro_contents/actionPlans', 'MicroContentController@ajaxActionPlans' );
+    Route::get('/training/{id}', 'TrainingController@show' );
+    Route::post('/training', 'TrainingController@create' );
 
     Route::resource('action_plans', 'ActionPlanController');
 

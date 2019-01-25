@@ -115,9 +115,6 @@
                             </div>
                         </div>
 
-
-
-
                         </div>
                         </div>
                         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3 card-div-right">
@@ -128,7 +125,7 @@
                                     <h4 class="rol-label">Admin</h4>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mT-20">
-                                     <img style="margin-top: 5px" src="{{ asset('images/assets/ASSET-20.png') }}" height="42px"/><br>
+                                    <img style="margin-top: 5px" src="{{ asset('images/assets/ASSET-20.png') }}" height="42px"/><br>
                                     <h4 class="user-label">{{ $actionPConfig->coach()->get()[0]->fullName() }}</h4>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mT-60">
@@ -141,7 +138,6 @@
                     </div>
                 </a>
             </div>
-
         @endforeach
     </div>
 

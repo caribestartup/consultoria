@@ -84,7 +84,8 @@ class ActionPlanController extends Controller
     {
         if (Auth::user()->rol == "Administrador" || Auth::user()->rol == "Jefe") {
             $actionPConfig = $this->processForm($request, $actionPlan = new ActionPlan());
-            return redirect(action('ActionPlanController@show', ['id' => $actionPConfig->id]));
+            // return redirect(action('ActionPlanController@show', ['id' => $actionPConfig->id]));
+            return redirect(action('TrainingController@show', ['id' => $actionPConfig->id]));
         }
         else {
             return view('error.403');
