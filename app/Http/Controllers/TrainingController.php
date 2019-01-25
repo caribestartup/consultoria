@@ -36,27 +36,27 @@ class TrainingController extends Controller
         $id = $request->id;
         $url = '#';
 
-        
+
 
         foreach ($emails as $email) {
-            
+
             $exist_user = User::where(array('email' => $email))->get();
 
-            
+
 
             if (sizeof($exist_user) > 0) {
 
                 // sacarselo por una notificacion
 
             } else {
-                
+
                 // crear usuario nuevo
                 $string = mb_split('@', $email);
                 $name = $string[0];
                 $pass = bcrypt($name);
                 $rol = 'Evaluador';
 
-                
+
                 $dataUser = new User();
                 $dataUser->name= $name;
                 $dataUser->email = $email;
@@ -65,23 +65,23 @@ class TrainingController extends Controller
                 $dataUser->save();
 
                 // enviar correo
-                // Mail::send('mail.index', ['email' => $email, 'name' => $name, 'url' => $url, 'id' => $id], function ($m) use ($email) {
-                //     $m->from('carmec634@gmail.com', 'Your Application');
-                //     $m->to($email)->subject('Evaluar entrenamiento!');
-                // });
+                Mail::send('mail.index', ['email' => $email, 'name' => $name, 'url' => $url, 'id' => $id], function ($m) use ($email) {
+                    $m->from('carmec634@gmail.com', 'Your Application');
+                    $m->to($email)->subject('Evaluar entrenamiento!');
+                });
 
-                Mail::to($email)->subject('Evaluar entrenamiento')->send('Visite nuestro sitio web para evaluar el plan de accion con el usuario '.$email.' contraseña '.$name.' por favor entre al siguiente link y logueese con las credenciales descritas: '.$url.'/'.$id );
+                // Mail::to($email)->subject('Evaluar entrenamiento')->send('Visite nuestro sitio web para evaluar el plan de accion con el usuario '.$email.' contraseña '.$name.' por favor entre al siguiente link y logueese con las credenciales descritas: '.$url.'/'.$id );
                 // Mail::to($email)->send('Visite nuestro sitio web para evaluar el plan de accion con el usuario '.$email.' contraseña '.$name.' por favor entre al siguiente link y logueese con las credenciales descritas: '.$url.'/'.$id );
             }
         }
 
-        
+
     }
 
     public function evaluation(Request $request)
     {
         //recoger las respuesta y guardar en plan answer.
-        
+
         //si rol es 'Evaluador' tomo id y elimino.
 
         //sino elimino notificacion.
