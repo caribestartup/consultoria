@@ -7,6 +7,6 @@
     <title>Document</title>
 </head>
 <body>
-    Visite nuestro sitio web para evaluar el plan de accion con el usuario {{$email}} contraseña {{ $name }} por favor entre al siguiente link y logueese con las credenciales descritas: {{ $url }}/{{ $id }}
+    Visite nuestro sitio web para evaluar el plan de accion con el usuario: <strong>{{$email}}</strong>, contraseña: <strong>{{ $name }}</strong> por favor entre al siguiente link y logueese con las credenciales descritas: <a href="{{ $url }}/{{ $id }}">Aquí</a>
 </body>
 </html>
