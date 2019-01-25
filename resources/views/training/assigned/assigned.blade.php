@@ -10,7 +10,7 @@
 
 @section('content')
     @include('components.index_top', ['indexes' => [
-        trans_choice('common.action_plan', 2),	$actionPConfig->actionPlan->title
+        "Evaluar Entrenamiento",	$actionPConfig->actionPlan->title
         ]])
 
     <div class="bgc-white p-20">
@@ -46,7 +46,7 @@
             <fieldset>
                 <h2>{{ trans_choice('common.action', 2) }}</h2>
                 @foreach($actionPConfig->actionConfigurations as $actionConfig)
-                    @include('action_plan.assigned.action')
+                    @include('training.assigned.action')
                 @endforeach
             </fieldset>
         @endif
@@ -59,14 +59,14 @@
             @endphp
                 @foreach($actionPConfig->actionPlan->freePlanElements() as $element)
                     @if($element instanceof \App\Action)
-                        @include('action_plan.assigned.action', ['actionConfig' => $element->configurations[0]])
+                        @include('training.assigned.action', ['actionConfig' => $element->configurations[0]])
                     @elseif($element instanceof \App\FreeContent)
-                        @include('action_plan.assigned.free_content', ['freeContent' => $element, 'index' => $indexFreeContent])
+                        @include('training.assigned.free_content', ['freeContent' => $element, 'index' => $indexFreeContent])
                     @php
                         $indexFreeContent++;
                     @endphp
                     @elseif($element instanceof \App\PlanQuestion)
-                        @include('action_plan.assigned.question_plan', ['question' => $element, 'index' => $indexQuestion])
+                        @include('training.assigned.question_plan', ['question' => $element, 'index' => $indexQuestion])
                         @php
                             $indexQuestion++;
                         @endphp

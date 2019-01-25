@@ -43,7 +43,7 @@ class TrainingController extends Controller
     {
         $emails = mb_split(',', $request->emails);
         $id = $request->id;
-        $url = '#';
+        $url = '/training/create/'.$id;
 
         foreach ($emails as $email) {
 
@@ -51,7 +51,7 @@ class TrainingController extends Controller
             if (sizeof($exist_user) > 0) {
 
                 // sacarselo por una notificacion
-                Mail::send('mail.index', ['email' => $email, 'name' => $name, 'url' => $url, 'id' => $id], function ($m) use ($email) {
+                Mail::send('mail.index', ['email' => $email, 'name' => $name, 'url' => $url], function ($m) use ($email) {
                     $m->from('carmec634@gmail.com', 'Your Application');
                     $m->to($email)->subject('Evaluar entrenamiento!');
                 });
@@ -75,7 +75,7 @@ class TrainingController extends Controller
                 // $dataUser->save();
                 $user = User::create($dataUser);
 
-                Mail::send('mail.index', ['email' => $email, 'name' => $name, 'url' => $url, 'id' => $id], function ($m) use ($email) {
+                Mail::send('mail.index', ['email' => $email, 'name' => $name, 'url' => $url], function ($m) use ($email) {
                     $m->from('carmec634@gmail.com', 'Your Application');
                     $m->to($email)->subject('Evaluar entrenamiento!');
                 });
@@ -128,7 +128,8 @@ class TrainingController extends Controller
                                                 'plan_question_id' => $questionId,
                                                 'action_configuration_id' => $actionId,
                                                 'value' => $questionOption->id,
-                                                'email'   => Auth::user()->email
+                                                'email'   => Auth::user()->email,
+                                                'created_at' => date("Y-m-d H:i:s")
                                             ]);
                                         }
                                     }
@@ -140,7 +141,8 @@ class TrainingController extends Controller
                                             'plan_question_id' => $questionId,
                                             'action_configuration_id' => $actionId,
                                             'value' => $question['value'],
-                                            'email'   => Auth::user()->email
+                                            'email'   => Auth::user()->email,
+                                            'created_at' => date("Y-m-d H:i:s")
                                         ]);
                                     }
                                 }
@@ -151,7 +153,8 @@ class TrainingController extends Controller
                                 'plan_question_id' => $questionId,
                                 'action_configuration_id' => $actionId,
                                 'value' => $question['value'],
-                                'email'   => Auth::user()->email
+                                'email'   => Auth::user()->email,
+                                'created_at' => date("Y-m-d H:i:s")
                             ]);
                         }
                     }

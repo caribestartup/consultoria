@@ -19,6 +19,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class ActionPlanController extends Controller
 {
@@ -82,9 +83,31 @@ class ActionPlanController extends Controller
      */
     public function store(Request $request)
     {
+
         if (Auth::user()->rol == "Administrador" || Auth::user()->rol == "Jefe") {
+
+            $actions = $request->action;
+            // if($actions) {
+            //     $arr = new Request;
+                
+            //     $arr->sum = 0;
+            //     // $val = Validator::make($arr, [
+            //     //     "sum" => "required_if:sum,==,100",
+            //     //     // 'objectives_percent'      => "required",
+            //     // ]);
+            //     $val = array();
+            //     $val = array_merge($arr, [
+            //         "sum" => "required_if:sum,==,100",
+            //     ]);
+            //     foreach ($actions as $key => $data) {
+            //         $arr['sum'] += $data['objectives_percent'];
+            //     }
+                
+            //     $this->validate($arr, $val);
+            //     // $this->validate($val);
+            // }
+            
             $actionPConfig = $this->processForm($request, $actionPlan = new ActionPlan());
-            // return redirect(action('ActionPlanController@show', ['id' => $actionPConfig->id]));
             return redirect(action('TrainingController@show', ['id' => $actionPConfig->id]));
         }
         else {
@@ -205,6 +228,7 @@ class ActionPlanController extends Controller
                     if ($questions) {
                         foreach ($questions as $qkey => $data) {
                             $data['action_id'] = $action->id;
+
                             if ($qkey < $questionCount) {
                                 $question = $pQuestions[$qkey];
                                 $question->update($data);
@@ -375,8 +399,6 @@ class ActionPlanController extends Controller
                 }
             }
         }
-
-
         return $configuration;
     }
 
@@ -388,7 +410,6 @@ class ActionPlanController extends Controller
                 break;
             }
         }
-
         return $result;
     }
 
@@ -401,10 +422,17 @@ class ActionPlanController extends Controller
     public function show($id)
     {
         $actionPConfig = ActionPlanConfiguration::find($id);
-        if($actionPConfig)
-            return view('action_plan.assigned.assigned', compact('actionPConfig'));
-        else
-            abort(404);
+        if(sizeof($actionPConfig) > 0){
+            if (Auth::user()->rol == "Administrador" || $actionPConfig->coach_id == Auth::user()->id) {
+                return view('action_plan.assigned.assigned', compact('actionPConfig'));
+            }
+            else {
+                return view('error.403');
+            }
+        }
+        else {
+            return view('error.404');
+        }
     }
 
     /**
@@ -466,8 +494,7 @@ class ActionPlanController extends Controller
                 $configuration->delete();
                 if ($actionPlan->configurations()->count() == 0)
                     $actionPlan->delete();
-
-                return redirect(action('ActionPlanController@index'));
+                    return redirect(action('ActionPlanController@index'));
             }
             else
                 return view('error.404');
@@ -491,7 +518,6 @@ class ActionPlanController extends Controller
                 $actionConfig = ActionConfiguration::find($actionId);
                 $actionConfig->fill($action);
                 $actionConfig->save();
-
                 $questions = $action['question'];
                 foreach ($questions as $questionId => $question) {
                     $questionO = $actionConfig->action->questions()->where('id', $questionId)->get()->first();
@@ -504,8 +530,6 @@ class ActionPlanController extends Controller
                             $questionO->type == PlanQuestion::MULTIPLE) {
                             $questionOptions = $questionO->options()->where('id', $questionId)->get();
                             if($questionOptions != null) {
-
-
                                 if(is_array($question['value'])) {
                                     foreach ($question['value'] as $value) {
                                         $questionOption = PlanQuestionOption::where('id', $value)->first();

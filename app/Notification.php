@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
+use App\ActionPlanConfiguration;
 
 class Notification extends Model
 {
@@ -113,6 +115,19 @@ class Notification extends Model
 
     public function entities() {
         return $this->hasMany(EntityNotification::class);
+    }
+
+    public function checkStatus($change)
+    {
+        $actionPlan = ActionPlanConfiguration::where(array('action_plan_id' => $this->entity_id, 'user_id' => Auth::user()->id))->get();
+        $total = $actionPlan[0]->compliment();
+        if($total == 100){
+            $change = true;
+            $this->read = 0;
+            $this->type = 'removed';
+            $this->save();
+        }
+        return $change;
     }
 
 }

@@ -47,24 +47,17 @@ class ActionPlanConfiguration extends Model
                 $total = sizeof($microContens->get());
                 $count = 0;
                 foreach ($microContens->get() as $microContent) {
-                    // if ($rol == "Administrador") {
-
-                    // }
-                    // else {
-
+                    
                     $micro = DB::table('micro_content_user')
                     ->join('micro_contents', 'micro_contents.id', '=', 'micro_content_user.micro_content_id')
                     ->where('micro_contents.id', $microContent->id)
                     ->where('micro_content_user.user_id', $user_id)
                     ->where('micro_content_user.approve_coach', true)
                     ->get();
-                    // return $micro;
 
                     if(sizeof($micro) > 0){
                         $count++;
                     }
-
-                    // }
                 }
                 if($count == $total){
                     $totalPercent += $action->objectives_percent;

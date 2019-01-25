@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class PlanQuestion extends Model
 {
@@ -55,5 +56,20 @@ class PlanQuestion extends Model
                 ->where('user_id', $userId)
                 ->where('plan_question_id', $questionId)
                 ->get();
+    }
+
+    public function answer () {
+
+        $answers = DB::table('plan_answer_training')
+            ->join('plan_question_options', 'plan_answer_training.value', '=', 'plan_question_options.id')
+            ->where('plan_question_options.plan_question_id', $this->id)
+            ->select(
+                    'plan_answer_training.created_at',
+                    'plan_question_options.value',
+                    'plan_answer_training.email')
+            ->get();
+
+        return $answers;
+            
     }
 }

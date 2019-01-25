@@ -14,7 +14,7 @@
         </div>
         <div class="layer w-100 pR-20 pL-20 pB-20 panel-body ">
             <div class="mB-20">
-                <div>
+                {{-- <div>
                     <div class="mB-10">
                         <strong>{{ __('action_plan.about_action_to_develop') }}</strong>
                     </div>
@@ -149,7 +149,7 @@
                             @endforeach
                         </div>
                     </div>
-                @endif
+                @endif --}}
 
                 @if($actionConfig->action->questions->count() > 0)
                     <hr class="mB-15 mT-25">

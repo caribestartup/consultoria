@@ -10,7 +10,25 @@ use Illuminate\Support\Facades\DB;
 class NotificationController extends Controller
 {
     public static function unread(){
-        return Notification::where('read', true)->where('user_id', Auth::user()->id)->get();
+        $notifications = Notification::where('read', true)->where('user_id', Auth::user()->id)->get();
+        $change = false;
+        // dd($notifications);
+        if (sizeof($notifications) > 0){
+            // dd($notifications);
+            foreach ($notifications as $notification) {
+                // dd($notification);
+                if ($notification->entity_type == 'App\ActionPlanConfiguration') {
+                    $change = $notification->checkStatus($change);
+                }
+            }
+            if ($change){
+                return Notification::where('read', true)->where('user_id', Auth::user()->id)->get();
+            }
+            else {
+                return $notifications;
+            }
+        }
+        return $notifications;
     }
 
     public function destroy($id)

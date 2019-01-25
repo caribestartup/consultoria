@@ -151,7 +151,7 @@
                     </div>
                 @endif
 
-                @if($actionConfig->action->questions->count() > 0)
+                {{-- @if($actionConfig->action->questions->count() > 0)
                     <hr class="mB-15 mT-25">
                     <strong>{{ __('common.training') }}</strong>
                     <div class="row">
@@ -159,7 +159,13 @@
                             @include('action_plan.assigned.question', ['index' => $loop->index])
                         @endforeach
                     </div>
-                @endif
+                @endif --}}
+
+                <hr class="mB-15 mT-25">
+                {{-- <strong>Resultados del {{ __('common.training') }}</strong> --}}
+                <div class="row">
+                    @include('action_plan.assigned.training_result', ['questions' => $actionConfig->action->questions])
+                </div>
             </div>
         </div>
 
