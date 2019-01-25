@@ -35,18 +35,13 @@ class TrainingController extends Controller
             return view('training.index', compact('actionPConfig'));
         else
             return view( 'error.404');
-        // return view('training.index', compact('question'));
     }
 
     public function create(Request $request)
     {
-        // return $request->all();
-
         $emails = mb_split(',', $request->emails);
         $id = $request->id;
         $url = '#';
-
-
 
         foreach ($emails as $email) {
 
@@ -54,6 +49,10 @@ class TrainingController extends Controller
             if (sizeof($exist_user) > 0) {
 
                 // sacarselo por una notificacion
+                Mail::send('mail.index', ['email' => $email, 'name' => $name, 'url' => $url, 'id' => $id], function ($m) use ($email) {
+                    $m->from('carmec634@gmail.com', 'Your Application');
+                    $m->to($email)->subject('Evaluar entrenamiento!');
+                });
 
 
             } else {
@@ -84,25 +83,19 @@ class TrainingController extends Controller
 
     public function show_training($id)
     {
-        // $question = PlanQuestion::join('actions', 'actions.id', '=', 'plan_questions.action_id')
-        //                 ->join('action_plans', 'action_plans.id', '=', 'actions.action_plan_id')
-        //                 ->where(array('action_plans.id' => $id))
-        //                 ->get();
 
         $actionPConfig = ActionPlanConfiguration::find($id);
         if($actionPConfig)
-            // return view('action_plan.assigned.assigned', compact('actionPConfig'));
             return view('training.assigned.assigned', compact('actionPConfig'));
         else
-            abort(404);
+            return view( 'error.404');
 
     }
 
     public function evaluation(Request $request, $id)
     {
-        //recoger las respuesta y guardar en plan answer.
+        //recoger las respuesta y guardar en plan answer training.
         $actionPConfig = ActionPlanConfiguration::find($id);
-        // if($actionPConfig && $actionPConfig->users()->where('user_id', Auth::user()->id)->get()->first() != null) {
             $actions = $request->action;
             foreach ($actions as $actionId => $action) {
                 $actionConfig = ActionConfiguration::find($actionId);
@@ -135,7 +128,8 @@ class TrainingController extends Controller
                                             ]);
                                         }
                                     }
-                                }else{
+                                }
+                                else{
                                     $questionOption = PlanQuestionOption::where('id', $question['value'])->first();
                                     if ($questionOption) {
                                         DB::table('plan_answer_training')->insert([
@@ -159,15 +153,17 @@ class TrainingController extends Controller
                     }
                 }
             }
-        // }
-        // else
-        //     abort(404);
-        //
-        // return redirect(action('ActionPlanController@index'));
 
-        //si rol es 'Evaluador' tomo id y elimino.
+        if (Auth::user()->rol == 'Evaluador') {
 
-        //sino elimino notificacion.
-        return redirect(action('ActionPlanController@index'));
+            //si rol es 'Evaluador' tomo id y elimino.
+            $userEvaduador = User::findOrFail(Auth::user()->id);
+            $userEvaduador->delete();
+            // return redirect(action('\App\Http\Controllers\Auth\LoginController@logout'));
+
+            return redirect()->route('logout')->withSuccess('Evaluación realizada con éxito');
+        }
+
+        return redirect()->route('action_plans.index')->withSuccess('Evaluación del estrenamiento realizada con éxito');
     }
 }
