@@ -507,8 +507,13 @@ class ActionPlanController extends Controller
             if($configuration) {
                 $actionPlan = $configuration->actionPlan;
                 $configuration->delete();
-                if ($actionPlan->configurations()->count() == 0)
+                if ($actionPlan->configurations()->count() == 0) {
+
                     $actionPlan->delete();
+                }
+
+                Notification::where(array('entity_id' => $id, 'entity_type' => 'App\ActionPlanConfiguration'))->delete();
+
                     return redirect(action('ActionPlanController@index'));
             }
             else
