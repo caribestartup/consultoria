@@ -150,7 +150,7 @@
         $(document).ready(function () {
             $('.edit-plan').click(function (e) {
                 e.preventDefault();
-                window.location = $('.edit-plan').attr('href');
+                window.location = $(this).attr('href');
             });
         });
     </script>

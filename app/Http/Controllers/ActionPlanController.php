@@ -502,19 +502,18 @@ class ActionPlanController extends Controller
      */
     public function destroy($id)
     {
-        if (Auth::user()->rol == "Administrador" || Auth::user()->rol == "Jefe") {
+        // dd($id);
+        if (Auth::user()->rol == "Administrador") {
             $configuration = ActionPlanConfiguration::find($id);
-            if($configuration) {
+            if(isset($configuration)) {
+                // dd($configuration);
                 $actionPlan = $configuration->actionPlan;
                 $configuration->delete();
                 if ($actionPlan->configurations()->count() == 0) {
-
                     $actionPlan->delete();
                 }
-
                 Notification::where(array('entity_id' => $id, 'entity_type' => 'App\ActionPlanConfiguration'))->delete();
-
-                    return redirect(action('ActionPlanController@index'));
+                return redirect(action('ActionPlanController@index'));
             }
             else
                 return view('error.404');
