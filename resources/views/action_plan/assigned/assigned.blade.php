@@ -1,4 +1,5 @@
 @extends('default')
+
 @section('title')
     {{ trans_choice('common.action_plan', 1) . ': '. $actionPConfig->actionPlan->title }}
 @endsection
@@ -13,8 +14,16 @@
         trans_choice('common.action_plan', 2),	$actionPConfig->actionPlan->title
         ]])
 
+    <h1>{{ $actionPConfig->actionPlan->title }}</h1>
+    {{-- TODO --}}
+    @if(\Illuminate\Support\Facades\Auth::user()->id === $actionPConfig->user->id || \Illuminate\Support\Facades\Auth::user()->rol == 'Administrador')
+        <a class="btn btn-app-primary mb-3" href="{{ action('ActionPlanController@edit', ['id' => $actionPConfig->id]) }}">
+            {{ __('common.edit') }}
+        </a>
+    @endif
+
     <div class="bgc-white p-20">
-        <h1>{{ $actionPConfig->actionPlan->title }}</h1>
+        {{-- <h1>{{ $actionPConfig->actionPlan->title }}</h1> --}}
 
 
         <strong>{{ trans_choice('common.objective', 2) }}</strong>

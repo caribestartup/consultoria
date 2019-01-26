@@ -397,22 +397,20 @@
             <input name="deleted[questions]" type="hidden"/>
             <input name="deleted[actions]" type="hidden"/>
             <input name="deleted[answers]" type="hidden"/>
-            {!! Form::button(__('common.delete'), [
-            'class'         => 'btn btn-app-primary',
-            'id'            => 'delete-action-plan',
-            'data-toggle'   => "modal",
-            'data-target'  => "#delete-modal"])!!}
         @endisset
 
         {!! Form::close() !!}
 
         @isset($actionPConfig)
             {!! Form::open([
-            'class'     => 'hide',
+            'class'     => 'deleteplanform',
             'route'     => ['action_plans.destroy', 'id' => $actionPConfig->id],
             'id'        => 'delete-form',
             'method'    => 'DELETE'
             ]) !!}
+                {!! Form::button(__('common.delete'), [
+                'class'         => 'btn btn-app-primary',
+                'id'            => 'delete-action-plan'])!!}
             {!! Form::close() !!}
         @endisset
     </div>

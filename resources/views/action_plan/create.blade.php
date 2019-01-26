@@ -15,6 +15,10 @@
     <link href="{{ asset('/plugins/summernote/summernote-bs4.css') }}" rel="stylesheet">
 
     <style>
+        .deleteplanform {
+            display: initial;
+        }
+
         .nopad {
             padding-left: 0 !important;
             padding-right: 0 !important;
@@ -57,18 +61,17 @@
 
 @section('content')
 
-        <h1 class=" ml-3 text-white" style="font-family: Comfortaa">
-             @include('components.index_create', [
-            'title' => trans_choice('common.action_plan', 2),
-            'url'   => route('action_plans.create'),
-            'create'=> __('action_plan.create_action_plan')
-            ])
+    <div class="row orange-row d-flex align-items-start mb-5">
+        <h1 class=" ml-3 text-white" >
+            @if(isset($actionPConfig))
+                {{ __('action_plan.edit_action_plan') . ': ' . $actionPConfig->actionPlan->title }}
+            @else
+                {{ __('action_plan.create_action_plan') }}
+            @endif
         </h1>
 
-  
+    </div>
  
-  
-
     @include('action_plan.form.form')
 
     @include('components.modal', [
@@ -95,13 +98,23 @@
      'cancel'    => __('common.no')
      ])
 
-    @isset($actionPConfig)
+    {{-- @isset($actionPConfig)
         @include('components.modal', [
         'modal_id'  => 'delete-modal',
         'title'     => __('common.attention!'),
         'content'   => __('action_plan.delete_action_plan_question'),
         'accept'    => __('common.yes'),
         'cancel'    => __('common.no')
+        ])
+    @endisset --}}
+
+    @isset($actionPConfig)
+        @include('components.modal_delete', [
+            'modal_id'  => 'delete-modal',
+            'title'     => __('common.attention!'),
+            'content'   => __('common.delete_entity'),
+            'accept'    => __('common.yes'),
+            'cancel'    => __('common.no')
         ])
     @endisset
 
@@ -834,17 +847,42 @@
             {{-- hasta aki tipo libre --}}
 
             @isset($actionPConfig)
-            {{-- Boton eliminar plan de accion --}}
-            $('#delete-modal .accept-button').click(function () {
-                $('form#delete-form').submit();
-            });
+            {{-- Boton eliminar micro contenid--}}
+            var currentForm;
+            $(document).on('click', 'form.deleteplanform button', function() {
+                alertify.defaults.transition = "slide";
+                alertify.defaults.theme.ok = "btn btn-primary";
+                alertify.defaults.theme.cancel = "btn btn-danger";
+                alertify.defaults.theme.input = "form-control";
 
-            {{-- ejecute el metodo de mostrar lo q corresponda a ese plan ed accion --}}
-            $('#plan-type').change();
+                var headerText = $('#delete-modal div.modal-title').text();
+                var header = document.createElement('modal-title');
+                var div = document.createElement('div');
+                div.className = 'modal-title';
+                var title = document.createElement('h5');
+                title.innerText = headerText;
+                title.innerHTML = title.innerHTML.replace('<br>', '');
+                title.style = 'font-size: xx-large';
+                div.appendChild(title);
+                header.appendChild(div);
+
+                var body = document.createElement('modal-content-alert');
+                body.appendChild(document.getElementsByClassName('modal-content-alert')[0]);
+
+                alertify.confirm(header, body, function(){
+                        alertify.success('Eliminado');
+                        currentForm = $('#delete-form')
+                        currentForm = $('#delete-form').closest("form")
+                        currentForm.submit();
+                    },function(){
+                        alertify.error('Cancelado');
+                    }).set({labels:{ok:'Elimanar', cancel: 'Cancelar'}, padding: false});
+            });
 
             var deletedActions = $('input[name="deleted[actions]"]');
             var deletedAnswers = $('input[name="deleted[answers]"]');
             var deletedQuestions = $('input[name="deleted[questions]"]');
+
             @endisset
         });
     </script>
