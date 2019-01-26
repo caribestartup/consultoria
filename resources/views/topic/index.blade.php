@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <div class="row">
+    <div class="row title-page-buttom">
         <div class="col-xs-12 col-sm-6">
             @include('components.index_create', [
             'title' => trans_choice('common.topic', 2),
@@ -14,7 +14,7 @@
             ])
         </div>
     </div>
-    <div class="row mt-5">
+    <div class="row mt-10">
         <div class="col-xs-12 col-sm-8 col-md-8">
             <h2>Temas</h2>
             <table class="table">

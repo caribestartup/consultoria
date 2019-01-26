@@ -37,23 +37,65 @@
             <tbody>
 
             @foreach($departaments as $departament)
-                <form  action="{{route('departament.destroy',$departament->id)}}" method="post">
-                    @csrf
-                    @method('DELETE')
+
+                {!! Form::open([
+                        'class'=>'deletetopicform',
+                        'url'  => route('departament.destroy', $departament->id),
+                        'method' => 'DELETE',
+                        'id' => 'delete_form_'.$departament->id,
+                        ])
+                !!}
+
                     <tr>
                         <td>{{$departament->id}}</td>
                         <td>{{$departament->value}}</td>
                         <td>
                             <a href="{{ route('departament.show',$departament->id) }}"><i class="fa fa-eye"></i></a>
                             <a href="{{ route('departament.edit',$departament->id) }}"><i class="fa fa-edit"></i></a>
-                            <button class="border-0 bg-transparent" style="cursor: pointer" type="submit"><i class="fa fa-trash"></i></button>
+                            <button id= {{$departament->id}} class="border-0 bg-transparent" style="cursor: pointer" type="button"><i class="fa fa-trash"></i></button>
                         </td>
                     </tr>
 
-                    @endforeach
-                </form>
+                    {!! Form::close() !!}
+
+                @endforeach
 
             </tbody>
         </table>
     </div>
+
+    @include('components.modal_delete', [
+        'modal_id'  => 'delete-modal',
+        'title'     => __('common.attention!'),
+        'content'   => __('common.delete_entity'),
+        'accept'    => __('common.yes'),
+        'cancel'    => __('common.no')
+        ])
+@endsection
+
+@section('js')
+
+    <script type="text/javascript">
+        var currentForm;
+        $('.border-0').on('click', function() {
+            currentForm = ($('#delete_form_'+this.id[0]));
+            alertify.defaults.transition = "slide";
+            alertify.defaults.theme.ok = "btn btn-primary";
+            alertify.defaults.theme.cancel = "btn btn-danger";
+            alertify.defaults.theme.input = "form-control";
+
+            var header = document.createElement('modal-title');
+            header.appendChild(document.getElementsByClassName('modal-title')[0]);
+
+            var body = document.createElement('modal-content-alert');
+            body.appendChild(document.getElementsByClassName('modal-content-alert')[0]);
+
+            alertify.confirm(header, body, function(){
+                    alertify.success('Eliminado');
+                    currentForm.submit();
+                },function(){
+                    alertify.error('Cancelado');
+                }).set({labels:{ok:'Elimanar', cancel: 'Cancelar'}, padding: false});
+        });
+    </script>
 @endsection

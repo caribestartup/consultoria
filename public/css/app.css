@@ -8185,6 +8185,30 @@ button.bg-dark:hover {
     margin-left: 1.5rem!important
 }
 
+.m-10 {
+    margin: 5rem !important
+}
+
+.mt-10,
+.my-10 {
+    margin-top: 5rem !important
+}
+
+.mr-10,
+.mx-10 {
+    margin-right: 5rem !important
+}
+
+.mb-10,
+.my-10 {
+    margin-bottom: 5rem !important
+}
+
+.ml-10,
+.mx-10 {
+    margin-left: 5rem !important
+}
+
 .m-5 {
     margin: 3rem!important
 }
