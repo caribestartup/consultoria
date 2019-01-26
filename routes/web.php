@@ -27,6 +27,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('training/{id}/evaluation', 'TrainingController@evaluation' );
 
     Route::resource('action_plans', 'ActionPlanController');
+    Route::get('action_plans_coach/', 'ActionPlanController@index_coach' );
 
     // Route::resource('interests', 'InterestController');
     // Route::resource('departments', 'DepartmentController');

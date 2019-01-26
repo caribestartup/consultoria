@@ -33,7 +33,7 @@ class ActionPlanController extends Controller
 
         $actionPConfigs = null;
 
-        if (Auth::user()->rol == "Administrador") {
+        if (Auth::user()->rol == "Administrador" ||  Auth::user()->rol == "Jefe") {
             $actionPConfigs = ActionPlanConfiguration::paginate(15);
         }
         else {
@@ -56,6 +56,20 @@ class ActionPlanController extends Controller
 
             // $actionPConfigs = ActionPlanConfiguration::find($microContents1->id)->simplePaginate(1);
         }
+        return view('action_plan.index', ['actionPConfigs' => $actionPConfigs]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index_coach()
+    {
+
+        $actionPConfigs = ActionPlanConfiguration::where('action_plan_configurations.coach_id', Auth::user()->id)
+                            ->paginate(15);
+
         return view('action_plan.index', ['actionPConfigs' => $actionPConfigs]);
     }
 
@@ -422,8 +436,9 @@ class ActionPlanController extends Controller
     public function show($id)
     {
         $actionPConfig = ActionPlanConfiguration::find($id);
-        if(sizeof($actionPConfig->get()) > 0){
-            if (Auth::user()->rol == "Administrador" || $actionPConfig->coach_id == Auth::user()->id) {
+        if (isset($actionPConfig)) {
+        // if(sizeof($actionPConfig->get()) > 0){
+            if (Auth::user()->rol == "Jefe" || Auth::user()->rol == "Administrador" || $actionPConfig->coach_id == Auth::user()->id) {
                 return view('action_plan.assigned.assigned', compact('actionPConfig'));
             }
             else {

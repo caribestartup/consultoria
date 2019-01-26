@@ -17,16 +17,37 @@
     </a>
 </li>
 
+@if(auth()->check() && auth()->user()->is_coach == true)
 <li class="nav-item {{ request()->is('action_plans*') ? 'bgc-blue-50' : '' }} border " style="font-family:Comfortaa">
-    <a class='sidebar-link' href="{{ route('action_plans.index') }}">
+    <a class='sidebar-link' href="#">
         <span class="img-menu">
             <img src="{{ asset('/images/assets/action_plan.png') }}" height="32px" width="35px" />
         </span>
         <span class="title  pL-20">{{ trans_choice('common.action_plan', 2) }}</span>
+        <i class="fa fa-sort-down text-blue title pL-20" ></i>
     </a>
+
+    <span class="dropdown-menu dropdown-menu-right  ">
+        <a class="dropdown-item" href="{{ action('ActionPlanController@index') }}">Todos</a>
+        <a class="dropdown-item" href="{{ action('ActionPlanController@index_coach') }}">Coachs</a>
+    </span>
 </li>
 
+@else
+    <li class="nav-item {{ request()->is('action_plans*') ? 'bgc-blue-50' : '' }} border " style="font-family:Comfortaa">
+        <a class='sidebar-link' href="{{ action('ActionPlanController@index') }}">
+            <span class="img-menu">
+                <img src="{{ asset('/images/assets/action_plan.png') }}" height="32px" width="35px" />
+            </span>
+            <span class="title  pL-20">{{ trans_choice('common.action_plan', 2) }}</span>
+        </a>
+    </li>
+
+@endif
+
 @if(auth()->check() && auth()->user()->rol == 'Administrador')
+
+
     <li class="nav-item {{ request()->is('users*') ? 'bgc-blue-50' : '' }} border " style="font-family:Comfortaa">
         <a class='sidebar-link ' href="{{ route('users.index') }}">
             <span class="img-menu">

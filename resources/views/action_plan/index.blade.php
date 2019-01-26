@@ -130,6 +130,7 @@
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mT-60">
                                     @if(\Illuminate\Support\Facades\Auth::user()->id === $actionPConfig->user->id)
+                                        <!-- <a class="card-buttom-edit" href="{{ action('ActionPlanController@edit', ['id' => $actionPConfig->id ]) }}">Editar Plan</a> -->
                                         <button class="card-buttom-edit">Editar Plan</button>
                                     @endif
                                 </div>
