@@ -11,15 +11,19 @@
             <div class="form-group">
                 <label>{{ __('common.title') }}</label>
                 <input class="form-control" name="micro_content[title]" required
-                       @isset($microContent)
+                    @isset($microContent)
                        value="{{ $microContent->title }}"
-                        @endisset
+                    @endisset
                 />
             </div>
 
             <div class="form-group col-xs-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
                 <label>{{ trans('common.min_approve') }}</label>
-                <input class="form-control points-i" name="micro_content[approve]" required type="number" />
+                <input class="form-control points-i" name="micro_content[approve]" required type="number"
+                    @isset($microContent)
+                        value="{{ $microContent->approve }}"
+                    @endisset
+                />
             </div>
 
             <div class="row">
@@ -119,23 +123,20 @@
         @isset($microContent)
             <input name="deleted[questions]" type="hidden"/>
             <input name="deleted[answers]" type="hidden"/>
-
-            {!! Form::button(__('common.delete'), [
-            'class'         => 'btn btn-app-primary',
-            'id'            => 'delete-micro-content',
-            'data-toggle'   => "modal",
-             'data-target'  => "#delete-modal"])!!}
         @endisset
 
         {!! Form::close() !!}
 
         @isset($microContent)
             {!! Form::open([
-            'class'     => 'hide',
+            'class'     => 'deletemicroform',
             'route'     => ['micro_contents.destroy', 'id' => $microContent->id],
             'id'        => 'delete-form',
             'method'    => 'DELETE'
             ]) !!}
+                {!! Form::button(__('common.delete'), [
+                'class'         => 'btn btn-app-primary',
+                'id'            => 'delete-micro-content'])!!}
             {!! Form::close() !!}
         @endisset
     </div>

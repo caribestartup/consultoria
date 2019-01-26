@@ -45,8 +45,7 @@
 
                     </div>
                     <div class="text-center">
-                            <a href="{{ route('micro_contents.show', ['id' => $microContent->id]) }}"
-                                               class="mB-10">
+                            <a href="{{ route('micro_contents.show', ['id' => $microContent->id]) }}" class="mB-10">
                                 <img class="mB-10" src="{{ asset('images/assets/ASSET-01.png') }}" height="42px"/>
                             </a>
                     </div>
@@ -65,9 +64,7 @@
                                     <h4 class="question-cont-label">{{ $microContent->questions->count() }}</h4>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mT-15 mB-10">
-                                        <a href="{{ route('micro_contents.show', ['id' => $microContent->id]) }}"
-                                               class="card-buttom-edit mB-10 pl-4 pr-4">Editar</a>
-
+                                    <a href="{{ route('micro_contents.edit', ['id' => $microContent->id]) }}" class="card-buttom-edit mB-10 pl-4 pr-4">Editar</a>
                                 </div>
                             </div>
                         </div>

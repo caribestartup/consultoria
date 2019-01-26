@@ -1,6 +1,6 @@
 <div class="modal fade" id="{{ $modal_id }}">
     <div class="modal-title">
-        <h5 style="font-size: xx-large;">{{ $title }}</h5>
+        <h5 style="font-size: xx-large;">{{$title}}</h5>
     </div>
     <div class="modal-content-alert" style="text-align: center; font-size: x-large;">
         <p>{{ $content }}</p>

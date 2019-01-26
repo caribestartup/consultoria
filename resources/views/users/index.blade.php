@@ -83,14 +83,6 @@
         </ul>
     </nav>
 
-    @include('components.modal_delete', [
-        'modal_id'  => 'delete-modal',
-        'title'     => __('common.attention!'),
-        'content'   => __('common.delete_entity'),
-        'accept'    => __('common.yes'),
-        'cancel'    => __('common.no')
-    ])
-
 @endsection
 
 @section('js')

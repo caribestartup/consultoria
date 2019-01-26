@@ -12,6 +12,10 @@
     <link href="{{ asset('/plugins/summernote/summernote-bs4.css') }}" rel="stylesheet">
     <link href="{{ asset('/plugins/bootstrap-multiselect/css/bootstrap-multiselect.css') }}" rel="stylesheet">
     <style>
+        .deletemicroform {
+            display: initial;
+        }
+
         .multiselect-container .checkbox input[type="checkbox"] {
             opacity: 1 !important;
         }
@@ -34,11 +38,11 @@
 @section('content')
     <div class="row orange-row d-flex align-items-start mb-5">
         <h1 class=" ml-3 text-white" >
-          @if(isset($microContent))
-            {{ __('micro_content.edit_micro_content') . ': ' . $microContent->title }}
-        @else
-            {{ __('micro_content.create_micro_content') }}
-        @endif
+            @if(isset($microContent))
+                {{ __('micro_content.edit_micro_content') . ': ' . $microContent->title }}
+            @else
+                {{ __('micro_content.create_micro_content') }}
+            @endif
         </h1>
 
     </div>
@@ -46,28 +50,28 @@
     @include('micro_content.form.form')
 
     @include('components.modal', [
-    'modal_id'  => 'page-delete-modal',
-    'title'     => __('common.attention!'),
-    'content'   => __('micro_content.delete_page_question'),
-    'accept'    => __('common.yes'),
-    'cancel'    => __('common.no')
+        'modal_id'  => 'page-delete-modal',
+        'title'     => __('common.attention!'),
+        'content'   => __('micro_content.delete_page_question'),
+        'accept'    => __('common.yes'),
+        'cancel'    => __('common.no')
     ])
 
     @include('components.modal', [
-    'modal_id'  => 'question-delete-modal',
-    'title'     => __('common.attention!'),
-    'content'   => __('common.delete_question'),
-    'accept'    => __('common.yes'),
-    'cancel'    => __('common.no')
+        'modal_id'  => 'question-delete-modal',
+        'title'     => __('common.attention!'),
+        'content'   => __('common.delete_question'),
+        'accept'    => __('common.yes'),
+        'cancel'    => __('common.no')
     ])
 
     @isset($microContent)
-        @include('components.modal', [
-        'modal_id'  => 'delete-modal',
-        'title'     => __('common.attention!'),
-        'content'   => __('micro_content.delete_micro_content_question'),
-        'accept'    => __('common.yes'),
-        'cancel'    => __('common.no')
+        @include('components.modal_delete', [
+            'modal_id'  => 'delete-modal',
+            'title'     => __('common.attention!'),
+            'content'   => __('common.delete_entity'),
+            'accept'    => __('common.yes'),
+            'cancel'    => __('common.no')
         ])
     @endisset
 @endsection
@@ -392,8 +396,35 @@
 
             @isset($microContent)
             {{-- Boton eliminar micro contenid--}}
-            $('#delete-modal .accept-button').click(function () {
-                $('form#delete-form').submit();
+            var currentForm;
+            $(document).on('click', 'form.deletemicroform button', function() {
+                alertify.defaults.transition = "slide";
+                alertify.defaults.theme.ok = "btn btn-primary";
+                alertify.defaults.theme.cancel = "btn btn-danger";
+                alertify.defaults.theme.input = "form-control";
+
+                var headerText = $('#delete-modal div.modal-title').text();
+                var header = document.createElement('modal-title');
+                var div = document.createElement('div');
+                div.className = 'modal-title';
+                var title = document.createElement('h5');
+                title.innerText = headerText;
+                title.innerHTML = title.innerHTML.replace('<br>', '');
+                title.style = 'font-size: xx-large';
+                div.appendChild(title);
+                header.appendChild(div);
+
+                var body = document.createElement('modal-content-alert');
+                body.appendChild(document.getElementsByClassName('modal-content-alert')[0]);
+
+                alertify.confirm(header, body, function(){
+                        alertify.success('Eliminado');
+                        currentForm = $('#delete-form')
+                        currentForm = $('#delete-form').closest("form")
+                        currentForm.submit();
+                    },function(){
+                        alertify.error('Cancelado');
+                    }).set({labels:{ok:'Elimanar', cancel: 'Cancelar'}, padding: false});
             });
 
             let deletedAnswers = $('input[name="deleted[answers]"]');
