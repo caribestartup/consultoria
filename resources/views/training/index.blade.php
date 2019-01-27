@@ -23,7 +23,7 @@
             <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-2">
                 <fieldset class="mT-10 bgc-white p-20 border-form">
                     <div class="form-group">
-                        <label>Correos</label>
+                        <label>Correos de los Evaluadores</label>
                         <input id="emails" class="form-control" type="text" value="" data-role="tagsinput" />
                         <input id="id" value="{{ $actionPConfig->id }}" type="hidden"/>
                         @csrf
@@ -47,53 +47,32 @@
     <script src="{{ asset('plugins/bootstrap-star-rating/js/star-rating.min.js') }}"></script>
     <script src="{{ asset('plugins/bootstrap-tagsinput/js/bootstrap-tagsinput.js') }}"></script>
     <script>
-        // $('.btn').on('click', function () {
-        //     var currentForm = $('#send_form')[0];
-        //     currentForm.submit();
-        // });
         function submitFrom (e) {
-            $.post(
-                "{{ action('TrainingController@create') }}",
-                {
-                    _token: $('input[name="_token"]').val(),
-                    emails: document.getElementById('emails').value,
-                    id: document.getElementById('id').value
-                },
-                function (result) {
-                    location.href="{{ action('ActionPlanController@index') }}"
+            var emails = document.getElementById('emails').value;
+            emails = emails.split(',');
+            var regular = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            var incorrect = false;
+            emails.forEach(email => {
+                if (!regular.test(email)) {
+                    incorrect = true;
+                    alert('Formato de correo incorrecto, por favor revice los correos');
                 }
-            );
-
-            // $.ajax({
-            //     headers: {
-            //         'X-CSRF-TOKEN': token
-            //     },
-            //     url: urls,
-            //     type: 'POST',
-            //     data: {
-            //         emails: email,
-            //         id: ids
-            //     }
-            // });
-
-            // // var data = [];
-            // // data.array_push('emails', emails);
-            // // data.array_push('id', id);
-            // $.post(url,
-            //     headers: {
-            //         'X-CSRF-TOKEN': token
-            //     },
-            //     data: {
-            //         emails: email,
-            //         id: ids
-            //     },
-            //     function(data, status){
-            //         alert("Data: " + data + "\nStatus: " + status);
-            // });
-            //     // fetch(url, {
-            //     //     method: 'post',
-            //     //     body: data
-            //     // })
+            });
+            if(incorrect === false) {
+                $.post(
+                    "{{ action('TrainingController@create') }}",
+                    {
+                        _token: $('input[name="_token"]').val(),
+                        emails: document.getElementById('emails').value,
+                        id: document.getElementById('id').value
+                    },
+                    function (result) {
+                        console.log(result);
+                        // location.href="{{ action('ActionPlanController@index') }}"
+                    }
+                );
+            }
+            
         };
     </script>
 @endsection

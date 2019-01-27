@@ -46,10 +46,9 @@ class TrainingController extends Controller
         $url = $id;
 
         foreach ($emails as $email) {
-
             $exist_user = User::where(array('email' => $email))->get();
-            if (sizeof($exist_user) > 0) {
-
+            
+            if (isset($exist_user)) {
                 // sacarselo por una notificacion
                 Mail::send('mail.index', ['email' => $email, 'name' => $name, 'url' => $url], function ($m) use ($email) {
                     $m->from('carmec634@gmail.com', 'Your Application');
@@ -58,7 +57,6 @@ class TrainingController extends Controller
 
 
             } else {
-
                 // crear usuario nuevo
                 $string = mb_split('@', $email);
                 $name = $string[0];
