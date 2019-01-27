@@ -101,25 +101,6 @@ class ActionPlanController extends Controller
         if (Auth::user()->rol == "Administrador" || Auth::user()->rol == "Jefe") {
 
             $actions = $request->action;
-            // if($actions) {
-            //     $arr = new Request;
-
-            //     $arr->sum = 0;
-            //     // $val = Validator::make($arr, [
-            //     //     "sum" => "required_if:sum,==,100",
-            //     //     // 'objectives_percent'      => "required",
-            //     // ]);
-            //     $val = array();
-            //     $val = array_merge($arr, [
-            //         "sum" => "required_if:sum,==,100",
-            //     ]);
-            //     foreach ($actions as $key => $data) {
-            //         $arr['sum'] += $data['objectives_percent'];
-            //     }
-
-            //     $this->validate($arr, $val);
-            //     // $this->validate($val);
-            // }
 
             $actionPConfig = $this->processForm($request, $actionPlan = new ActionPlan());
             return redirect(action('TrainingController@show', ['id' => $actionPConfig->id]));
@@ -131,18 +112,9 @@ class ActionPlanController extends Controller
 
     private function processForm(Request $request, $actionPlan, $configuration = null)
     {
-        // dd($request->user);
-
         $data = $request->plan;
         $actionPlan->fill($data);
         $actionPlan->save();
-
-        /*foreach ($request->all() as $key => $input) {
-            echo $key . ': ';
-            var_dump($input);
-            echo '<br/>';
-        }
-        ;die;*/
 
         //Elimino las preguntas
         $toRemove = $request->deleted['questions'];
@@ -194,7 +166,7 @@ class ActionPlanController extends Controller
         }
 
         $configuration->save();
-        
+
         //Sinconizar grupos de usuario
         $userInsert = array();
 
@@ -222,7 +194,7 @@ class ActionPlanController extends Controller
                     array_push($userInsert, $user->user_id);
                 }
             }
-            
+
         }
 
         foreach ($request->users as $user) {
