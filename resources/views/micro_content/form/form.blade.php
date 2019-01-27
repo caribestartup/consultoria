@@ -131,7 +131,7 @@
             {!! Form::open([
             'class'     => 'deletemicroform',
             'route'     => ['micro_contents.destroy', 'id' => $microContent->id],
-            'id'        => 'delete-form',
+            'id'        => 'delete-form'.$microContent->id,
             'method'    => 'DELETE'
             ]) !!}
                 {!! Form::button(__('common.delete'), [

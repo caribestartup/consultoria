@@ -65,10 +65,10 @@
                                     'class'=>'deleteuserform',
                                     'url'  => route('users.destroy', $user->id),
                                     'method' => 'DELETE',
-                                    'id' => 'delete_form',
+                                    'id' => 'delete_form_'.$user->id,
                                     ])
                             !!}
-                                <button type="button" id="sendbtn" class="btn btn-light btn-sm fsz-md text-color-primary-header" title="{{ trans('common.delete') }}"><i class="ti-trash"></i></button>
+                                <button type="button" id="{{ $user->id }}" class="btn btn-light btn-sm fsz-md text-color-primary-header" title="{{ trans('common.delete') }}"><i class="ti-trash"></i></button>
                             {!! Form::close() !!}
                         </li>
                     </ul>
@@ -83,6 +83,14 @@
         </ul>
     </nav>
 
+    @include('components.modal_delete', [
+        'modal_id'  => 'delete-modal',
+        'title'     => __('common.attention!'),
+        'content'   => __('common.delete_entity'),
+        'accept'    => __('common.yes'),
+        'cancel'    => __('common.no')
+    ])
+
 @endsection
 
 @section('js')
@@ -91,35 +99,26 @@
 
         var currentForm;
         $(document).on('click', 'form.deleteuserform button', function() {
-                alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary";
-                alertify.defaults.theme.cancel = "btn btn-danger";
-                alertify.defaults.theme.input = "form-control";
+            var id = this.getAttribute("id");
+            alertify.defaults.transition = "slide";
+            alertify.defaults.theme.ok = "btn btn-primary";
+            alertify.defaults.theme.cancel = "btn btn-danger";
+            alertify.defaults.theme.input = "form-control";
 
-                // var header = document.createElement('modal-title');
-                // header.appendChild(document.getElementsByClassName('modal-title')[0]);
-                var headerText = $('#delete-modal div.modal-title').text();
-                var header = document.createElement('modal-title');
-                var div = document.createElement('div');
-                div.className = 'modal-title';
-                var title = document.createElement('h5');
-                title.innerText = headerText;
-                title.innerHTML = title.innerHTML.replace('<br>', '');
-                title.style = 'font-size: xx-large';
-                div.appendChild(title);
-                header.appendChild(div);
+            var header = document.createElement('modal-title');
+            header.appendChild(document.getElementsByClassName('modal-title')[0]);
 
-                // var body = document.createElement('modal-content-alert');
-                // body.appendChild(document.getElementsByClassName('modal-content-alert')[0]);
+            var body = document.createElement('modal-content-alert');
+            body.appendChild(document.getElementsByClassName('modal-content-alert')[0]);
 
-                alertify.confirm(header, null, function(){
-                        alertify.success('Eliminado');
-                        currentForm = $('#delete_form')
-                        currentForm = $('#delete_form').closest("form")
-                        currentForm.submit();
-                    },function(){
-                        alertify.error('Cancelado');
-                    }).set({labels:{ok:'Elimanar', cancel: 'Cancelar'}, padding: false});
+            alertify.confirm(header, body, function(){
+                    alertify.success('Eliminado');
+                    currentForm = $('#delete_form_'+id);
+                    // currentForm = $('#delete_form').closest("form");
+                    currentForm.submit();
+                },function(){
+                    alertify.error('Cancelado');
+                }).set({labels:{ok:'Elimanar', cancel: 'Cancelar'}, padding: false});
         });
     </script>
 @endsection
