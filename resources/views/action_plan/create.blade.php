@@ -722,10 +722,78 @@
                 });
             }
 
+            //////// grupos de usarios //////////
+            {{-- Evento buscar usuarios --}}
+            $('#groups-i').on('click keyup', function (e) {
+                let dropDown = $('#groups-drop-down');
+                if($(this).val().replace(/[" \n]/g, '').length > 0) {
+                    if(e.type === 'keyup' || (e.type === 'click' && $('.item', dropDown).length === 0))
+                        $.post(
+                            "{{ action('GroupController@search') }}",
+                            {
+                                _token: $('input[name="_token"]').val(),
+                                search: $(this).val()
+                            },
+                            function (result) {
+                                $('.item', dropDown).remove();
+                                result = $(result);
+                                let items = $('.dropdown-item', result);
+                                if(items.length > 0) {
+                                    items.click(groupUserDropDownItemEvent);
+                                    dropDown.append(items);
+                                    $('.no-results', dropDown).addClass('d-n');
+                                }
+                                else{
+                                    $('.no-results', dropDown).removeClass('d-n');
+                                    $('#groups-i').removeData('group');
+                                }
+                            });
+                }
+                else{
+                    $('.item', dropDown).remove();
+                    $('.no-results', dropDown).removeClass('d-n');
+                    $('#groups-i').removeData('group');
+                }
+            });
+
+            {{-- Evento click sobre usuarios en listado --}}
+            function groupUserDropDownItemEvent(){
+                let item = $(this);
+                let id = item.data('id');
+                let groupsAdded = $('#groups-added');
+                if(groupsAdded.find('input[name="groups[]"][value="' + id +'"]').length == 0) {
+                    let newItem = '<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 col-xl-3 group-wrapper mT-10"><div class="card p-10 h-100"></div></div>';
+                    newItem = $(newItem);
+
+                    let input = '<input type="hidden" name="groups[]" value="' + id + '"/>';
+                    let closeButton = '<span class="fa fa-close pos-a r-2 t-2 cur-p "></span>';
+                    closeButton = $(closeButton);
+                    closeButton.click(removeGroupUserEvent);
+
+                    newItem.find('.card').append(item.html());
+                    newItem.find('.card').append(closeButton);
+                    newItem.append(input);
+
+                    groupsAdded.append(
+                        newItem
+                    );
+                }
+            }
+
+            $('#groups-added .fa-close').click(removeGroupUserEvent);
+
+            {{-- Evento eliminar usuario --}}
+            function removeGroupUserEvent(){
+                let wrapper = $(this).closest('.group-wrapper');
+                wrapper.hide('fast', function () {
+                    $(this).remove();
+                });
+            }
 
 
-                    {{-- Tipo Libre --}}
-                    {{-- Cojo contenido por defecto--}}
+
+            {{-- Tipo Libre --}}
+            {{-- Cojo contenido por defecto--}}
             var FreeContent = $('#free-content').html();
             $('#free-content').remove();
             var TrainingContent = $('#training-content').html();

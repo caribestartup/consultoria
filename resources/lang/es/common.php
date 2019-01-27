@@ -36,6 +36,7 @@ return [
     'friday'            => 'Viernes',
     'general'           => 'General|Generales',
     'group'             => 'Grupo|Grupos',
+    'group_users'       => 'Grupo de Usuarios',
     'guided'            => 'Guiado',
     'home'              => 'Inicio',
     'inactive'          => 'Inactivo|Inactivos',

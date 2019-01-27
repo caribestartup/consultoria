@@ -24,7 +24,7 @@
 
     <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 col-xl-3 form-group">
         <label>{{ trans_choice('common.action', 1) }}</label>
-        <select class="custom-select" id="actions">
+        <select class="custom-select" name="action[]" id="actions">
             <option value="-1">--{{ __('common.select') }}--</option>
         </select>
     </div>

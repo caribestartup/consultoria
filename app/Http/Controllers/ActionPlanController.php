@@ -131,6 +131,8 @@ class ActionPlanController extends Controller
 
     private function processForm(Request $request, $actionPlan, $configuration = null)
     {
+        // dd($request->user);
+
         $data = $request->plan;
         $actionPlan->fill($data);
         $actionPlan->save();
@@ -192,9 +194,45 @@ class ActionPlanController extends Controller
         }
 
         $configuration->save();
+        
+        //Sinconizar grupos de usuario
+        $userInsert = array();
+
+        foreach ($request->groups as $group) {
+
+            $insertGroup = DB::table('action_plan_configuration_group')->where(
+                array(
+                    'action_plan_configuration_id' => $configuration->id,
+                    'group_id' => $group
+                )
+            )->get();
+
+            if(!isset($insertGroup)) {
+                DB::table('action_plan_configuration_group')->insert(
+                    [
+                        'action_plan_configuration_id' => $configuration->id,
+                        'group_id' => $group
+                    ]
+                );
+            }
+
+            $usuarios = DB::table('group_user')->where(array('group_id' => $group))->select('user_id')->get();
+            if(!isset($usuarios)) {
+                foreach ($usuarios as $user) {
+                    array_push($userInsert, $user->user_id);
+                }
+            }
+            
+        }
+
+        foreach ($request->users as $user) {
+            array_push($userInsert, $user);
+        }
+
+        $resultado = array_unique($userInsert);
 
         //Sincronizo los usuarios
-        $configuration->users()->sync($request->users);
+        $configuration->users()->sync($resultado);
 
         $actions = $request->action;
         $pActionConfigs = $configuration->actionConfigurations;

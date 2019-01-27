@@ -116,16 +116,10 @@ class UserController extends Controller
 
         $user = User::create($data);
 
-        // DB::table('model_has_roles')->insert([
-        //     'role_id' => $data['role'],
-        //     'model_type' => 'App\User',
-        //     'model_id' => $user->id
-        // ]);
-
         $user->groups()->sync($request->group);
         $user->departments()->sync($request->department);
 
-        return redirect()->route('action_plan.index')->withSuccess(trans('users.user_success_create'));
+        return redirect()->route('users.index')->withSuccess(trans('users.user_success_create'));
     }
 
     /**
@@ -178,13 +172,8 @@ class UserController extends Controller
 
         $user->update($data);
 
-//        DB::table('model_has_roles')->insert([
-//            'role_id' => $data['role'],
-//            'model_type' => 'App\User',
-//            'model_id' => $user->id
-//        ]);
-        // Los usuarios solo tienen un rol
-        // DB::table('model_has_roles')->where('model_id', $user->id)->update(['role_id' => $data['role']]);
+        $user->groups()->sync($request->group);
+        $user->departments()->sync($request->department);
 
         return redirect()->route('users.index')->withSuccess(trans('users.user_success_update'));
     }

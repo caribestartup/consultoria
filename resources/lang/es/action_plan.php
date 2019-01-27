@@ -29,6 +29,7 @@ return [
     'know_how_to_improve'         => '¿Sabes cómo mejorar esta opción?',
     'link_micro_contents'         => 'Vincule micro contenidos a esta acción',
     'link_users_to_ap'            => 'Vincule usuarios a este plan de acción',
+    'link_group_users_to_ap'      => 'Vincule grupos de usuarios a este plan de acción',
     'select_micro_content'        => 'Seleccione los micro contenidos',
     'tracing_label'               => '¿Quieres que ayudemos a impulsar este plan de acción?',
     'public_label'                => '¿Este plan de acción será público?',

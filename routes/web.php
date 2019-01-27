@@ -10,6 +10,7 @@ Route::get('error403', function ()
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/', 'DashboardController@index')->name('dash');
     // Route::resource('users', 'UserController');
+    Route::post('/groups/search', 'GroupController@search' );
     Route::post('/users/search', 'UserController@search' );
     Route::get('/users/approve/{id}/{micro_content_id}/{notificarion_id}', 'UserController@approve' );
 

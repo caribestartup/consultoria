@@ -76,6 +76,10 @@ class ActionPlanConfiguration extends Model
         return $this->belongsToMany(User::class);
     }
 
+    public function groups(){
+        return $this->belongsToMany(Group::class);
+    }
+
     public function collaborators(){
         return $this->hasMany(User::class);
     }
@@ -144,7 +148,7 @@ class ActionPlanConfiguration extends Model
             $result = date('H:i', $this->reminders_value);
 
         return $result;
-    }
+    }  
 
 
 }

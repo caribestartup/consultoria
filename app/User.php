@@ -70,6 +70,8 @@ class User extends Authenticatable
     //     )->select('id','name');
     // }
 
+    // function
+
     public function boss()
     {
         return $this->belongsTo(User::class, 'boss_id');

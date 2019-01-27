@@ -217,6 +217,19 @@ class MicroContentController extends Controller
         $microContent->fill($data);
         $microContent->save();
 
+        /*Probar vincunlar micro contenido al usuario*/
+        $exist = DB::table('micro_content_user')->where(array('micro_content_user.micro_content_id'=> $microContent->id, 'micro_content_user.user_id' => Auth::user()->id))->get();
+        if(sizeof($exist)==0){
+            DB::table('micro_content_user')->insert(
+                [
+                    'micro_content_id' => $microContent->id,
+                    'user_id' => Auth::user()->id
+                ]
+            );
+        }
+
+        /******************************************* */
+
         //Sincronizo las relaciones (many to many)
         $microContent->topics()->sync($request->topic);
         $microContent->actions()->sync($request->action);

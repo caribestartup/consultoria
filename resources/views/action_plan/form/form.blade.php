@@ -292,6 +292,49 @@
 
         <hr class="mT-40 mB-20">
 
+        {{-- Grupos de Usarios --}}
+        <h2>{{ __('action_plan.link_group_users_to_ap') }}</h2>
+        <fieldset class="mT-10 p-20 bgc-white border-form">
+            <div class="form-group row">
+                <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 r-0">
+                    <label>{{ __('common.group_users') }}</label>
+                    <input id="groups-i" class="form-control" placeholder="{{ __('common.search') }}"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" autocomplete="off"
+                    />
+                    <div class="dropdown-menu" id="groups-drop-down">
+                        <div class="dropdown-item no-results">
+                            {{ __('common.no_result') }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="groups-added" class="row">
+                @isset($actionPConfig)
+                    @isset($actionPConfig->groups)
+                        @foreach($actionPConfig->groups as $group)
+                            <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 col-xl-3 group-wrapper mT-10">
+                                <div class="card p-10 h-100">
+                                    <div class="row align-items-center">
+                                        {{-- <div class="col-4 pR-0">
+                                            <img src="{{ asset('/uploads/avatars/' .$user->avatar) }}" class="bdrs-50p" width="45px" height="45px"/>
+                                        </div> --}}
+                                        <div class="col-8 pL-5">
+                                            {{ $group->value  }}
+                                        </div>
+                                    </div>
+                                    <span class="fa fa-close pos-a r-2 t-2 cur-p "></span>
+                                    <input type="hidden" name="groups[]" value="{{ $group->id }}"/>
+                                </div>
+                            </div>
+                        @endforeach
+                    @endisset
+                @endisset
+            </div>
+        </fieldset>
+
+        <hr class="mT-40 mB-20">
+
+        {{-- Usuarios --}}
         <h2>{{ __('action_plan.link_users_to_ap') }}</h2>
         <fieldset class="mT-10 p-20 bgc-white border-form">
             <div class="form-group row">
@@ -309,19 +352,26 @@
             </div>
             <div id="users-added" class="row">
                 @isset($actionPConfig)
+                    {{-- {{ dd($actionPConfig->userFilter()) }} --}}
                     @foreach($actionPConfig->users as $user)
+                        
                         <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 col-xl-3 user-wrapper mT-10">
                             <div class="card p-10 h-100">
                                 <div class="row align-items-center">
                                     <div class="col-4 pR-0">
-                                        <img src="{{ asset('/uploads/avatars/' .$user->avatar) }}" class="bdrs-50p" width="45px" height="45px"/>
+                                        @if($user->avatar)
+                                            <img src="{{ asset('/uploads/avatars/' .$user->avatar) }}" class="bdrs-50p" width="45px" height="45px"/>
+                                        @else
+                                            <img src="{{ asset('/uploads/avatars/unknown.png') }}" class="bdrs-50p" width="45px" height="45px"/>
+                                        @endif
+                                        
                                     </div>
                                     <div class="col-8 pL-5">
                                         {{ $user->fullName()  }}
                                     </div>
                                 </div>
                                 <span class="fa fa-close pos-a r-2 t-2 cur-p "></span>
-                                <input type="hidden" name="user[]" value="{{ $user->id }}"/>
+                                <input type="hidden" name="users[]" value="{{ $user->id }}"/>
                             </div>
                         </div>
                     @endforeach

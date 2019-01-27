@@ -130,4 +130,42 @@ class GroupController extends Controller
 
         return redirect()->route('groups.index')->with('success','Group deleted successfully');
     }
+
+    public function search(Request $request) {
+        $search = $request->search;
+        // $coach = $request->get('coach', 0);
+        $but = $request->get('but', null);
+
+        $whereName = [
+            ['value', 'like', "%$search%"]
+        ];
+
+        // $whereLName = [
+        //     ['last_name', 'like', "%$search%"]
+        // ];
+
+        // $whereFullName = 'CONCAT(users.name," ", users.last_name) like \'%' . $search . '%\'';
+
+        if($but) {
+            $butId = ['id', '<>', $but];
+            $whereName[] = $butId;
+            $whereLName[] = $butId;
+            $whereFullName .= " AND id <> $but";
+        }
+
+        // if($coach == 1) {
+        //     $isCoach = ['is_coach', '=', 1];
+        //     $whereName[] = $isCoach;
+        //     $whereLName[] = $isCoach;
+        //     $whereFullName .= " AND is_coach = 1";
+        // }
+
+        $groups = Group::where($whereName)
+            // ->orWhere($whereLName)
+            // ->orWhereRaw($whereFullName)
+            ->get(['id', 'value']);
+
+
+        return view('components.group-dropdown-item', compact('groups'));
+    }
 }

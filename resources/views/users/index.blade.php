@@ -96,13 +96,23 @@
                 alertify.defaults.theme.cancel = "btn btn-danger";
                 alertify.defaults.theme.input = "form-control";
 
+                // var header = document.createElement('modal-title');
+                // header.appendChild(document.getElementsByClassName('modal-title')[0]);
+                var headerText = $('#delete-modal div.modal-title').text();
                 var header = document.createElement('modal-title');
-                header.appendChild(document.getElementsByClassName('modal-title')[0]);
+                var div = document.createElement('div');
+                div.className = 'modal-title';
+                var title = document.createElement('h5');
+                title.innerText = headerText;
+                title.innerHTML = title.innerHTML.replace('<br>', '');
+                title.style = 'font-size: xx-large';
+                div.appendChild(title);
+                header.appendChild(div);
 
-                var body = document.createElement('modal-content-alert');
-                body.appendChild(document.getElementsByClassName('modal-content-alert')[0]);
+                // var body = document.createElement('modal-content-alert');
+                // body.appendChild(document.getElementsByClassName('modal-content-alert')[0]);
 
-                alertify.confirm(header, body, function(){
+                alertify.confirm(header, null, function(){
                         alertify.success('Eliminado');
                         currentForm = $('#delete_form')
                         currentForm = $('#delete_form').closest("form")
