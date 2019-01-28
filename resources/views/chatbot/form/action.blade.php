@@ -1,17 +1,4 @@
 <div class="row align-items-end">
-    {{--<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 col-xl-3 form-group">
-        <label>{{ trans_choice('common.user', 1) }}</label>
-        <input id="users-i" class="form-control" placeholder="{{ __('common.search') }}"
-               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" autocomplete="off"
-        />
-        <div class="dropdown-menu" id="users-drop-down">
-            <div class="dropdown-item no-results">
-                {{ __('common.no_result') }}
-            </div>
-        </div>
-
-    </div>--}}
-
     <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 col-xl-3 form-group">
         <label>{{ trans_choice('common.action_plan', 1) }}</label>
         <select class="custom-select" id="action-plans">

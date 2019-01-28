@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateChatbotQuestionChatbotTable extends Migration
+class CreateChatbotQuestionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,15 @@ class CreateChatbotQuestionChatbotTable extends Migration
      */
     public function up()
     {
-        Schema::create('chatbot_question_chatbot', function (Blueprint $table) {
+        Schema::create('chatbot_questions', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id')->unsigned();
-            $table->integer('value')->nullable();
+            $table->integer('chatbot_id')->unsigned(); 
+            $table->foreign('chatbot_id')
+                  ->references('id')
+                  ->on('chatbots')
+                  ->onDelete('cascade');
+            $table->string('value')->nullable();
             $table->timestamps();
         });
     }

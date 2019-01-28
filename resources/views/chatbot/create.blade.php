@@ -5,7 +5,8 @@
 @endsection
 
 @section('css')
-
+    <link href="{{ asset('/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}" rel="stylesheet">
 
 @endsection
 
@@ -13,7 +14,7 @@
 
     <div class="row orange-row d-flex align-items-start mb-5">
         <h1 class=" ml-3 text-white" >
-          @if(isset($chatbot))
+        @if(isset($chatbot))
             {{ __('chatbot.edit_micro_content') . ': ' . $chatbot->name }}
         @else
             {{ __('chatbot.create_chatbot_content') }}
@@ -55,11 +56,36 @@
 
 @section('js')
     <script src="{{ asset('/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ asset('/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.es.min.js') }}"></script>
+    <script src="{{ asset('/plugins/moment/moment.min.js') }}"></script>
+    <script src="{{ asset('/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
     <script src="{{ asset('/plugins/summernote/summernote-bs4.min.js') }}"></script>
     <script src="{{ asset('/plugins/summernote/lang/summernote-es-Es.js') }}"></script>
     <script src="{{ asset('/plugins/bootstrap-multiselect/js/bootstrap-multiselect.js') }}"></script>
     <script>
         $(document).ready(function () {
+
+            function convertDatePicker(element) {
+                element.datepicker({
+                    language: 'es',
+                    startDate: 'now',
+                    setDate: new Date(),
+                    format: 'yyyy-mm-dd'
+                });
+            }
+
+            $('.clockpicker').clockpicker();
+
+            convertDatePicker($('.datepicker'));
+
+            $('#reminders').click(function () {
+                let checked = $('#reminders:checked').length > 0;
+                if(checked)
+                    $('#period').show('fast');
+                else
+                    $('#period').hide('fast');
+            });
 
             {{-- Evento para preguntas --}}
             function createQuestionEvents(question){
@@ -254,6 +280,74 @@
             {{-- Evento eliminar usuario --}}
             function removeUserEvent(){
                 let wrapper = $(this).closest('.user-wrapper');
+                wrapper.hide('fast', function () {
+                    $(this).remove();
+                });
+            }
+
+            //////// grupos de usarios //////////
+            {{-- Evento buscar usuarios --}}
+            $('#groups-i').on('click keyup', function (e) {
+                let dropDown = $('#groups-drop-down');
+                if($(this).val().replace(/[" \n]/g, '').length > 0) {
+                    if(e.type === 'keyup' || (e.type === 'click' && $('.item', dropDown).length === 0))
+                        $.post(
+                            "{{ action('GroupController@search') }}",
+                            {
+                                _token: $('input[name="_token"]').val(),
+                                search: $(this).val()
+                            },
+                            function (result) {
+                                $('.item', dropDown).remove();
+                                result = $(result);
+                                let items = $('.dropdown-item', result);
+                                if(items.length > 0) {
+                                    items.click(groupUserDropDownItemEvent);
+                                    dropDown.append(items);
+                                    $('.no-results', dropDown).addClass('d-n');
+                                }
+                                else{
+                                    $('.no-results', dropDown).removeClass('d-n');
+                                    $('#groups-i').removeData('group');
+                                }
+                            });
+                }
+                else{
+                    $('.item', dropDown).remove();
+                    $('.no-results', dropDown).removeClass('d-n');
+                    $('#groups-i').removeData('group');
+                }
+            });
+
+            {{-- Evento click sobre usuarios en listado --}}
+            function groupUserDropDownItemEvent(){
+                let item = $(this);
+                let id = item.data('id');
+                let groupsAdded = $('#groups-added');
+                if(groupsAdded.find('input[name="groups[]"][value="' + id +'"]').length == 0) {
+                    let newItem = '<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 col-xl-3 group-wrapper mT-10"><div class="card p-10 h-100"></div></div>';
+                    newItem = $(newItem);
+
+                    let input = '<input type="hidden" name="groups[]" value="' + id + '"/>';
+                    let closeButton = '<span class="fa fa-close pos-a r-2 t-2 cur-p "></span>';
+                    closeButton = $(closeButton);
+                    closeButton.click(removeGroupUserEvent);
+
+                    newItem.find('.card').append(item.html());
+                    newItem.find('.card').append(closeButton);
+                    newItem.append(input);
+
+                    groupsAdded.append(
+                        newItem
+                    );
+                }
+            }
+
+            $('#groups-added .fa-close').click(removeGroupUserEvent);
+
+            {{-- Evento eliminar usuario --}}
+            function removeGroupUserEvent(){
+                let wrapper = $(this).closest('.group-wrapper');
                 wrapper.hide('fast', function () {
                     $(this).remove();
                 });

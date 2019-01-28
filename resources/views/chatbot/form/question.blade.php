@@ -17,17 +17,17 @@
                 <div class="form-group col-xs-12 col-sm-8 col-md-8 col-lg-9 col-xl-9">
                     <label>{{ trans_choice('common.question', 1) }}</label>
                     <input class="form-control question-i" name="question[{{ $index }}][value]" required
-                           @isset($question)
+                        @isset($question)
                            value="{{ $question->value }}"
-                            @endisset/>
+                        @endisset/>
                 </div>
-                <div class="form-group col-xs-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
+                {{-- <div class="form-group col-xs-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
                     <label>{{ trans_choice('common.point', 2) }}</label>
                     <input class="form-control points-i" name="question[{{ $index }}][points]" required type="number"
                            @isset($question)
                            value="{{ $question->points }}"
                             @endisset/>
-                </div>
+                </div> --}}
             </div>
 
             <label>{{ trans_choice('common.answer', 2) }}</label>
@@ -36,6 +36,7 @@
 
                 @isset($question)
                     @foreach($question->answers as $answer)
+                        {{-- {{dd($question->answers)}} --}}
                         @include('chatbot.form.answer', ['index' => $loop->index, 'question_index' => $loop->parent->index])
                     @endforeach
                 @endisset

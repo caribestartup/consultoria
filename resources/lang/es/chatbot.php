@@ -10,6 +10,7 @@ return [
     'edit_chatbot_content'          => 'Editando chatbot',
     'add_evaluation_questions'      => 'Añade preguntas de evaluación',
     'add_user'                      => 'Vincule usuarios a este chatbot',
+    'link_actions'                  => 'Vincula acciones al chatbot',
 
     
     'add_page'                      => 'Añadir página',

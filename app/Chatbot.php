@@ -6,23 +6,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Chatbot extends Model
 {
-    protected $table = 'chatbot';
+    protected $table = 'chatbots';
 
     protected $primaryKey = 'id';
 
     protected $fillable = [
         'name',
         'description',
-        'automatic',
-        'default_response',
         'approach',
-
+        'launch',
     ];
 
     protected $hidden = ['created_at', 'updated_at'];
 
 
-    public function questionChatbot()
+    public function questions()
     {
         return $this->hasMany(QuestionChatbot::class);
     }

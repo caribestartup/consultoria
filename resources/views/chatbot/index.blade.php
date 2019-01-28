@@ -38,9 +38,9 @@
                         </div>
                         <div class="col-md-2">
                             <a href="{{ route('chatbot.edit',$chat->id) }}">
-                             <span class="img-menu">
-                                <img src="{{ asset("images/option.png") }}" height="30px" width="30px" />
-                            </span>
+                                <span class="img-menu">
+                                    <img src="{{ asset("images/option.png") }}" height="30px" width="30px" />
+                                </span>
                             </a>
                         </div>
                         <div class="col-md-2">
@@ -48,11 +48,13 @@
                                     'class'=>'deletechatbotform',
                                     'url'  => route('chatbot.destroy',$chat->id),
                                     'method' => 'DELETE',
-                                    'id' => 'delete_form',
+                                    'id' => 'delete_form_'.$chat->id,
                                     ])
                             !!}
-                                <button type="submit" id="sendbtn" class="btn btn-light btn-sm fsz-md text-color-primary-header" title="{{ trans('common.delete') }}"><i class="ti-trash"></i></button>
-                                <a href="" type="button">
+                                {{-- <button type="button" id="{{ $user->id }}" class="btn btn-light btn-sm fsz-md text-color-primary-header" title="{{ trans('common.delete') }}"><i class="ti-trash"></i></button> --}}
+                           
+                                {{-- <button type="submit" id="sendbtn" class="btn btn-light btn-sm fsz-md text-color-primary-header" title="{{ trans('common.delete') }}"><i class="ti-trash"></i></button> --}}
+                                <a href="" id="{{ $chat->id }}" type="button" style="-webkit-appearance: none;">
                                     <span class="img-menu">
                                         <img src="{{ asset("images/trash.png") }}" height="30px" width="30px" />
                                     </span>
@@ -102,26 +104,27 @@
 @section('js')
     <script type="text/javascript">
         var currentForm;
-        $(document).on('click', 'form.deletechatbotform button', function() {
-                alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary";
-                alertify.defaults.theme.cancel = "btn btn-danger";
-                alertify.defaults.theme.input = "form-control";
+        $(document).on('click', 'form.deletechatbotform a', function(e) {
+            e.preventDefault();
+            var id = this.getAttribute("id");
+            alertify.defaults.transition = "slide";
+            alertify.defaults.theme.ok = "btn btn-primary";
+            alertify.defaults.theme.cancel = "btn btn-danger";
+            alertify.defaults.theme.input = "form-control";
 
-                var header = document.createElement('modal-title');
-                header.appendChild(document.getElementsByClassName('modal-title')[0]);
+            var header = document.createElement('modal-title');
+            header.appendChild(document.getElementsByClassName('modal-title')[0]);
 
-                var body = document.createElement('modal-content-alert');
-                body.appendChild(document.getElementsByClassName('modal-content-alert')[0]);
+            var body = document.createElement('modal-content-alert');
+            body.appendChild(document.getElementsByClassName('modal-content-alert')[0]);
 
-                alertify.confirm(header, body, function(){
-                        alertify.success('Eliminado');
-                        currentForm = $('#delete_form')
-                        currentForm = $('#delete_form').closest("form")
-                        currentForm.submit();
-                    },function(){
-                        alertify.error('Cancelado');
-                    }).set({labels:{ok:'Elimanar', cancel: 'Cancelar'}, padding: false});
+            alertify.confirm(header, body, function(){
+                    alertify.success('Eliminado');
+                    currentForm = $('#delete_form_'+id);
+                    currentForm.submit();
+                },function(){
+                    alertify.error('Cancelado');
+                }).set({labels:{ok:'Elimanar', cancel: 'Cancelar'}, padding: false});
         });
     </script>
 @endsection
