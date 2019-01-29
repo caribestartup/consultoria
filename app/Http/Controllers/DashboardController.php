@@ -9,6 +9,8 @@ use App\User;
 use App\MicroContent;
 use App\Interest;
 use App\ActionPlan;
+use App\ActionPlanConfiguration;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -29,6 +31,17 @@ class DashboardController extends Controller
         $nInterest = Interest::all()->count();
         $nActionPlan = ActionPlan::all()->count();
 
-        return view('dashboard.index', compact('nUser', 'nMicroContent', 'nInterest', 'nActionPlan'));
+        $results = DB::select('SELECT COUNT(coach_id) as amount, users.email from action_plan_configurations 
+                            JOIN users on users.id = action_plan_configurations.coach_id GROUP BY coach_id');
+
+        $coachs = '';
+        $amounts = '';
+        foreach ($results as $key => $value) {
+            $coachs .= "'".$value->email."'".", ";
+            $amounts .= $value->amount.", ";
+        }
+
+        // dd($coachs);
+        return view('dashboard.index', compact('nUser', 'nMicroContent', 'nInterest', 'nActionPlan', 'coachs', 'amounts'));
     }
 }

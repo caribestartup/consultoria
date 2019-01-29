@@ -60,7 +60,7 @@
                                @endisset
                                autocomplete="off"
                                {{-- required --}}
-                        >
+                        />
                     </div>
                 </div>
             </fieldset>
@@ -182,7 +182,7 @@
 
             @isset($chatbot)
                 {!! Form::open([
-                'class'     => 'hide',
+                'class'     => 'deletechatform',
                 'route'     => ['chatbot.destroy', 'id' => $chatbot->id],
                 'id'        => 'delete-form',
                 'method'    => 'DELETE'

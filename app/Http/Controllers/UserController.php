@@ -114,6 +114,13 @@ class UserController extends Controller
             $data['avatar'] = $avatar_filename;
         }
 
+        if(array_key_exists('is_coach', $data) === false){
+            $data['is_coach'] = false;
+        }
+        else {
+            $data['is_coach'] = true;
+        }
+
         $user = User::create($data);
 
         $user->groups()->sync($request->group);
@@ -167,8 +174,12 @@ class UserController extends Controller
             delete_avatar_file($user->avatar);
         }
 
-        if(array_key_exists('is_coach', $data) === false)
+        if(array_key_exists('is_coach', $data) === false){
             $data['is_coach'] = false;
+        }
+        else {
+            $data['is_coach'] = true;
+        }
 
         $user->update($data);
 

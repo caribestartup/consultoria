@@ -8,6 +8,12 @@
     <link href="{{ asset('/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}" rel="stylesheet">
 
+    <style>
+        .deletechatform {
+            display: initial;
+        }
+    </style>
+
 @endsection
 
 @section('content-chatbot')
