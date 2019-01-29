@@ -131,12 +131,14 @@
             {!! Form::open([
             'class'     => 'deletemicroform',
             'route'     => ['micro_contents.destroy', 'id' => $microContent->id],
-            'id'        => 'delete-form'.$microContent->id,
+            'id'        => 'delete_form_'.$microContent->id,
             'method'    => 'DELETE'
             ]) !!}
+                {{-- <button type="button" id="{{ $microContent->id }}" class="btn btn-light btn-sm fsz-md text-color-primary-header" title="{{ trans('common.delete') }}"><i class="ti-trash"></i></button> --}}
+                           
                 {!! Form::button(__('common.delete'), [
                 'class'         => 'btn btn-app-primary',
-                'id'            => 'delete-micro-content'])!!}
+                'id'            => $microContent->id ])!!}
             {!! Form::close() !!}
         @endisset
     </div>

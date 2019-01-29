@@ -398,6 +398,7 @@
             {{-- Boton eliminar micro contenid--}}
             var currentForm;
             $(document).on('click', 'form.deletemicroform button', function() {
+                var id = this.getAttribute("id");
                 alertify.defaults.transition = "slide";
                 alertify.defaults.theme.ok = "btn btn-primary";
                 alertify.defaults.theme.cancel = "btn btn-danger";
@@ -419,8 +420,9 @@
 
                 alertify.confirm(header, body, function(){
                         alertify.success('Eliminado');
-                        currentForm = $('#delete-form')
-                        currentForm = $('#delete-form').closest("form")
+                        currentForm = $('#delete_form_'+id);
+                        // currentForm = $('#delete-form')
+                        // currentForm = $('#delete-form').closest("form")
                         currentForm.submit();
                     },function(){
                         alertify.error('Cancelado');

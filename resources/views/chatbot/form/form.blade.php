@@ -26,7 +26,7 @@
                             <label>{{ __('chatbot.description') }}</label>
                             <input class="form-control" name="chatbot[description]" id="name" required
                                 @isset($chatbot)
-                                    {{ $chatbot->description }}
+                                    value="{{ $chatbot->description }}"
                                 @endisset
                             />
                         </div>
@@ -43,7 +43,7 @@
                                             <option value="{{$opt}}">{{$opt}}</option>
                                         @endif
                                     @else
-                                        <option  @if($loop->index == 0 )selected @endif value="{{$opt}}">{{$opt}}</option>
+                                        <option  @if($loop->index == 0) selected @endif value="{{$opt}}">{{$opt}}</option>
                                     @endif
                                 @endforeach
                             </select>
@@ -51,7 +51,7 @@
                     </div>
                 </div>
                 <div class="row free-type">
-                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                    <div class="form-group col-xs-12 col-sm-6 col-md-4">
                         <label for="start-date">Lanzamiento</label>
                         <input class="form-control datepicker"
                                name="chatbot[launch]"
