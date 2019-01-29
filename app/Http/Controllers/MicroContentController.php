@@ -215,28 +215,45 @@ class MicroContentController extends Controller
             $data['public'] = false;
 
         $microContent->fill($data);
-        $microContent->save(); 
+        $microContent->save();
 
         //Sincronizo las relaciones (many to many)
-       
+
         $microContent->topics()->sync($request->topic);
-        if ($request->action[0] == -1){
+        if ($request->action[0] != -1){
             $microContent->actions()->sync($request->action);
 
-            /*Probar vincunlar micro contenido al usuario*/
-            // $exist = DB::table('micro_content_user')->where(array('micro_content_user.micro_content_id'=> $microContent->id,
-            //                                                      'micro_content_user.user_id' => Auth::user()->id))
-            //                                         ->get();
-            // if(sizeof($exist)==0){
-            //     DB::table('micro_content_user')->insert(
-            //         [
-            //             'micro_content_id' => $microContent->id,
-            //             'user_id' => Auth::user()->id
-            //         ]
-            //     );
-            // }
+            foreach ($request->action as $newAction) {
 
-            /******************************************* */
+                /*Probar vincunlar micro contenido al usuario*/
+                // encuentro los usuarios vinculados al pland e accion por su accion
+                $usuarios = DB::table('action_plan_configuration_user')
+                                ->join('actions', 'actions.action_plan_id', '=', 'action_plan_configuration_user.action_plan_configuration_id')
+                                ->where(array('actions.id'=> $newAction))
+                                ->select('action_plan_configuration_user.user_id')
+                                ->get();
+
+
+                foreach ($usuarios as $usuario) {
+                    // compruebo que el usuario no tenga asignado ya el micro contenido
+                    $exist = DB::table('micro_content_user')
+                    ->where(array('micro_content_user.micro_content_id'=> $microContent->id, 'micro_content_user.user_id' => $usuario->user_id))
+                    ->get();
+
+
+                    if(sizeof($exist)==0){
+                        // lo inserto
+                        DB::table('micro_content_user')->insert(
+                            [
+                                'micro_content_id' => $microContent->id,
+                                'user_id' => $usuario->user_id
+                            ]
+                        );
+                    }
+                }
+                /******************************************* */
+            }
+
         }
 
         //Envio notificaciones a los usuarios con esas acciones
@@ -425,6 +442,7 @@ class MicroContentController extends Controller
      */
     public function destroy($id)
     {
+        // dd($id);
         if (Auth::user()->rol == "Administrador" || Auth::user()->rol == "Jefe") {
             $microContent = MicroContent::find($id);
             $microContent->pages()->each(function ($page) {
