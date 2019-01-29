@@ -31,17 +31,73 @@ class DashboardController extends Controller
         $nInterest = Interest::all()->count();
         $nActionPlan = ActionPlan::all()->count();
 
-        $results = DB::select('SELECT COUNT(coach_id) as amount, users.email from action_plan_configurations 
-                            JOIN users on users.id = action_plan_configurations.coach_id GROUP BY coach_id');
+        // $results = DB::select('SELECT COUNT(coach_id) as amount, users.email from action_plan_configurations JOIN users on users.id = action_plan_configurations.coach_id GROUP BY users.email');
+        //
+        // $coachs = '';
+        // $amounts = '';
+        // foreach ($results as $value) {
+        //     $coachs .= "'".$value->email."'".", ";
+        //     $amounts .= $value->amount.", ";
+        // }
+
+        $list_coachs = User::where(array('is_coach' => true))->get();
 
         $coachs = '';
-        $amounts = '';
-        foreach ($results as $key => $value) {
-            $coachs .= "'".$value->email."'".", ";
-            $amounts .= $value->amount.", ";
+        $dataResult['terminados'] = '';
+        $dataResult['sinComerzar'] = '';
+        $dataResult['sinTerminar'] = '';
+
+        foreach ($list_coachs as $coach) {
+
+            $coachs .= "'".$coach->email."'".", ";
+
+            $terminados = 0;
+            $sinTerminar = 0;
+            $sinComerzar = 0;
+            $aPlanConfs = ActionPlanConfiguration::where(array('coach_id' => $coach->id))->get(); // me da todos los planes de accion de por coach
+
+            foreach ($aPlanConfs as $aPlanConf) {   //  recorro los planes de accion para ver por empleado los resultados
+
+                // cojo todos los usuarios de ese plan de accion
+                $usuarios = DB::table('action_plan_configuration_user')
+                                ->join('action_plan_configurations', 'action_plan_configurations.id', '=', 'action_plan_configuration_user.action_plan_configuration_id')
+                                ->where(array('action_plan_configurations.id'=> $aPlanConf->id))
+                                ->select('action_plan_configuration_user.user_id')
+                                ->get();
+
+                //variables para comparar cual de los estados se debe incrementar
+                $nTerminados = 0;
+                $nSinTerminar = 0;
+                $nSinComerzar = 0;
+                foreach ($usuarios as $key => $usuario) {
+                    // recorro los resultados de los usuarios por cada plan de accion
+                    $results = $aPlanConf->user_compliment($usuario->user_id);
+
+                    if($results == 100) {
+                        $nTerminados++;
+                    } else if ($results == 0) {
+                        $nSinComerzar++;
+                    } else {
+                        $nSinTerminar++;
+                    }
+                }
+
+                if(sizeof($usuarios) == $nTerminados) {
+                    $terminados++;
+                } else if (sizeof($usuarios) == $nSinComerzar) {
+                    $sinComerzar++;
+                } else {
+                    $sinTerminar++;
+                }
+            }
+            $dataResult['terminados'] .= $terminados.", ";
+            $dataResult['sinComerzar'] .= $sinComerzar.", ";
+            $dataResult['sinTerminar'] .= $sinTerminar.", ";
         }
 
+        // dd($dataResult);
+
         // dd($coachs);
-        return view('dashboard.index', compact('nUser', 'nMicroContent', 'nInterest', 'nActionPlan', 'coachs', 'amounts'));
+        return view('dashboard.index', compact('nUser', 'nMicroContent', 'nInterest', 'nActionPlan', 'coachs', 'dataResult'));
     }
 }

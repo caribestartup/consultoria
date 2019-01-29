@@ -68,6 +68,41 @@ class ActionPlanConfiguration extends Model
         return $totalPercent;
     }
 
+    public function user_compliment($id_user) {
+        $user_id = $id_user;
+        $actionPs = $this->actionPlan();
+        $totalPercent = 0;
+        foreach ($actionPs->get() as $actionP) {
+
+            $actions = $actionP->actions();
+
+            foreach ($actions->get() as $action) {
+                $microContens = $action->microContents();
+
+                $total = sizeof($microContens->get());
+                $count = 0;
+                foreach ($microContens->get() as $microContent) {
+
+                    $micro = DB::table('micro_content_user')
+                    ->join('micro_contents', 'micro_contents.id', '=', 'micro_content_user.micro_content_id')
+                    ->where('micro_contents.id', $microContent->id)
+                    ->where('micro_content_user.user_id', $user_id)
+                    ->where('micro_content_user.approve_coach', true)
+                    ->get();
+
+                    if(sizeof($micro) > 0){
+                        $count++;
+                    }
+                }
+                if($count == $total){
+                    $totalPercent += $action->objectives_percent;
+                }
+            }
+
+        }
+        return $totalPercent;
+    }
+
     public function user(){
         return $this->belongsTo(User::class);
     }
@@ -148,7 +183,7 @@ class ActionPlanConfiguration extends Model
             $result = date('H:i', $this->reminders_value);
 
         return $result;
-    }  
+    }
 
 
 }

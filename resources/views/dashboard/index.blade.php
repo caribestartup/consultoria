@@ -6,7 +6,7 @@
 
 @section('content')
     <br>
-    
+
 
         @if(auth()->check() && auth()->user()->rol == 'Administrador')
             <div class="row gap-20 masonry pos-r border-form">
@@ -108,7 +108,7 @@
             <div class="row gap-20 masonry pos-r border-form">
                 <div class="masonry-sizer col-md-6"></div>
                 <div class="masonry-item col-12">
-                    @include('components.charts_colunm', ['coachs' => $coachs, 'amounts' => $amounts])
+                    @include('components.charts_colunm_all', ['coachs' => $coachs, 'dataResult' => $dataResult])
                 </div>
             </div>
             {{-- @endif --}}
@@ -135,6 +135,6 @@
 
         @endif
 
-    
+
 
 @endsection

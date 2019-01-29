@@ -170,35 +170,41 @@ class ActionPlanController extends Controller
         //Sinconizar grupos de usuario
         $userInsert = array();
 
-        foreach ($request->groups as $group) {
+        if(isset($request->groups)) {
 
-            $insertGroup = DB::table('action_plan_configuration_group')->where(
-                array(
-                    'action_plan_configuration_id' => $configuration->id,
-                    'group_id' => $group
-                )
-            )->get();
+            foreach ($request->groups as $group) {
 
-            if(!isset($insertGroup)) {
-                DB::table('action_plan_configuration_group')->insert(
-                    [
+                $insertGroup = DB::table('action_plan_configuration_group')->where(
+                    array(
                         'action_plan_configuration_id' => $configuration->id,
                         'group_id' => $group
-                    ]
-                );
-            }
+                    )
+                    )->get();
 
-            $usuarios = DB::table('group_user')->where(array('group_id' => $group))->select('user_id')->get();
-            if(!isset($usuarios)) {
-                foreach ($usuarios as $user) {
-                    array_push($userInsert, $user->user_id);
+                    if(!isset($insertGroup)) {
+                        DB::table('action_plan_configuration_group')->insert(
+                            [
+                                'action_plan_configuration_id' => $configuration->id,
+                                'group_id' => $group
+                            ]
+                        );
+                    }
+
+                    $usuarios = DB::table('group_user')->where(array('group_id' => $group))->select('user_id')->get();
+                    if(!isset($usuarios)) {
+                        foreach ($usuarios as $user) {
+                            array_push($userInsert, $user->user_id);
+                        }
+                    }
+
                 }
-            }
-
         }
 
-        foreach ($request->users as $user) {
-            array_push($userInsert, $user);
+        if(isset($request->users)) {
+
+            foreach ($request->users as $user) {
+                array_push($userInsert, $user);
+            }
         }
 
         $resultado = array_unique($userInsert);
