@@ -6,7 +6,7 @@
         <ul class="nav-left " role="navigation">
             <li class=" top-menu-item">
                 <a id='sidebar-toggle' class="sidebar-toggle  text-white" href="javascript:void(0);">
-                    <i class="fa fa-sort-down text-white"></i>
+                    <i class="ti-menu"></i>
                 </a>
             </li>
         </ul>
@@ -49,7 +49,7 @@
                     </div>
                 </a>
                 <ul class="dropdown-menu fsz-sm">
-                    <li>
+                    <!-- <li>
                         <a href="" class="d-b td-n pY-5 bgcH-grey-100 c-grey-700">
                             <i class="ti-settings mR-10"></i>
                             <span>{{ trans_choice('common.setting', 1) }}</span>
@@ -67,7 +67,7 @@
                             <span>{{ trans_choice('common.message', 2) }}</span>
                         </a>
                     </li>
-                    <li role="separator" class="divider"></li>
+                    <li role="separator" class="divider"></li> -->
                     <li>
                         <a href="{{ route('logout') }}" class="d-b td-n pY-5 bgcH-grey-100 c-grey-700">
                             <i class="ti-power-off mR-10"></i>
@@ -131,17 +131,17 @@
                 <span class="counter bgc-blue">3</span>
 
                 <a href="" class="dropdown-toggle no-after text-white" data-toggle="dropdown">
-                    <img src="{{ asset('/images/assets/top_email.png') }}" height="32px" width="32px"/>
+                    <img src="{{ asset('/images/assets/chatbotTop.png') }}" height="32px" width="32px"/>
                 </a>
 
                 <ul class="dropdown-menu">
                     <li class="pX-20 pY-15 bdB">
                         <i class="ti-email pR-10"></i>
-                        <span class="fsz-sm fw-600 c-grey-900">Emails</span>
+                        <span class="fsz-sm fw-600 c-grey-900">Chatbot</span>
                     </li>
                     <li id="list">
                         <ul class="ovY-a pos-r scrollable lis-n p-0 m-0 fsz-sm">
-                            <li>
+                            <!-- <li>
                                 <a href="" class='peers fxw-nw td-n p-20 bdB c-grey-800 cH-blue bgcH-grey-100'>
                                     <div class="peer mR-15">
                                         <img class="w-3r bdrs-50p" src="{{ asset('/images/1.jpg') }}" alt="">
@@ -206,23 +206,23 @@
                                         </div>
                                     </div>
                                 </a>
-                            </li>
+                            </li> -->
                         </ul>
                     </li>
                     <li class="pX-20 pY-15 ta-c bdT">
                         <span>
-                            <a href="" class="c-grey-600 cH-blue fsz-sm td-n">View All Email <i class="fs-xs ti-angle-right mL-10"></i>
-                            </a>
+                            <!-- <a href="" class="c-grey-600 cH-blue fsz-sm td-n">View All Email <i class="fs-xs ti-angle-right mL-10"></i>
+                            </a> -->
                         </span>
                     </li>
                 </ul>
             </li>
-            <li class="notifications dropdown top-menu-item">
+            <!-- <li class="notifications dropdown top-menu-item">
                 <span class="counter bgc-blue">3</span>
                 <a href="" class="dropdown-toggle no-after text-white" data-toggle="dropdown">
                     <img src="{{ asset('/images/assets/top_chat.png') }}" height="32px" width="32px"/>
                 </a>
-             </li>
+             </li> -->
         </ul>
 
     </div>

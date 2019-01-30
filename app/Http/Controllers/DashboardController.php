@@ -14,15 +14,6 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-//    public function __construct()
-//    {
-////        var_dump("dashboard");
-////        var_dump(Config::get('database.default'));die;
-//        if(Session::has('selected.database'))
-//        {
-//            Config::set('database.default',Session::get('selected.database'));
-//        }
-//    }
 
     public function index()
     {
@@ -95,9 +86,6 @@ class DashboardController extends Controller
             $dataResult['sinTerminar'] .= $sinTerminar.", ";
         }
 
-        // dd($dataResult);
-
-        // dd($coachs);
         return view('dashboard.index', compact('nUser', 'nMicroContent', 'nInterest', 'nActionPlan', 'coachs', 'dataResult'));
     }
 }
