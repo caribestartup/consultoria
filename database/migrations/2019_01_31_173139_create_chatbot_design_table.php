@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateChatbotAnswerUserQuestionTable extends Migration
+class CreateChatbotDesignTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,24 +13,20 @@ class CreateChatbotAnswerUserQuestionTable extends Migration
      */
     public function up()
     {
-        Schema::create('chatbot_answer_user_question', function (Blueprint $table) {
+        Schema::create('chatbot_design', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->integer('user_id')->unsigned();
-            $table->foreign('user_id')
+            $table->integer('chatbot_id')->unsigned();
+            $table->foreign('chatbot_id')
                   ->references('id')
-                  ->on('users')
+                  ->on('chatbots')
                   ->onDelete('cascade');
             $table->integer('question_id')->unsigned();
             $table->foreign('question_id')
                   ->references('id')
                   ->on('chatbot_questions')
-                  ->onDelete('cascade');
-            $table->integer('answer_id')->unsigned();
-            $table->foreign('answer_id')
-                  ->references('id')
-                  ->on('chatbot_answers')
-                  ->onDelete('cascade');
+                  ->onDelete('cascade'); 
+            $table->integer('trigger_answer_id')->default(0);
             // $table->boolean('is_correct');
             $table->timestamps();
         });
@@ -43,6 +39,6 @@ class CreateChatbotAnswerUserQuestionTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('chatbot_answer_user_question');
+        Schema::dropIfExists('chatbot_design');
     }
 }

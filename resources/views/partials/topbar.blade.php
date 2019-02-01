@@ -6,13 +6,16 @@
         <ul class="nav-left " role="navigation">
             <li class=" top-menu-item">
                 <a id='sidebar-toggle' class="sidebar-toggle  text-white" href="javascript:void(0);">
-                    <i class="ti-menu"></i>
+                    <i class="ti-menu mx"></i>
                 </a>
             </li>
         </ul>
 
         @php
             $notifications = \App\Http\Controllers\NotificationController::unread();
+            $chatbots = \App\Http\Controllers\ChatbotController::unread();
+            // dd($chatbots);
+            // dd($chatbots->firstQuestion())
         @endphp
 
         <ul class="nav-right md-lg-12 collapse navbar-collapse navbar-nav " id="navbarSupportedContent">
@@ -92,7 +95,7 @@
                             <i class="ti-bell pR-10"></i>
                             <span class="fsz-sm fw-600 c-grey-900">{{ trans_choice('common.notification', 2) }}</span>
                         </li>
-                        <li class="list">
+                        <li class="list-not">
                             <ul class="ovY-a pos-r scrollable lis-n p-0 m-0 fsz-sm">
                                 @foreach($notifications as $notification)
                                     <a href="{{ $notification->url()['url'] }}" class='peers fxw-nw td-n p-20 bdB c-grey-800 cH-blue bgcH-grey-100'>
@@ -126,226 +129,35 @@
                     </ul>
                 </li>
             </ul>
-            <!--email-->
-            <li class="notifications dropdown top-menu-item">
-                <span class="counter bgc-blue">3</span>
-
-                <a href="" class="dropdown-toggle no-after text-white" data-toggle="dropdown">
-                    <img src="{{ asset('/images/assets/chatbotTop.png') }}" height="32px" width="32px"/>
-                </a>
-
-                <ul class="dropdown-menu">
-                    <li class="pX-20 pY-15 bdB">
-                        <i class="ti-email pR-10"></i>
-                        <span class="fsz-sm fw-600 c-grey-900">Chatbot</span>
-                    </li>
-                    <li id="list">
-                        <ul class="ovY-a pos-r scrollable lis-n p-0 m-0 fsz-sm">
-                            <!-- <li>
-                                <a href="" class='peers fxw-nw td-n p-20 bdB c-grey-800 cH-blue bgcH-grey-100'>
-                                    <div class="peer mR-15">
-                                        <img class="w-3r bdrs-50p" src="{{ asset('/images/1.jpg') }}" alt="">
-                                    </div>
-                                    <div class="peer peer-greed">
-                                        <div>
-                                            <div class="peers jc-sb fxw-nw mB-5">
-                                                <div class="peer">
-                                                    <p class="fw-500 mB-0">John Doe</p>
-                                                </div>
-                                                <div class="peer">
-                                                    <small class="fsz-xs">5 mins ago</small>
-                                                </div>
-                                            </div>
-                                            <span class="c-grey-600 fsz-sm">
-                                                Want to create your own customized data generator for your app...
-                                            </span>
-                                        </div>
-                                    </div>
+            <!--chatbot-->
+            <ul class="nav-right">
+                <li class="notifications dropdown top-menu-item">
+                    <span class="counter bgc-blue">3</span>
+                    <a href="" class="dropdown-toggle no-after text-white" data-toggle="dropdown">
+                        <img src="{{ asset('/images/assets/chatbotTop.png') }}" height="32px" width="32px"/>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="pX-20 pY-15 bdB">
+                            <i class="ti-bell pR-10"></i>
+                            <span class="fsz-sm fw-600 c-grey-900">Chatbot</span>
+                        </li>
+                        <li class="list">
+                            {{-- {{dd($chatbots)}} --}}
+                            @if($chatbots != null)
+                                @include('chatbot.form.question_chat', ['question' => $chatbots->firstQuestion()])
+                            @endif
+                        </li>
+                        {{--<li class="pX-20 pY-15 ta-c bdT">
+                            <span>
+                                <a href="" class="c-grey-600 cH-blue fsz-sm td-n">{{ __('notification.view_all') }}
+                                    <i class="ti-angle-right fsz-xs mL-10"></i>
                                 </a>
-                            </li>
-                            <li>
-                                <a href="" class='peers fxw-nw td-n p-20 bdB c-grey-800 cH-blue bgcH-grey-100'>
-                                    <div class="peer mR-15">
-                                        <img class="w-3r bdrs-50p" src="{{ asset('/images/2.jpg') }}" alt="">
-                                    </div>
-                                    <div class="peer peer-greed">
-                                        <div>
-                                            <div class="peers jc-sb fxw-nw mB-5">
-                                                <div class="peer">
-                                                    <p class="fw-500 mB-0">Moo Doe</p>
-                                                </div>
-                                                <div class="peer">
-                                                    <small class="fsz-xs">15 mins ago</small>
-                                                </div>
-                                            </div>
-                                            <span class="c-grey-600 fsz-sm">
-                                                Want to create your own customized data generator for your app...
-                                            </span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="" class='peers fxw-nw td-n p-20 bdB c-grey-800 cH-blue bgcH-grey-100'>
-                                    <div class="peer mR-15">
-                                        <img class="w-3r bdrs-50p" src="{{ asset('/images/3.jpg') }}" alt="">
-                                    </div>
-                                    <div class="peer peer-greed">
-                                        <div>
-                                            <div class="peers jc-sb fxw-nw mB-5">
-                                                <div class="peer">
-                                                    <p class="fw-500 mB-0">Lee Doe</p>
-                                                </div>
-                                                <div class="peer">
-                                                    <small class="fsz-xs">25 mins ago</small>
-                                                </div>
-                                            </div>
-                                            <span class="c-grey-600 fsz-sm">
-                                                Want to create your own customized data generator for your app...
-                                            </span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li> -->
-                        </ul>
-                    </li>
-                    <li class="pX-20 pY-15 ta-c bdT">
-                        <span>
-                            <!-- <a href="" class="c-grey-600 cH-blue fsz-sm td-n">View All Email <i class="fs-xs ti-angle-right mL-10"></i>
-                            </a> -->
-                        </span>
-                    </li>
-                </ul>
-            </li>
-            <!-- <li class="notifications dropdown top-menu-item">
-                <span class="counter bgc-blue">3</span>
-                <a href="" class="dropdown-toggle no-after text-white" data-toggle="dropdown">
-                    <img src="{{ asset('/images/assets/top_chat.png') }}" height="32px" width="32px"/>
-                </a>
-             </li> -->
+                            </span>
+                        </li>--}}
+                    </ul>
+                </li>
+            </ul>
         </ul>
-
     </div>
 </div>
-<!--
 
-<nav class="navbar navbar-expand-lg navbar-light  " style="background-color: #003C4F">
-            <a id='sidebar-toggle' class="sidebar-toggle  text-white" href="javascript:void(0);">
-                    <i class="fa fa-sort-down text-white" ></i>
-            </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-     <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
-        <ul class="navbar-nav mr-auto">
-
-        <!--usuario--
-           <li class="nav-item dropdown">
-               <a href="" class="dropdown-toggle no-after peers fxw-nw ai-c " data-toggle="dropdown">
-                <div class="peer user" style="text-align: right ">
-                        <span class="fsz-sm c-grey-50">{{ auth()->user()->name .' '. auth()->user()->last_name }}</span>
-                       <br>
-                        <span class="fsz-sm c-grey-500" >
-                           @foreach(auth()->user()->roles as $role)
-                                {{ $role->name }}
-                            @endforeach
-
-                        </span>
-                    </div>
-                    <div class="peer mR-10" style="padding-left: 10px">
-                        <img class="w-2r bdrs-50p" src="{{ auth()->user()->avatarUrl }}" alt="">
-                        <i class="fa fa-sort-down text-white"></i>
-                    </div>
-
-                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">
-                    <i class="ti-settings mR-10"></i>
-                    <span>{{ trans_choice('common.setting', 1) }}</span>
-                    </a>
-                    <a class="dropdown-item" href="#"><i class="ti-user mR-10"></i>
-                            <span>{{ trans_choice('common.profile', 1) }}</span>
-                    </a>
-                    <a class="dropdown-item" href="#">
-                    <i class="ti-email mR-10"></i>
-                            <span>{{ trans_choice('common.message', 2) }}</span>
-                    </a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="/logout"><i class="ti-power-off mR-10"></i>
-                            <span>{{ __('login.logout') }}</span>
-                        </a>
-             </div>
-          </li>
-
-        <!--email--
-           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <img src="{{ asset("images/assets/top_email.png") }}" height="32px" width="32px"/>
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#">   <div class="peer mR-15">
-                                        <img class="w-3r bdrs-50p" src="/images/1.jpg" alt="">
-                                    </div>
-                                    <div class="peer peer-greed">
-                                        <div>
-                                            <div class="peers jc-sb fxw-nw mB-5">
-                                                <div class="peer">
-                                                    <p class="fw-500 mB-0">John Doe</p>
-                                                </div>
-                                                <div class="peer">
-                                                    <small class="fsz-xs">5 mins ago</small>
-                                                </div>
-                                            </div>
-                                            <span class="c-grey-600 fsz-sm">
-                                                Want to create your own customized data generator for your app...
-                                            </span>
-                                        </div>
-                                    </div></a>
-              <a class="dropdown-item" href="#"> <div class="peer mR-15">
-                                        <img class="w-3r bdrs-50p" src="/images/2.jpg" alt="">
-                                    </div>
-                                    <div class="peer peer-greed">
-                                        <div>
-                                            <div class="peers jc-sb fxw-nw mB-5">
-                                                <div class="peer">
-                                                    <p class="fw-500 mB-0">Moo Doe</p>
-                                                </div>
-                                                <div class="peer">
-                                                    <small class="fsz-xs">15 mins ago</small>
-                                                </div>
-                                            </div>
-                                            <span class="c-grey-600 fsz-sm">
-                                                Want to create your own customized data generator for your app...
-                                            </span>
-                                        </div>
-                                    </div></a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Something else here</a>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link disabled" href="#">Disabled</a>
-          </li>
-        </ul>
-
-      </div>
-</nav>
-
-
-
-<!--  <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Dropdown
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Something else here</a>
-            </div>
-          </li>-->

@@ -39,6 +39,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('action_plans/{id}/update_assigned', 'ActionPlanController@updateAssigned');
     // Route::resource('chatbot', 'ChatbotController');
 
+    Route::get('chatbots/unread', 'ChatbotController@unread');
+    Route::post('chatbots/next', 'ChatbotController@next');
 });
 
 Route::group(['middleware' => 'admin'], function () {
@@ -54,9 +56,15 @@ Route::group(['middleware' => 'admin'], function () {
     Route::resource('interests', 'InterestController');
 
     Route::resource('chatbot', 'ChatbotController');
+    Route::get('/chatbot/design/{id}', 'ChatbotController@design' );
+    Route::post('/chatbot/design_store', 'ChatbotController@design_store' );
 });
 
-Route::group(['middleware' => 'advance'], function () {
-
-
+Route::group(['middleware' => 'admin'], function () {
+    // Route::get('design', function ()
+    // {
+    //     return view('chatbot.design');
+    // });
 });
+
+

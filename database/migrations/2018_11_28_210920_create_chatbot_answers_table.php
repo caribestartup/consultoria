@@ -22,7 +22,7 @@ class CreateChatbotAnswersTable extends Migration
                   ->on('chatbot_questions')
                   ->onDelete('cascade');
             $table->string('value')->nullable();
-            $table->integer('is_correct')->nullable();
+            // $table->integer('is_correct')->nullable();
             $table->timestamps();
         });
     }

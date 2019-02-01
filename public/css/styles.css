@@ -931,8 +931,13 @@ a.card-buttom-delete:hover {
     letter-spacing: 1px;
 }
 
-.list {
+.list-not {
     height: 300px;
+    overflow: auto;
+}
+
+.list {
+    height: 500px;
     overflow: auto;
 }
 

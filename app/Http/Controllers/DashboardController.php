@@ -86,6 +86,8 @@ class DashboardController extends Controller
             $dataResult['sinTerminar'] .= $sinTerminar.", ";
         }
 
+        //chatbot
+
         return view('dashboard.index', compact('nUser', 'nMicroContent', 'nInterest', 'nActionPlan', 'coachs', 'dataResult'));
     }
 }

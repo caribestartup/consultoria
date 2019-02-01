@@ -32,9 +32,11 @@
                             <label>{{$chat->name}}</label>
                         </div>
                         <div class="col-md-2">
-                            <span class="img-menu">
-                                <img src="{{ asset("images/folder.png") }}" height="30px" width="30px" />
-                            </span>
+                            <a href="{{ action('ChatbotController@design', ['id' => $chat->id ]) }}">
+                                <span class="img-menu">
+                                    <img src="{{ asset("images/folder.png") }}" height="30px" width="30px" />
+                                </span>
+                            </a>
                         </div>
                         <div class="col-md-2">
                             <a href="{{ route('chatbot.edit',$chat->id) }}">

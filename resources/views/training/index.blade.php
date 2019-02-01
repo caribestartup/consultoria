@@ -67,7 +67,6 @@
                         id: document.getElementById('id').value
                     },
                     function (result) {
-                        // console.log(result);
                         location.href="{{ action('ActionPlanController@index') }}"
                     }
                 );

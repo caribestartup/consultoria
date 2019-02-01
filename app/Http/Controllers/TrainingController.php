@@ -166,6 +166,6 @@ class TrainingController extends Controller
             return redirect()->route('logout')->withSuccess('Evaluación realizada con éxito');
         }
 
-        return redirect()->route('action_plans.index')->withSuccess('Evaluación del estrenamiento realizada con éxito');
+        return redirect()->route('action_plans.index')->withSuccess('Evaluación del entrenamiento realizada con éxito');
     }
 }

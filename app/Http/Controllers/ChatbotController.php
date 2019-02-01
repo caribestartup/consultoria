@@ -19,6 +19,112 @@ class ChatbotController extends Controller
 
     }
 
+    public function next(Request $request)
+    {
+        $answer_id = $request->answer_id;
+        $chatbot_id = $request->chatbot_id;
+        $next = QuestionChatbot::join('chatbot_design', 'chatbot_design.question_id', '=', 'chatbot_questions.id')
+                                ->where(array('chatbot_design.chatbot_id' => $chatbot_id, 'chatbot_design.trigger_answer_id' => $answer_id))
+                                ->get();
+
+        if(sizeof($next) > 0){
+            $next_question = QuestionChatbot::find($next[0]->question_id);
+            $next_answer = $next_question->answers;
+
+            $next_data['question'] = $next_question;
+            $next_data['answers'] = $next_answer;
+
+            return $next_data;
+        }
+        else{
+            $chat = DB::table('chatbot_user')
+                        ->where('chatbot_user.chatbot_id', '=', $chatbot_id)
+                        ->where('chatbot_user.user_id', '=', Auth::user()->id)
+                        ->update(array('read' => true));
+            return 0;
+        }
+        
+    }
+
+    public static function unread()
+    {
+        $chatbot = Chatbot::join('chatbot_user', 'chatbot_user.chatbot_id', '=', 'chatbots.id')
+                        ->where('launch', '<=', date("Y-m-d"))
+                        ->where('chatbot_user.read', '=', false)
+                        ->where('chatbot_user.user_id', '=', Auth::user()->id)
+                        ->get();
+
+    
+        
+        
+        if(sizeof($chatbot) > 0){
+            return Chatbot::find($chatbot[0]->chatbot_id);
+        }
+        else{
+            return null;
+        }
+        // dd($chatbot);
+    }
+
+    public function children($childrens, $id)
+    {
+        foreach ($childrens as $child) {
+            if ($child["type"] == "answer" && sizeof($child) == 4) {
+                if (isset($child["children"])){
+                    // return $child["children"][0];
+                    DB::table('chatbot_design')
+                        ->insert(
+                            array('chatbot_id' => $id, 
+                                'question_id' => $child["children"][0]["id"], 
+                                'trigger_answer_id' => $child["db"]
+                            )
+                        );      
+                    $this->children($child["children"][0]["children"], $id);
+                }
+            }
+        }
+        return;
+    }
+
+    public function design_store(Request $request)
+    {
+        $datas = $request->data;
+        $id = $request->id;
+        // return $id;
+        foreach ($datas as $data) {
+            if(isset($data["children"])){
+               $this->children($data["children"], $id);
+            }
+        }
+        return;
+    }
+
+    // public function design_store(Request $request)
+    // {
+    //     $datas = $request->data;
+    //     // $id = $request->id;
+        
+    //     foreach ($datas as $data) {
+    //         return $data;
+    //         $insert = $data;
+    //         if(isset($data->children)){
+    //             foreach ($data->children as $child) {
+    //                 if(isset($child)){
+                        
+    //                 }
+    //             }
+    //            $insert = $this->children($data->children, 2);
+    //         }
+    //     }
+    // }
+
+    public function design($id)
+    {
+        $questions = QuestionChatbot::where('chatbot_questions.chatbot_id', $id)->get();
+        // dd($questions);
+        return view('chatbot.design', compact('questions'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -28,7 +134,6 @@ class ChatbotController extends Controller
     {
         // $approachOptions = ['Plan de acción',  'Intereses', 'Microcontenidos', 'Grupos', 'Reuniones'];
         $approachOptions = ['Grupos'];
-
         return view('chatbot.create', compact('approachOptions'));
     }
 
@@ -299,12 +404,12 @@ class ChatbotController extends Controller
 
                 $qAnswers = $question->answers;
                 $answerCount = count($qAnswers);
-                $correct_index = $data['is_correct'];
+                // $correct_index = $data['is_correct'];
                 // dd($data['answers']);
                 foreach ($data['answers'] as $key => $answerData) {
                     // dd($answerData);
                     $answerData['question_chatbot_id'] = $question->id;
-                    $answerData['is_correct'] = $key == $correct_index;
+                    // $answerData['is_correct'] = $key == $correct_index;
                     if($key < $answerCount) {
                         $answer = $qAnswers[$key];
                         $answer->update($answerData);
