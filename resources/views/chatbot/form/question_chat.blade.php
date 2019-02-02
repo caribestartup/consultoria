@@ -79,6 +79,8 @@
                 else{
                     //cerrar el pinga esa
                     $('div[class="jumbotron-chat"]').remove();
+                    $('li[class="notifications dropdown top-menu-item show"]').removeClass('show');
+
                 }
             }
         );

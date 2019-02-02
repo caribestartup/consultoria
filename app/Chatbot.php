@@ -40,15 +40,19 @@ class Chatbot extends Model
         return $this->belongsToMany(Group::class);
     }
 
+    function interactions()
+    {
+        return DB::table('chatbot_design')->where('chatbot_id', '=', $this->id)->count();
+    }
+
     public function firstQuestion()
     {
-        $first;
-        // return $this->questions;
+        $first = null;
+       
         foreach ($this->questions as $question) {
-            // return $question;
+        
             $exist = QuestionChatbot::join("chatbot_design", "chatbot_design.question_id", "=", "chatbot_questions.id")->where('chatbot_design.question_id', '=', $question->id)->get();
-            if(isset($exist)){
-                // return $exist;
+            if(!$exist->isEmpty()){
                 $first = $question;
                 break;
             }

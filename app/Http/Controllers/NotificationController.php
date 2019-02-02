@@ -13,7 +13,7 @@ class NotificationController extends Controller
         $notifications = Notification::where('read', true)->where('user_id', Auth::user()->id)->get();
         $change = false;
 
-        if (sizeof($notifications) > 0){
+        if (!$notifications->isEmpty()){
             foreach ($notifications as $notification) {
                 if ($notification->entity_type == 'App\ActionPlanConfiguration') {
                     $change = $notification->checkStatus($change);

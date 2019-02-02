@@ -167,6 +167,11 @@ class ActionPlanController extends Controller
 
         $configuration->save();
 
+        $oldUsers = DB::table('action_plan_configuration_user')
+            ->where('action_plan_configuration_user.action_plan_configuration_id', '=', $configuration->id)
+            ->get()
+            ->toArray();
+
         //Sinconizar grupos de usuario
         $userInsert = array();
 
@@ -199,6 +204,23 @@ class ActionPlanController extends Controller
 
                 }
         }
+        else {
+            $deleteGroup = DB::table('action_plan_configuration_group')->where(
+                    array(
+                        'action_plan_configuration_id' => $configuration->id
+                    )
+                    )->get();
+
+            if(!$deleteGroup->isEmpty()) {
+                foreach ($deleteGroup as $value) {
+                    DB::table('action_plan_configuration_group')->where(
+                        [
+                            'action_plan_configuration_group.id' => $value->id
+                        ]
+                    )->delete();
+                }    
+            }
+        }
 
         if(isset($request->users)) {
 
@@ -208,6 +230,20 @@ class ActionPlanController extends Controller
         }
 
         $resultado = array_unique($userInsert);
+
+        foreach ($oldUsers as $old) {
+            if (!in_array($old->user_id, $resultado)){
+                Notification::where(
+                                    array('user_id' => $old->user_id, 
+                                          'entity_id' => $configuration->id, 
+                                          'entity_type' => 'App\ActionPlanConfiguration'
+                                        )
+                                    )->delete();
+                // if(!$noti->isEmpty()) {
+                //     $noti->detele();
+                // }
+            }
+        }
 
         //Sincronizo los usuarios
         $configuration->users()->sync($resultado);
@@ -397,35 +433,41 @@ class ActionPlanController extends Controller
         $actions = $request->action;
         //Envio notificaciones
         foreach ($configuration->users as $user) {
-            $notification = new Notification();
-            $notification->user_id = $user->id;
-            $notification->entity_id = $configuration->id;
-            $notification->entity_type = ActionPlanConfiguration::class;
-            $notification->type = Notification::NEW;
-            $notification->save();
 
-            if($actions) {
-                foreach ($actions as $key => $data) {
+            $existNot = Notification::where(array('user_id' => $user->id, 'entity_id' => $configuration->id, 'entity_type' => 'App\ActionPlanConfiguration'))
+                        ->get();
 
-                    $microContents = [];
-                    if(array_key_exists('micro_content', $data)) {
-                        $microContents = $data['micro_content'];
-                    }
+            if($existNot->isEmpty()) {
+                $notification = new Notification();
+                $notification->user_id = $user->id;
+                $notification->entity_id = $configuration->id;
+                $notification->entity_type = ActionPlanConfiguration::class;
+                $notification->type = Notification::NEW;
+                $notification->save();
 
-                    for ($i=0; $i < sizeof($microContents) ; $i++) {
-                        $exist = DB::table('micro_content_user')->where(array('micro_content_id' => $microContents[$i], 'user_id' => $user->id))->first();
+                if($actions) {
+                    foreach ($actions as $key => $data) {
 
-                        if (!$exist) {
-
-                            DB::table('micro_content_user')->insert(
-                                [
-                                    'micro_content_id' => $microContents[$i],
-                                    'user_id' => $user->id
-                                ]
-                            );
+                        $microContents = [];
+                        if(array_key_exists('micro_content', $data)) {
+                            $microContents = $data['micro_content'];
                         }
+
+                        for ($i=0; $i < sizeof($microContents) ; $i++) {
+                            $exist = DB::table('micro_content_user')->where(array('micro_content_id' => $microContents[$i], 'user_id' => $user->id))->first();
+
+                            if (!$exist) {
+
+                                DB::table('micro_content_user')->insert(
+                                    [
+                                        'micro_content_id' => $microContents[$i],
+                                        'user_id' => $user->id
+                                    ]
+                                );
+                            }
+                        }
+                        // $user->microContents()->sync($microContents);
                     }
-                    // $user->microContents()->sync($microContents);
                 }
             }
         }

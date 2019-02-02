@@ -156,7 +156,7 @@
                                         </div>
                                     </div>
                                     <span class="fa fa-close pos-a r-2 t-2 cur-p "></span>
-                                    <input type="hidden" name="user[]" value="{{ $user->id }}"/>
+                                    <input type="hidden" name="users[]" value="{{ $user->id }}"/>
                                 </div>
                             </div>
                         @endforeach

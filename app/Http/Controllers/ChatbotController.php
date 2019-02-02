@@ -63,7 +63,6 @@ class ChatbotController extends Controller
         else{
             return null;
         }
-        // dd($chatbot);
     }
 
     public function children($childrens, $id)
@@ -71,7 +70,6 @@ class ChatbotController extends Controller
         foreach ($childrens as $child) {
             if ($child["type"] == "answer" && sizeof($child) == 4) {
                 if (isset($child["children"])){
-                    // return $child["children"][0];
                     DB::table('chatbot_design')
                         ->insert(
                             array('chatbot_id' => $id, 
@@ -90,7 +88,13 @@ class ChatbotController extends Controller
     {
         $datas = $request->data;
         $id = $request->id;
-        // return $id;
+        
+        $oldDisegn = DB::table('chatbot_design')->where('chatbot_id', '=', $id)->get();
+       
+        if(!$oldDisegn->isEmpty()) { 
+            DB::table('chatbot_design')->where('chatbot_id', '=', $id)->delete();
+        }
+
         foreach ($datas as $data) {
             if(isset($data["children"])){
                $this->children($data["children"], $id);
@@ -247,7 +251,6 @@ class ChatbotController extends Controller
 
         //Sinconizar grupos de usuario
         $userInsert = array();
-
         
         if(isset($request->groups)) {
             foreach ($request->groups as $group) {
@@ -279,7 +282,25 @@ class ChatbotController extends Controller
 
             }
         }
+        else {
+            $deleteGroup = DB::table('chatbot_group')->where(
+                    array(
+                        'chatbot_id' => $chatbot->id
+                    )
+                    )->get();
 
+            if(!$deleteGroup->isEmpty()) {
+                foreach ($deleteGroup as $value) {
+                    DB::table('chatbot_group')->where(
+                        [
+                            'chatbot_group.id' => $value->id
+                        ]
+                    )->delete();
+                }    
+            }
+        }
+
+        // dd($request->users);
         if(isset($request->users)) {
             foreach ($request->users as $user) {
                 array_push($userInsert, $user);

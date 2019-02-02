@@ -107,7 +107,7 @@
                                                 <span class="fw-500">{{ $notification->message() }}</span>
                                                 <span class="c-grey-600">Inicia <span class="text-dark">{{ $notification->url()['inicio'] }}</span></span>
                                             </span>
-                                            @if($notification->url()['dias'] != null)
+                                            @if(isset($notification->url()['dias']))
                                                 <span class="{{$notification->url()['class']}}">
                                                     <p class="m-0">
                                                         <small class="fsz-xs">{{ $notification->url()['dias'] }} {{$notification->url()['mgs']}} </small>
@@ -131,7 +131,14 @@
             </ul>
             <!--chatbot-->
             <ul class="nav-right">
-                <li class="notifications dropdown top-menu-item">
+                @if($chatbots != null)
+                    @if($chatbots->firstQuestion() != null)
+                        <li class="notifications dropdown top-menu-item show">
+                    @else
+                        <li class="notifications dropdown top-menu-item">
+                    @endif
+                @endif
+           
                     <span class="counter bgc-blue">3</span>
                     <a href="" class="dropdown-toggle no-after text-white" data-toggle="dropdown">
                         <img src="{{ asset('/images/assets/chatbotTop.png') }}" height="32px" width="32px"/>
@@ -144,7 +151,9 @@
                         <li class="list">
                             {{-- {{dd($chatbots)}} --}}
                             @if($chatbots != null)
-                                @include('chatbot.form.question_chat', ['question' => $chatbots->firstQuestion()])
+                                @if($chatbots->firstQuestion() != null)
+                                    @include('chatbot.form.question_chat', ['question' => $chatbots->firstQuestion()])
+                                @endif
                             @endif
                         </li>
                         {{--<li class="pX-20 pY-15 ta-c bdT">

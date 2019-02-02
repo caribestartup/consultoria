@@ -78,7 +78,7 @@
                             <span class="img-menu">
                             <img src="{{ asset("images/assets/micro_contents.png") }}" height="35px" width="35px" />
                             </span>
-                            <label class="d-flex justify-content-center" style="color:  #ed5919">25</label>
+                        <label class="d-flex justify-content-center" style="color:  #ed5919">{{ $chat->interactions() == 0? 0 : $chat->interactions() + 1 }}</label>
                         </div>
                         <div class="col-md-4 d-flex flex-column justify-content-center">
                             <label class="d-flex justify-content-center">Enfoque</label>
