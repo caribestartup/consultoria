@@ -100,16 +100,16 @@
                     </div>
                 </div>
                 <div id="groups-added" class="row">
-                    {{-- @isset($actionPConfig)
-                        @isset($actionPConfig->groups)
-                            @foreach($actionPConfig->groups as $group)
+                    @isset($chatbot)
+                        @isset($chatbot->groups)
+                            @foreach($chatbot->groups as $group)
                                 <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 col-xl-3 group-wrapper mT-10">
                                     <div class="card p-10 h-100">
                                         <div class="row align-items-center">
                                             {{-- <div class="col-4 pR-0">
                                                 <img src="{{ asset('/uploads/avatars/' .$user->avatar) }}" class="bdrs-50p" width="45px" height="45px"/>
                                             </div> --}}
-                                            {{-- <div class="col-8 pL-5">
+                                            <div class="col-8 pL-5">
                                                 {{ $group->value  }}
                                             </div>
                                         </div>
@@ -119,7 +119,7 @@
                                 </div>
                             @endforeach
                         @endisset
-                    @endisset --}}
+                    @endisset
                 </div>
             </fieldset>
 
@@ -141,14 +141,16 @@
                     </div>
                 </div>
                 <div id="users-added" class="row">
-                    {{-- @isset($chatbot)
+                    @isset($chatbot)
                         @foreach($chatbot->users as $user)
                             <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 col-xl-3 user-wrapper mT-10">
                                 <div class="card p-10 h-100">
                                     <div class="row align-items-center">
-                                        <div class="col-4 pR-0">
+                                        @if($user->avatar)
                                             <img src="{{ asset('/uploads/avatars/' .$user->avatar) }}" class="bdrs-50p" width="45px" height="45px"/>
-                                        </div>
+                                        @else
+                                            <img src="{{ asset('/uploads/avatars/unknown.png') }}" class="bdrs-50p" width="45px" height="45px"/>
+                                        @endif
                                         <div class="col-8 pL-5">
                                             {{ $user->fullName()  }}
                                         </div>
@@ -158,7 +160,7 @@
                                 </div>
                             </div>
                         @endforeach
-                    @endisset --}}
+                    @endisset
                 </div>
             </fieldset>
 

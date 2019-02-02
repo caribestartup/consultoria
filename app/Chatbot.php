@@ -16,7 +16,8 @@ class Chatbot extends Model
         'name',
         'description',
         'approach',
-        'launch',
+        'launch'
+        // 'user_id'
     ];
 
     protected $hidden = ['created_at', 'updated_at'];
@@ -27,13 +28,16 @@ class Chatbot extends Model
         return $this->hasMany(QuestionChatbot::class);
     }
 
-    public function guide()
-    {
-        $questions = $this->questions;
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 
-        foreach ($questions->get() as $key => $question) {
-            //answer->question
-        }
+    public function users(){
+        return $this->belongsToMany(User::class);
+    }
+
+    public function groups(){
+        return $this->belongsToMany(Group::class);
     }
 
     public function firstQuestion()

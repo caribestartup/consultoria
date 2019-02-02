@@ -44,8 +44,8 @@
                             <ol class="dd-list">
                                 @foreach ($question->answers as $answer)
                                     <li class="dd-item" data-type="answer" data-db="{{$answer->id}}" data-id="{{$question->id.'_'.$answer->id}}">
-                                    <div  class="dd-answer-custom dd-handle">{{ $answer->value }}</div>
-                                </li>
+                                        <div  class="dd-answer-custom dd-handle">{{ $answer->value }}</div>
+                                    </li>
                                 @endforeach
                             </ol>
                         </li>
@@ -79,12 +79,20 @@
                 }
             );
         };
-
+    
+    var dd = $('div[class="dd"]')[0];
+    var place;
+    console.log($('.dd'));
+        
     $('.dd').nestable({
         maxDepth: 16,
         onDragStart: function (l, e) {
-            // get type of dragged element
+
+            // dd = $('div[class="dd"]')[0];
             var type = $(e).data('type');
+            // var p = $(p).parent().data('type');
+
+            console.log(dd);
 
             if (type == "answer") {
                 e.preventDefault();
@@ -94,9 +102,13 @@
             // switch (type) {
             //     case 'question':
             //         // element of type1 can be child of type2 and type3
-            //         l.find("[data-type=answer]").removeClass('dd-nochildren');
+            //         // console.log('no se puede pepillo');
+            //         // if ($(p).parent().data('type') == 'question') {
+            //         //     console.log('no se puede pepillo');
+            //         // }
+            //         // l.find("[data-type=question]").addClass('dd-dragel');
             //         // l.find("[data-type=type3]").removeClass('dd-nochildren');
-            //         console.log($('.dd').nestable('toArray'));
+            //         // console.log($('.dd').nestable('toArray'));
             //         break;
             //     // case 'type2':
             //     //     // element of type2 cannot be child of type2 or type3
@@ -114,7 +126,26 @@
             //         // console.error("Invalid type");
             //         console.log($('.dd').nestable('serialize'));
             // }
-            
+        },
+        beforeDragStop: function(l,e, p){
+            place = p;
+        },
+        callback: function(l,e){
+            var type = $(e).data('type');
+            var type_in = place.parent().data('type');
+
+            if(type == type_in){
+                console.log('no se puede pepillo');
+                // if (condition) {
+                //     place.child();
+                // }
+                // console.log(dd);
+                // $('div[class="dd"]')[0].remove();
+                // $('div[class="masonry-item col-12"]').html(dd);
+            }
+            else {
+                // dd = $('div[class="dd"]')[0];
+            }
         }
     });
     

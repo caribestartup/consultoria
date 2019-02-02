@@ -181,7 +181,7 @@ class ActionPlanController extends Controller
                     )
                     )->get();
 
-                    if(!isset($insertGroup)) {
+                    if($insertGroup->isEmpty()) {
                         DB::table('action_plan_configuration_group')->insert(
                             [
                                 'action_plan_configuration_id' => $configuration->id,
@@ -191,7 +191,7 @@ class ActionPlanController extends Controller
                     }
 
                     $usuarios = DB::table('group_user')->where(array('group_id' => $group))->select('user_id')->get();
-                    if(!isset($usuarios)) {
+                    if(!$usuarios->isEmpty()) {
                         foreach ($usuarios as $user) {
                             array_push($userInsert, $user->user_id);
                         }

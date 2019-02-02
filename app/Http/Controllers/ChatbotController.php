@@ -99,25 +99,6 @@ class ChatbotController extends Controller
         return;
     }
 
-    // public function design_store(Request $request)
-    // {
-    //     $datas = $request->data;
-    //     // $id = $request->id;
-        
-    //     foreach ($datas as $data) {
-    //         return $data;
-    //         $insert = $data;
-    //         if(isset($data->children)){
-    //             foreach ($data->children as $child) {
-    //                 if(isset($child)){
-                        
-    //                 }
-    //             }
-    //            $insert = $this->children($data->children, 2);
-    //         }
-    //     }
-    // }
-
     public function design($id)
     {
         $questions = QuestionChatbot::where('chatbot_questions.chatbot_id', $id)->get();
@@ -188,11 +169,6 @@ class ChatbotController extends Controller
 //        return back()->withSuccess(trans('app.success_store'));
 
         if (Auth::user()->rol == "Administrador") {
-
-            // $chatbotReq = $request->chatbot;
-
-            // dd($request);
-
             $newChatbot = $this->processForm($request, $chatbot = new Chatbot());
             return redirect()->route('chatbot.index')->withSuccess(trans('app.success_store'));
         }
@@ -265,26 +241,56 @@ class ChatbotController extends Controller
         // if(!array_key_exists('public', $data))
         //     $data['public'] = false;
 
-        // dd($data);
+        
         $chatbot->fill($chat);
         $chatbot->save();
 
-        /*Probar vincunlar micro contenido al usuario*/
-        // $exist = DB::table('micro_content_user')->where(array('micro_content_user.micro_content_id'=> $chatbot->id, 'micro_content_user.user_id' => Auth::user()->id))->get();
-        // if(sizeof($exist)==0){
-        //     DB::table('micro_content_user')->insert(
-        //         [
-        //             'micro_content_id' => $chatbot->id,
-        //             'user_id' => Auth::user()->id
-        //         ]
-        //     );
-        // }
+        //Sinconizar grupos de usuario
+        $userInsert = array();
 
-        /******************************************* */
+        
+        if(isset($request->groups)) {
+            foreach ($request->groups as $group) {
 
-        //Sincronizo las relaciones (many to many)
-        // $chatbot->topics()->sync($request->topic);
-        // $chatbot->actions()->sync($request->action);
+                $insertGroup = DB::table('chatbot_group')->where(
+                    array(
+                        'chatbot_id' => $chatbot->id,
+                        'group_id' => $group
+                    )
+                    )->get();
+                
+                if($insertGroup->isEmpty()) {
+                    
+                    DB::table('chatbot_group')->insert(
+                        [
+                            'chatbot_id' => $chatbot->id,
+                            'group_id' => $group
+                        ]
+                    );
+                }
+
+                $usuarios = DB::table('group_user')->where(array('group_id' => $group))->select('user_id')->get();
+                
+                if(!$usuarios->isEmpty()) {
+                    foreach ($usuarios as $user) {
+                        array_push($userInsert, $user->user_id);
+                    }
+                }
+
+            }
+        }
+
+        if(isset($request->users)) {
+            foreach ($request->users as $user) {
+                array_push($userInsert, $user);
+            }
+        }
+
+        $resultado = array_unique($userInsert);
+
+        // dd($resultado);
+        //Sincronizo los usuarios
+        $chatbot->users()->sync($resultado);
 
         //Envio notificaciones a los usuarios con esas acciones
 
@@ -300,100 +306,12 @@ class ChatbotController extends Controller
         if(count($toRemoveAnswers))
             AnswerChatbot::destroy($toRemoveAnswers);
 
-        //Elimino todas las paginas
-        // $chatbot->pages()->delete();
-
-        // $pages = $request->page;
-        // $images_array = [];
-
-        //Para que DOM lea HTML 5
-        // libxml_use_internal_errors(true);
-        // if($pages) {
-        //     foreach ($pages as $page) {
-        //         $document = new \DOMDocument();
-        //         $newPage = new Page();
-        //         try {
-        //             $document->loadHTML($page['content']);
-        //             $document->encoding = 'utf-8';
-        //             $images = $document->getElementsByTagName('img');
-        //             foreach ($images as $image) {
-        //                 if ($image->hasAttributes()) {
-        //                     $scrAttr = $this->findDOMNodeAttr($image, 'src');
-        //                     $fileNameAttr = $this->findDOMNodeAttr($image, 'data-filename');
-        //                     if ($scrAttr) {
-        //                         $src = $scrAttr->value;
-        //                         $isImage = true;
-        //                         $imageUrl = $src;
-        //                         if (preg_match('/^data:image\/(\w+);base64,/', $src, $type)) {
-        //                             $src = substr($src, strpos($src, ',') + 1);
-        //                             $type = strtolower($type[1]); // jpg, png, gif
-
-        //                             if (!in_array($type, ['jpg', 'jpeg', 'gif', 'png'])) {
-        //                                 break;
-        //                             }
-
-        //                             $imageFile = base64_decode($src);
-        //                             if ($imageFile !== false) {
-        //                                 $imageName = uniqid() . '.jpg';
-
-        //                                 if($fileNameAttr) {
-        //                                     $fileNameAttr->value = '';
-        //                                 }
-
-        //                                 $fileName = "uploads/img/" . $imageName;
-        //                                 file_put_contents($fileName, $imageFile);
-        //                                 $scrAttr->value = '/' . $fileName;
-
-        //                                 $imageUrl = $fileName;
-        //                             }
-        //                             else{
-        //                                 $isImage = false;
-        //                             }
-        //                         }
-
-        //                         if($isImage) {
-        //                             $image = new Image();
-        //                             $image->url = $imageUrl;
-        //                             $images_array[] = $image;
-        //                         }
-        //                     }
-        //                 }
-        //             }
-
-        //         } catch (\Exception $e) {
-        //             echo $e->getMessage();
-        //         }
-        //         finally {
-        //             $data = $page;
-        //             $html = $document->saveHTML();
-        //             $body = '';
-        //             if (preg_match('/(?:<body[^>]*>)(.*)<\/body>/isU', $html, $matches)) {
-        //                 $body = $matches[1];
-        //             }
-        //             $data['content'] = $body;
-        //             $data['micro_content_id'] = $chatbot->id;
-        //             $newPage->fill($data);
-        //             $newPage = Page::create($data);
-
-        //             foreach ($images_array as $key => $image) {
-        //                 //$image->entity_id = $newPage->id;
-        //                 $newPage->images()->save($image);
-        //                 //$image->save();
-        //             }
-
-        //             $images_array = [];
-        //         }
-        //     }
-        // }
-
         $questions = $request->question;
         $mCQuestions = $chatbot->questions;
-        // dd($chatbot->questions);
         $questionCount = count($mCQuestions);
         if($questions) {
             foreach ($questions as $qKey => $data) {
                 $data['chatbot_id'] = $chatbot->id;
-                // dd($data);
                 if($qKey < $questionCount) {
                     $question = $mCQuestions[$qKey];
                     $question->update($data);
