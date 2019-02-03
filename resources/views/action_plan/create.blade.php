@@ -166,6 +166,9 @@
         <div id="free-content">
             @include('action_plan.form.free.content', ['index' => 0])
         </div>
+        <div id="action-content">
+            @include('action_plan.form.action', ['index' => 0])
+        </div>
         <div id="training-content">
             @include('action_plan.form.free.training_question', ['index' => 0])
         </div>
@@ -361,8 +364,8 @@
 
             {{-- Evento borrar pregunta --}}
             $('#question-delete-modal .accept-button').click(function () {
-                        {{-- Guardo el id de la respuesta a eliminar --}}
-                        @isset($actionPConfig)
+                {{-- Guardo el id de la respuesta a eliminar --}}
+                @isset($actionPConfig)
                 let id = currentQuestion.prop('id').replace('question-', '');
                 if(id != ""){
                     deletedQuestions.val(id + ',' + deletedQuestions.val());
@@ -798,6 +801,8 @@
             $('#free-content').remove();
             var TrainingContent = $('#training-content').html();
             $('#training-content').remove();
+            var ActionContent = $('#action-content').html();
+            $('#action-content').remove();
 
             $('#plan-type').change(function () {
                 let value = parseInt($(this).val());
@@ -862,12 +867,59 @@
                         scrollTo(newContent);
                         break;
                     case 1:
-                        let action = newActionEvent($('#added-content'));
-                        let actionCount = $('.action-wrapper', $('#added-content')).length - 1;
-                        orderInput = '<input type="hidden" class="order-i" name="action[' + actionCount + '][order]" value="' + order + '"/>';
-                        action.append(orderInput);
+                        newAction = $(ActionContent);
+                        let actionCount = addedContent.find('.action-wrapper').length;
+                        newAction.find('.action-number').html(actionCount + 1);
 
-                        scrollTo(action);
+                        let title = newAction.find('.title-i');
+                        title.val('');
+                        title.attr('name', 'action[' + actionCount +'][title]');
+
+                        let percent = newAction.find('.percent-i');
+                        percent.val('');
+                        percent.attr('name', 'action[' + actionCount +'][objectives_percent]');
+
+                        let objectives = newAction.find('.objectives-i');
+                        objectives.html('');
+                        objectives.attr('name', 'action[' + actionCount +'][objectives]');
+
+                        let startDate = newAction.find('.start-date-i');
+                        startDate.val('');
+                        startDate.attr('name', 'action[' + actionCount +'][configuration][start_date]');
+
+                        let endingDate = newAction.find('.ending-date-i');
+                        endingDate.val('');
+                        endingDate.attr('name', 'action[' + actionCount +'][configuration][ending_date]');
+
+                        let collaboration = newAction.find('.collaboration-i');
+                        collaboration.prop('id', 'collaboration-' + actionCount);
+                        collaboration.attr('name', 'action[' + actionCount +'][configuration][collaboration]');
+                        collaboration.closest('.form-group').find('label').prop('for', 'collaboration-' + actionCount);
+
+                        let linkMicroContent = newAction.find('.link-micro-content');
+                        linkMicroContent.data('action-index', actionCount);
+                        microContentModalEvents(linkMicroContent);
+                        newAction.find('.micro-contents-added .image-checkbox.nopad').remove();
+                        newAction.find('.question-wrapper:not(:first-child)').remove();
+
+                        let question = newAction.find('.question-wrapper:first-child');
+                        question.find('.answers .answer:not(:first-child)').remove();
+
+                        question.find('.question-i').attr('name', 'action[' + actionCount + '][question][0][title]').val('');
+                        question.find('.type-i').attr('name', 'action[' + actionCount + '][question][0][type]').val(0);
+                        question.find('.answer-i').attr('name', 'action[' + actionCount + '][question][0][options][][value]').val('');
+                        question.find('.remove-answer').removeAttr('id');
+
+                        createQuestionEvents(question);
+                        convertDatePicker(newAction.find('.datepicker'));
+                        newQuestionEvent(newAction.find('.new-question'));
+
+                        newAction.removeAttr('id');
+                        addedContent.append(newAction);
+
+                        createActionEvents(newAction);
+
+                        scrollTo(newAction);
                         break;
                     case 2:
                         newContent = $(TrainingContent);

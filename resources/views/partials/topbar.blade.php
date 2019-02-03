@@ -37,7 +37,6 @@
                             @foreach(auth()->user()->roles as $role)
                                 {{ $role->name }}
                             @endforeach
-
                         </span>
                     </div>
                     <div class="peer mR-10" style="padding-left: 10px">
@@ -134,22 +133,21 @@
                 @if($chatbots != null)
                     @if($chatbots->firstQuestion() != null)
                         <li class="notifications dropdown top-menu-item show">
+                            {{-- <span class="counter bgc-blue">3</span> --}}
+                            {{-- <a href="" class="dropdown-toggle no-after text-white"> --}}
+                            <a href="" class="dropdown-toggle no-after text-white">
+                                <img src="{{ asset('/images/assets/chatbotTop.png') }}" height="32px" width="32px"/>
+                            </a>
                     @else
                         <li class="notifications dropdown top-menu-item">
                     @endif
                 @endif
-           
-                    <span class="counter bgc-blue">3</span>
-                    <a href="" class="dropdown-toggle no-after text-white" data-toggle="dropdown">
-                        <img src="{{ asset('/images/assets/chatbotTop.png') }}" height="32px" width="32px"/>
-                    </a>
                     <ul class="dropdown-menu">
                         <li class="pX-20 pY-15 bdB">
                             <i class="ti-bell pR-10"></i>
                             <span class="fsz-sm fw-600 c-grey-900">Chatbot</span>
                         </li>
-                        <li class="list">
-                            {{-- {{dd($chatbots)}} --}}
+                        <li class="list-chat">
                             @if($chatbots != null)
                                 @if($chatbots->firstQuestion() != null)
                                     @include('chatbot.form.question_chat', ['question' => $chatbots->firstQuestion()])

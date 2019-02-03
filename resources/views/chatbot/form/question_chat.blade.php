@@ -4,6 +4,8 @@
         margin-bottom: 2rem;
         background-color: #e9ecef;
         border-radius: .3rem;
+        height: 100%;
+        margin-bottom: 0px;
     }
 </style>
 <div class="jumbotron-chat">
@@ -50,6 +52,9 @@
 
 <script src="{{ asset('/plugins/jquery/jquery-3.3.1.min.js') }}"></script>
 <script>
+    $('a[class="dropdown-toggle no-after text-white"]').on("click", function (e) { 
+        e.preventDefault();
+    });
     $('#next').on("click", function (e) { 
         e.preventDefault();
         $.post(

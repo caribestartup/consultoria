@@ -124,12 +124,21 @@
                                     <h4 class="user-label">{{$actionPConfig->user->fullName()}}</h4>
                                     <h4 class="rol-label">{{$actionPConfig->user->rol}}</h4>
                                 </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mT-20">
-                                    <img style="margin-left: 30px;position: absolute;" src="{{ asset('images/assets/ASSET-19.png') }}" height="30px"/>
-                                    <img class="user-thumbail" style="margin-top: 10px;width: 50px !important;" src="{{ $actionPConfig->coach()->get()[0]->getAvatarUrlAttribute() }}" height="42px"/>
-                                    <br>
-                                    <h4 class="user-label">{{ $actionPConfig->coach()->get()[0]->fullName() }}</h4>
-                                </div>
+                                @if(!$actionPConfig->coach()->get()->isEmpty())
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mT-20">
+                                        <img style="margin-left: 30px;position: absolute;" src="{{ asset('images/assets/ASSET-19.png') }}" height="30px"/>
+                                        <img class="user-thumbail" style="margin-top: 10px;width: 50px !important;" src="{{ $actionPConfig->coach()->get()[0]->getAvatarUrlAttribute() }}" height="42px"/>
+                                        <br>
+                                        <h4 class="user-label">{{ $actionPConfig->coach()->get()[0]->fullName() }}</h4>
+                                    </div>
+                                @else
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mT-20">
+                                        {{-- <img style="margin-left: 30px;position: absolute;" src="{{ asset('images/assets/ASSET-20.png') }}" height="42px"/> --}}
+                                        <img class="user-thumbail" style="margin-top: 10px;width: 42px !important;" src="{{ asset('images/assets/ASSET-20.png') }}" height="42px"/>
+                                        <br>
+                                        <h4 class="user-label">Sin coach</h4>
+                                    </div>
+                                @endif
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mT-20">
                                     {{-- TODO --}}
                                     @if(\Illuminate\Support\Facades\Auth::user()->id === $actionPConfig->user->id || \Illuminate\Support\Facades\Auth::user()->rol == 'Administrador')

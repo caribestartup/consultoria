@@ -239,9 +239,6 @@ class ActionPlanController extends Controller
                                           'entity_type' => 'App\ActionPlanConfiguration'
                                         )
                                     )->delete();
-                // if(!$noti->isEmpty()) {
-                //     $noti->detele();
-                // }
             }
         }
 
@@ -280,8 +277,8 @@ class ActionPlanController extends Controller
 
                 $data['configuration']['action_id'] = $action->id;
 
-                if($actionPlan->type == ActionPlan::FREE)
-                    $action->action_plan_order = $data['order'];
+                // if($actionPlan->type == ActionPlan::FREE)
+                    $action->action_plan_order = null;
 
                 $actionConfiguration->fill($data['configuration']);
                 $actionConfiguration->save();
@@ -337,7 +334,7 @@ class ActionPlanController extends Controller
                         $question = PlanQuestion::create($data);
                     }
 
-                    $question->action_plan_order = $data['order'];
+                    // $question->action_plan_order = null;
                     $question->update();
 
                     $qOptions = $question->options;
@@ -417,7 +414,7 @@ class ActionPlanController extends Controller
                         $data = $freeContent;
                         $data['content'] = $document->saveHTML();
                         $data['action_plan_id'] = $actionPlan->id;
-                        $data['action_plan_order'] = $data['order'];
+                        $data['action_plan_order'] = null;
                         $newFreeContent = FreeContent::create($data);
 
                         foreach ($images_array as $key => $image) {
@@ -466,7 +463,6 @@ class ActionPlanController extends Controller
                                 );
                             }
                         }
-                        // $user->microContents()->sync($microContents);
                     }
                 }
             }
@@ -495,7 +491,6 @@ class ActionPlanController extends Controller
     {
         $actionPConfig = ActionPlanConfiguration::find($id);
         if (isset($actionPConfig)) {
-        // if(sizeof($actionPConfig->get()) > 0){
             if (Auth::user()->rol == "Jefe" || Auth::user()->rol == "Administrador" || $actionPConfig->coach_id == Auth::user()->id) {
                 return view('action_plan.assigned.assigned', compact('actionPConfig'));
             }
@@ -518,7 +513,7 @@ class ActionPlanController extends Controller
     {
         if (Auth::user()->rol == "Administrador" || Auth::user()->rol == "Jefe") {
             $actionPConfig = ActionPlanConfiguration::find($id);
-            if($actionPConfig) {
+            if(isset($actionPConfig)) {
                 $microContents = MicroContent::all();
                 return view('action_plan.create', compact('actionPConfig', 'microContents'));
             }else
@@ -540,7 +535,7 @@ class ActionPlanController extends Controller
     {
         if (Auth::user()->rol == "Administrador" || Auth::user()->rol == "Jefe") {
             $configuration = ActionPlanConfiguration::find($id);
-            if($configuration) {
+            if(isset($configuration)) {
                 $this->processForm($request, $configuration->actionPlan, $configuration);
                 return redirect(action('ActionPlanController@index'));
             }
@@ -589,7 +584,7 @@ class ActionPlanController extends Controller
     public function updateAssigned(Request $request, $id)
     {
         $actionPConfig = ActionPlanConfiguration::find($id);
-        if($actionPConfig && $actionPConfig->users()->where('user_id', Auth::user()->id)->get()->first() != null) {
+        if(isset($actionPConfig) && $actionPConfig->users()->where('user_id', Auth::user()->id)->get()->first() != null) {
             $actions = $request->action;
             foreach ($actions as $actionId => $action) {
                 $actionConfig = ActionConfiguration::find($actionId);
@@ -606,7 +601,7 @@ class ActionPlanController extends Controller
                         if($questionO->type == PlanQuestion::SINGLE ||
                             $questionO->type == PlanQuestion::MULTIPLE) {
                             $questionOptions = $questionO->options()->where('id', $questionId)->get();
-                            if($questionOptions != null) {
+                            if(!$questionOptions->isEmpty()) {
                                 if(is_array($question['value'])) {
                                     foreach ($question['value'] as $value) {
                                         $questionOption = PlanQuestionOption::where('id', $value)->first();
@@ -645,7 +640,7 @@ class ActionPlanController extends Controller
             }
         }
         else
-            abort(404);
+            return view('error.404');
 
         return redirect(action('ActionPlanController@index'));
     }

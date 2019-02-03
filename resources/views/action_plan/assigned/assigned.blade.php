@@ -20,6 +20,9 @@
         <a class="btn btn-app-primary mb-3" href="{{ action('ActionPlanController@edit', ['id' => $actionPConfig->id]) }}">
             {{ __('common.edit') }}
         </a>
+        <a class="btn btn-app-primary mb-3" href="{{ action('TrainingController@show', ['id' => $actionPConfig->id]) }}">
+            Agregar Evaluadores
+        </a>
     @endif
 
     <div class="bgc-white p-20">
@@ -31,6 +34,7 @@
 
 
         @if($actionPConfig->has_coach and $actionPConfig->coach_id != null)
+            {{-- {{ dd($actionPConfig->has_coach) }} --}}
             <strong>{{ __('action_plan.assigned_coach') }}</strong>
             <div class="align-items-center mT-10">
                 <img src="{{ asset($actionPConfig->coach->getAvatarUrlAttribute()) }}" class="bdrs-50p mR-10 " width="45px" height="45px"/>
@@ -44,6 +48,7 @@
                 </div>
             @endif
         @endif
+
     </div>
 
     {!! Form::open([
@@ -66,21 +71,28 @@
                 $indexQuestion = 0;
                 $indexFreeContent = 0;
             @endphp
-                @foreach($actionPConfig->actionPlan->freePlanElements() as $element)
-                    @if($element instanceof \App\Action)
-                        @include('action_plan.assigned.action', ['actionConfig' => $element->configurations[0]])
-                    @elseif($element instanceof \App\FreeContent)
-                        @include('action_plan.assigned.free_content', ['freeContent' => $element, 'index' => $indexFreeContent])
-                    @php
-                        $indexFreeContent++;
-                    @endphp
-                    @elseif($element instanceof \App\PlanQuestion)
-                        @include('action_plan.assigned.question_plan', ['question' => $element, 'index' => $indexQuestion])
+                @if($actionPConfig->actionPlan)
+                    {{-- {{dd($actionPConfig->actionPlan)}} --}}
+                    @foreach($actionPConfig->actionPlan->freePlanElements() as $element)
+                        @if($element instanceof \App\Action)
+                            {{-- {{dd($actionPConfig->actionPlan->freePlanElements())}} --}}
+                            @if(!$element->configurations->isEmpty())
+                                {{-- {{dd($element->configurations)}} --}}
+                                @include('action_plan.assigned.action', ['actionConfig' => $element->configurations[0]])
+                            @endif
+                        @elseif($element instanceof \App\FreeContent)
+                            @include('action_plan.assigned.free_content', ['freeContent' => $element, 'index' => $indexFreeContent])
                         @php
-                            $indexQuestion++;
+                            $indexFreeContent++;
                         @endphp
-                    @endif
-                @endforeach
+                        @elseif($element instanceof \App\PlanQuestion)
+                            @include('action_plan.assigned.question_plan', ['question' => $element, 'index' => $indexQuestion])
+                            @php
+                                $indexQuestion++;
+                            @endphp
+                        @endif
+                    @endforeach
+                @endif
         </fieldset>
     @endif
 
