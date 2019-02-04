@@ -18,6 +18,7 @@ return [
     'collaborator'      => 'Colaborador|Colaboradores',
     'collaboration'     => 'Colaboración',
     'confirm'           => 'Confirmar',
+    'chatbot_design'    => 'Diseñar Chatbot',
     'create'            => 'Crear',
     'dashboard'         => 'Escritorio',
     'daily'             => 'Diario',

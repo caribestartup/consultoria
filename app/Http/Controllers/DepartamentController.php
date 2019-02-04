@@ -39,7 +39,6 @@ class DepartamentController extends Controller
     {
         $this->validate($request, [
             'value' => 'required'
-
         ]);
 
 

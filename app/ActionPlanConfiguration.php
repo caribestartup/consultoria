@@ -98,7 +98,6 @@ class ActionPlanConfiguration extends Model
                     $totalPercent += $action->objectives_percent;
                 }
             }
-
         }
         return $totalPercent;
     }
@@ -129,7 +128,6 @@ class ActionPlanConfiguration extends Model
         foreach ($actions as $action){
             $amount += $action->questions->count();
         }
-
         return $amount;
     }
 
@@ -139,7 +137,6 @@ class ActionPlanConfiguration extends Model
         $suma = 0.0;
         foreach ($actions as $action){
             $microContens = $action->microContents;
-
             foreach ($microContens as $microConten) {
                 $empty = DB::table('micro_content_user')
                     ->where(array('micro_content_user.micro_content_id' => $microConten->id, 'micro_content_user.approve_coach' => true, 'micro_content_user.user_id' => Auth::user()->id))
@@ -152,7 +149,6 @@ class ActionPlanConfiguration extends Model
                 }
             }
         }
-
         return $nCant == 0 ? 0 : $suma/$nCant;
     }
 
@@ -184,6 +180,5 @@ class ActionPlanConfiguration extends Model
 
         return $result;
     }
-
 
 }

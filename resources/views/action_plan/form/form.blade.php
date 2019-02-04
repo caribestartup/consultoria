@@ -121,7 +121,9 @@
                         
                     </div>
                     <div class="form-group guided-type"
-                        @if(isset($actionPConfig) || (isset($actionPConfig)&& $actionPConfig->actionPlan->type == \App\ActionPlan::FREE))
+                        {{-- {{dd($actionPConfig)}} --}}
+                        {{-- isset($actionPConfig) || --}}
+                        @if( (isset($actionPConfig) && $actionPConfig->actionPlan->type == \App\ActionPlan::FREE))
                             style="display: none"
                         @endif >
                         <div class="custom-checkbox custom-control">
@@ -255,7 +257,7 @@
                     </div>
 
                     <div class="form-group guided-type"
-                        @if(isset($actionPConfig) || (isset($actionPConfig)&& $actionPConfig->actionPlan->type == \App\ActionPlan::FREE))
+                        @if((isset($actionPConfig)&& $actionPConfig->actionPlan->type == \App\ActionPlan::FREE))
                             style="display: none"
                         @endif >
                         <div class="custom-checkbox custom-control custom-control-inline">
@@ -270,7 +272,7 @@
                     </div>
 
                     <div class="form-group guided-type"
-                        @if(isset($actionPConfig) || (isset($actionPConfig)&& $actionPConfig->actionPlan->type == \App\ActionPlan::FREE))
+                        @if( (isset($actionPConfig)&& $actionPConfig->actionPlan->type == \App\ActionPlan::FREE))
                             style="display: none"
                         @endif >
                         <div class="custom-checkbox custom-control custom-control-inline">
@@ -369,7 +371,6 @@
                 @isset($actionPConfig)
                     {{-- {{ dd($actionPConfig->userFilter()) }} --}}
                     @foreach($actionPConfig->users as $user)
-                        
                         <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 col-xl-3 user-wrapper mT-10">
                             <div class="card p-10 h-100">
                                 <div class="row align-items-center">
@@ -379,7 +380,6 @@
                                         @else
                                             <img src="{{ asset('/uploads/avatars/unknown.png') }}" class="bdrs-50p" width="45px" height="45px"/>
                                         @endif
-                                        
                                     </div>
                                     <div class="col-8 pL-5">
                                         {{ $user->fullName()  }}
@@ -402,7 +402,6 @@
             @endphp
             @isset($actionPConfig)
                 @if($actionPConfig->actionPlan->type == \App\ActionPlan::FREE)
-                    
                     @foreach($actionPConfig->actionPlan->freePlanElements() as $element)
                         @if($element instanceof \App\Action)
                             @if(!$element->configurations->isEmpty())

@@ -83,7 +83,7 @@
             </div>
         @endforeach
 
-        @else
+        {{-- @else
             <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 mT-20">
                <div class="card-action-plan card h-100">
                    <div class="row">
@@ -94,7 +94,7 @@
                </div>
            </div>
            </div>
-           </div>
+           </div> --}}
         @endif
     </div>
     @if(auth()->check() && auth()->user()->rol == 'Administrador')

@@ -20,6 +20,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Redirect;
 
 class ActionPlanController extends Controller
 {
@@ -110,206 +111,222 @@ class ActionPlanController extends Controller
         }
     }
 
+    
+
     private function processForm(Request $request, $actionPlan, $configuration = null)
     {
         $data = $request->plan;
-        $actionPlan->fill($data);
-        $actionPlan->save();
 
-        //Elimino las preguntas
-        $toRemove = $request->deleted['questions'];
-        $toRemove = explode(',', $toRemove);
-        if(count($toRemove))
-            PlanQuestion::destroy($toRemove);
+        // $this->validateActions($request->action);
 
-        //Elimino las acciones
-        $toRemove = $request->deleted['actions'];
-        $toRemove = explode(',', $toRemove);
-        if(count($toRemove))
-            Action::destroy($toRemove);
-
-        //Elimino las acciones
-        $toRemove = $request->deleted['answers'];
-        $toRemove = explode(',', $toRemove);
-        if(count($toRemove))
-            PlanQuestionOption::destroy($toRemove);
-
-        if($configuration == null)
-            $configuration = new ActionPlanConfiguration();
-
-        $configuration->fill($request->configuration);
-
-        $configuration->user_id = Auth::user()->id;
-        $configuration->action_plan_id = $actionPlan->id;
-        if($actionPlan->type == ActionPlan::GUIDED) {
-            if (array_key_exists('reminders', $request->configuration)) {
-                //Convierto la hora a tiempo
-                if ($request->configuration['reminders_period'] == ActionPlan::R_DAILY) {
-                    $configuration->reminders_value = \DateTime::createFromFormat('H:i',
-                        $configuration->reminders_value)->getTimestamp();
-                }
-            } else {
-                $configuration->reminders = null;
-                $configuration->reminders_value = null;
-                $configuration->reminders_period = null;
-            }
-
-            //Elimino las preguntas y contenidos libres asociados
-            // Esto es para en caso que sea editando y haya cambiado de tipo de plan
-            $actionPlan->questions()->delete();
-            $actionPlan->freeContents()->delete();
-        }
-
-        if(!array_key_exists('has_coach', $request->configuration)) {
-            $configuration->coach_id = $configuration->coach_functions = null;
-            $configuration->has_coach = false;
-        }
-
-        $configuration->save();
-
-        $oldUsers = DB::table('action_plan_configuration_user')
-            ->where('action_plan_configuration_user.action_plan_configuration_id', '=', $configuration->id)
-            ->get()
-            ->toArray();
-
-        //Sinconizar grupos de usuario
-        $userInsert = array();
-
-        if(isset($request->groups)) {
-
-            foreach ($request->groups as $group) {
-
-                $insertGroup = DB::table('action_plan_configuration_group')->where(
-                    array(
-                        'action_plan_configuration_id' => $configuration->id,
-                        'group_id' => $group
-                    )
-                    )->get();
-
-                    if($insertGroup->isEmpty()) {
-                        DB::table('action_plan_configuration_group')->insert(
-                            [
-                                'action_plan_configuration_id' => $configuration->id,
-                                'group_id' => $group
-                            ]
-                        );
-                    }
-
-                    $usuarios = DB::table('group_user')->where(array('group_id' => $group))->select('user_id')->get();
-                    if(!$usuarios->isEmpty()) {
-                        foreach ($usuarios as $user) {
-                            array_push($userInsert, $user->user_id);
-                        }
-                    }
-
-                }
-        }
-        else {
-            $deleteGroup = DB::table('action_plan_configuration_group')->where(
-                    array(
-                        'action_plan_configuration_id' => $configuration->id
-                    )
-                    )->get();
-
-            if(!$deleteGroup->isEmpty()) {
-                foreach ($deleteGroup as $value) {
-                    DB::table('action_plan_configuration_group')->where(
-                        [
-                            'action_plan_configuration_group.id' => $value->id
-                        ]
-                    )->delete();
-                }    
-            }
-        }
-
-        if(isset($request->users)) {
-
-            foreach ($request->users as $user) {
-                array_push($userInsert, $user);
-            }
-        }
-
-        $resultado = array_unique($userInsert);
-
-        foreach ($oldUsers as $old) {
-            if (!in_array($old->user_id, $resultado)){
-                Notification::where(
-                                    array('user_id' => $old->user_id, 
-                                          'entity_id' => $configuration->id, 
-                                          'entity_type' => 'App\ActionPlanConfiguration'
-                                        )
-                                    )->delete();
-            }
-        }
-
-        //Sincronizo los usuarios
-        $configuration->users()->sync($resultado);
-
+        $total = 0;
         $actions = $request->action;
-        $pActionConfigs = $configuration->actionConfigurations;
-        $actionConfigCount = count($pActionConfigs);
         if($actions) {
             foreach ($actions as $key => $data) {
-                $data['action_plan_id'] = $actionPlan->id;
-                $data['configuration']['action_plan_configuration_id'] = $configuration->id;
+                $total += $data['objectives_percent'];
+            }
+        }
+        if($total == 100){
 
-                if(!array_key_exists('collaboration', $data['configuration']))
-                    $data['configuration']['collaboration'] = false;
+            $actionPlan->fill($data);
+            $actionPlan->save();
 
-                if($key < $actionConfigCount) {
-                    $action = $pActionConfigs[$key]->action;
-                    $action->update($data);
+            //Elimino las preguntas
+            $toRemove = $request->deleted['questions'];
+            $toRemove = explode(',', $toRemove);
+            if(count($toRemove))
+                PlanQuestion::destroy($toRemove);
 
-                    $actionConfiguration = $pActionConfigs[$key];
+            //Elimino las acciones
+            $toRemove = $request->deleted['actions'];
+            $toRemove = explode(',', $toRemove);
+            if(count($toRemove))
+                Action::destroy($toRemove);
+
+            //Elimino las acciones
+            $toRemove = $request->deleted['answers'];
+            $toRemove = explode(',', $toRemove);
+            if(count($toRemove))
+                PlanQuestionOption::destroy($toRemove);
+
+            if($configuration == null)
+                $configuration = new ActionPlanConfiguration();
+
+            $configuration->fill($request->configuration);
+
+            $configuration->user_id = Auth::user()->id;
+            $configuration->action_plan_id = $actionPlan->id;
+            if($actionPlan->type == ActionPlan::GUIDED) {
+                if (array_key_exists('reminders', $request->configuration)) {
+                    //Convierto la hora a tiempo
+                    if ($request->configuration['reminders_period'] == ActionPlan::R_DAILY) {
+                        $configuration->reminders_value = \DateTime::createFromFormat('H:i',
+                            $configuration->reminders_value)->getTimestamp();
+                    }
+                } else {
+                    $configuration->reminders = null;
+                    $configuration->reminders_value = null;
+                    $configuration->reminders_period = null;
                 }
-                else{
-                    $action = Action::create($data);
-                    $actionConfiguration = new ActionConfiguration();
-                    $action->configurations->push($actionConfiguration);
-                }
 
-                $microContents = [];
-                if(array_key_exists('micro_content', $data)) {
-                    $microContents = $data['micro_content'];
-                }
+                //Elimino las preguntas y contenidos libres asociados
+                // Esto es para en caso que sea editando y haya cambiado de tipo de plan
+                $actionPlan->questions()->delete();
+                $actionPlan->freeContents()->delete();
+            }
 
-                $action->microContents()->sync($microContents);
+            if(!array_key_exists('has_coach', $request->configuration)) {
+                $configuration->coach_id = $configuration->coach_functions = null;
+                $configuration->has_coach = false;
+            }
 
-                $data['configuration']['action_id'] = $action->id;
+            $configuration->save();
 
-                // if($actionPlan->type == ActionPlan::FREE)
-                    $action->action_plan_order = null;
+            $oldUsers = DB::table('action_plan_configuration_user')
+                ->where('action_plan_configuration_user.action_plan_configuration_id', '=', $configuration->id)
+                ->get()
+                ->toArray();
 
-                $actionConfiguration->fill($data['configuration']);
-                $actionConfiguration->save();
+            //Sinconizar grupos de usuario
+            $userInsert = array();
 
-                $action->update();
-                if(array_key_exists('question', $data)) {
-                    $questions = $data['question'];
-                    $pQuestions = $action->questions;
-                    $questionCount = count($pQuestions);
-                    if ($questions) {
-                        foreach ($questions as $qkey => $data) {
-                            $data['action_id'] = $action->id;
+            if(isset($request->groups)) {
 
-                            if ($qkey < $questionCount) {
-                                $question = $pQuestions[$qkey];
-                                $question->update($data);
-                            } else {
-                                $question = PlanQuestion::create($data);
+                foreach ($request->groups as $group) {
+
+                    $insertGroup = DB::table('action_plan_configuration_group')->where(
+                        array(
+                            'action_plan_configuration_id' => $configuration->id,
+                            'group_id' => $group
+                        )
+                        )->get();
+
+                        if($insertGroup->isEmpty()) {
+                            DB::table('action_plan_configuration_group')->insert(
+                                [
+                                    'action_plan_configuration_id' => $configuration->id,
+                                    'group_id' => $group
+                                ]
+                            );
+                        }
+
+                        $usuarios = DB::table('group_user')->where(array('group_id' => $group))->select('user_id')->get();
+                        if(!$usuarios->isEmpty()) {
+                            foreach ($usuarios as $user) {
+                                array_push($userInsert, $user->user_id);
                             }
+                        }
 
-                            if ($question->type != 2) {
-                                $qOptions = $question->options;
-                                $optionCount = count($qOptions);
-                                foreach ($data['options'] as $key => $optionData) {
-                                    $optionData['plan_question_id'] = $question->id;
-                                    if ($key < $optionCount) {
-                                        $option = $qOptions[$key];
-                                        $option->update($optionData);
-                                        $option->update($optionData);
-                                    } else {
-                                        PlanQuestionOption::create($optionData);
+                    }
+            }
+            else {
+                $deleteGroup = DB::table('action_plan_configuration_group')->where(
+                        array(
+                            'action_plan_configuration_id' => $configuration->id
+                        )
+                        )->get();
+
+                if(!$deleteGroup->isEmpty()) {
+                    foreach ($deleteGroup as $value) {
+                        DB::table('action_plan_configuration_group')->where(
+                            [
+                                'action_plan_configuration_group.id' => $value->id
+                            ]
+                        )->delete();
+                    }    
+                }
+            }
+
+            if(isset($request->users)) {
+
+                foreach ($request->users as $user) {
+                    array_push($userInsert, $user);
+                }
+            }
+
+            $resultado = array_unique($userInsert);
+
+            foreach ($oldUsers as $old) {
+                if (!in_array($old->user_id, $resultado)){
+                    Notification::where(
+                                        array('user_id' => $old->user_id, 
+                                                'entity_id' => $configuration->id, 
+                                                'entity_type' => 'App\ActionPlanConfiguration'
+                                            )
+                                        )
+                                ->delete();
+                }
+            }
+
+            //Sincronizo los usuarios
+            $configuration->users()->sync($resultado);
+
+            $actions = $request->action;
+            $pActionConfigs = $configuration->actionConfigurations;
+            $actionConfigCount = count($pActionConfigs);
+            if($actions) {
+                foreach ($actions as $key => $data) {
+                    $data['action_plan_id'] = $actionPlan->id;
+                    $data['configuration']['action_plan_configuration_id'] = $configuration->id;
+
+                    if(!array_key_exists('collaboration', $data['configuration']))
+                        $data['configuration']['collaboration'] = false;
+
+                    if($key < $actionConfigCount) {
+                        $action = $pActionConfigs[$key]->action;
+                        $action->update($data);
+
+                        $actionConfiguration = $pActionConfigs[$key];
+                    }
+                    else{
+                        $action = Action::create($data);
+                        $actionConfiguration = new ActionConfiguration();
+                        $action->configurations->push($actionConfiguration);
+                    }
+
+                    $microContents = [];
+                    if(array_key_exists('micro_content', $data)) {
+                        $microContents = $data['micro_content'];
+                    }
+
+                    $action->microContents()->sync($microContents);
+
+                    $data['configuration']['action_id'] = $action->id;
+
+                    // if($actionPlan->type == ActionPlan::FREE)
+                        $action->action_plan_order = null;
+
+                    $actionConfiguration->fill($data['configuration']);
+                    $actionConfiguration->save();
+
+                    $action->update();
+                    if(array_key_exists('question', $data)) {
+                        $questions = $data['question'];
+                        $pQuestions = $action->questions;
+                        $questionCount = count($pQuestions);
+                        if ($questions) {
+                            foreach ($questions as $qkey => $data) {
+                                $data['action_id'] = $action->id;
+
+                                if ($qkey < $questionCount) {
+                                    $question = $pQuestions[$qkey];
+                                    $question->update($data);
+                                } else {
+                                    $question = PlanQuestion::create($data);
+                                }
+
+                                if ($question->type != 2) {
+                                    $qOptions = $question->options;
+                                    $optionCount = count($qOptions);
+                                    foreach ($data['options'] as $key => $optionData) {
+                                        $optionData['plan_question_id'] = $question->id;
+                                        if ($key < $optionCount) {
+                                            $option = $qOptions[$key];
+                                            $option->update($optionData);
+                                            $option->update($optionData);
+                                        } else {
+                                            PlanQuestionOption::create($optionData);
+                                        }
                                     }
                                 }
                             }
@@ -317,155 +334,158 @@ class ActionPlanController extends Controller
                     }
                 }
             }
-        }
 
-        if($actionPlan->type == ActionPlan::FREE) {
-            //Preguntas
-            $questions = $request->question;
-            $pQuestions = $actionPlan->questions;
-            $questionCount = count($pQuestions);
-            if ($questions) {
-                foreach ($questions as $qkey => $data) {
-                    $data['action_plan_id'] = $actionPlan->id;
-                    if ($qkey < $questionCount) {
-                        $question = $pQuestions[$qkey];
-                        $question->update($data);
-                    } else {
-                        $question = PlanQuestion::create($data);
-                    }
-
-                    // $question->action_plan_order = null;
-                    $question->update();
-
-                    $qOptions = $question->options;
-                    $optionCount = count($qOptions);
-                    foreach ($data['options'] as $key => $optionData) {
-                        $optionData['plan_question_id'] = $question->id;
-                        if ($key < $optionCount) {
-                            $option = $qOptions[$key];
-                            $option->update($optionData);
+            if($actionPlan->type == ActionPlan::FREE) {
+                //Preguntas
+                $questions = $request->question;
+                $pQuestions = $actionPlan->questions;
+                $questionCount = count($pQuestions);
+                if ($questions) {
+                    foreach ($questions as $qkey => $data) {
+                        $data['action_plan_id'] = $actionPlan->id;
+                        if ($qkey < $questionCount) {
+                            $question = $pQuestions[$qkey];
+                            $question->update($data);
                         } else {
-                            PlanQuestionOption::create($optionData);
+                            $question = PlanQuestion::create($data);
+                        }
+
+                        // $question->action_plan_order = null;
+                        $question->update();
+
+                        $qOptions = $question->options;
+                        $optionCount = count($qOptions);
+                        foreach ($data['options'] as $key => $optionData) {
+                            $optionData['plan_question_id'] = $question->id;
+                            if ($key < $optionCount) {
+                                $option = $qOptions[$key];
+                                $option->update($optionData);
+                            } else {
+                                PlanQuestionOption::create($optionData);
+                            }
                         }
                     }
                 }
-            }
 
-            //Contenido libre
-            $actionPlan->freeContents()->delete();
-            $freeContents = $request->freeContent;
-            $images_array = [];
-            if($freeContents) {
-                foreach ($freeContents as $fkey => $freeContent) {
-                    $document = new \DOMDocument();
-                    try {
-                        $document->loadHTML($freeContent['content']);
-                        $document->encoding = 'utf-8';
-                        $images = $document->getElementsByTagName('img');
-                        foreach ($images as $image) {
-                            if ($image->hasAttributes()) {
-                                $scrAttr = $this->findDOMNodeAttr($image, 'src');
-                                $fileNameAttr = $this->findDOMNodeAttr($image, 'data-filename');
-                                if ($scrAttr) {
-                                    $src = $scrAttr->value;
-                                    $isImage = true;
-                                    $imageUrl = $src;
-                                    if (preg_match('/^data:image\/(\w+);base64,/', $src, $type)) {
-                                        $src = substr($src, strpos($src, ',') + 1);
-                                        $type = strtolower($type[1]); // jpg, png, gif
+                //Contenido libre
+                $actionPlan->freeContents()->delete();
+                $freeContents = $request->freeContent;
+                $images_array = [];
+                if($freeContents) {
+                    foreach ($freeContents as $fkey => $freeContent) {
+                        $document = new \DOMDocument();
+                        try {
+                            $document->loadHTML($freeContent['content']);
+                            $document->encoding = 'utf-8';
+                            $images = $document->getElementsByTagName('img');
+                            foreach ($images as $image) {
+                                if ($image->hasAttributes()) {
+                                    $scrAttr = $this->findDOMNodeAttr($image, 'src');
+                                    $fileNameAttr = $this->findDOMNodeAttr($image, 'data-filename');
+                                    if ($scrAttr) {
+                                        $src = $scrAttr->value;
+                                        $isImage = true;
+                                        $imageUrl = $src;
+                                        if (preg_match('/^data:image\/(\w+);base64,/', $src, $type)) {
+                                            $src = substr($src, strpos($src, ',') + 1);
+                                            $type = strtolower($type[1]); // jpg, png, gif
 
-                                        if (!in_array($type, ['jpg', 'jpeg', 'gif', 'png'])) {
-                                            break;
-                                        }
-
-                                        $imageFile = base64_decode($src);
-                                        if ($imageFile !== false) {
-                                            $imageName = uniqid() . '.jpg';
-
-                                            if($fileNameAttr) {
-                                                $fileNameAttr->value = '';
+                                            if (!in_array($type, ['jpg', 'jpeg', 'gif', 'png'])) {
+                                                break;
                                             }
 
-                                            $fileName = "uploads/img/" . $imageName;
-                                            file_put_contents($fileName, $imageFile);
-                                            $scrAttr->value = '/' . $fileName;
+                                            $imageFile = base64_decode($src);
+                                            if ($imageFile !== false) {
+                                                $imageName = uniqid() . '.jpg';
 
-                                            $imageUrl = $fileName;
-                                        }
-                                        else{
-                                            $isImage = false;
-                                        }
-                                    }
+                                                if($fileNameAttr) {
+                                                    $fileNameAttr->value = '';
+                                                }
 
-                                    if($isImage) {
-                                        $image = new Image();
-                                        $image->url = $imageUrl;
-                                        $images_array[] = $image;
+                                                $fileName = "uploads/img/" . $imageName;
+                                                file_put_contents($fileName, $imageFile);
+                                                $scrAttr->value = '/' . $fileName;
+
+                                                $imageUrl = $fileName;
+                                            }
+                                            else{
+                                                $isImage = false;
+                                            }
+                                        }
+
+                                        if($isImage) {
+                                            $image = new Image();
+                                            $image->url = $imageUrl;
+                                            $images_array[] = $image;
+                                        }
                                     }
                                 }
                             }
-                        }
 
-                    } catch (\Exception $e)
-                    {
-                        echo $e->getMessage();
+                        } catch (\Exception $e)
+                        {
+                            echo $e->getMessage();
+                        }
+                        finally {
+                            $data = $freeContent;
+                            $data['content'] = $document->saveHTML();
+                            $data['action_plan_id'] = $actionPlan->id;
+                            $data['action_plan_order'] = null;
+                            $newFreeContent = FreeContent::create($data);
+
+                            foreach ($images_array as $key => $image) {
+                                $newFreeContent->images()->save($image);
+                            }
+
+                            $images_array = [];
+                        }
                     }
-                    finally {
-                        $data = $freeContent;
-                        $data['content'] = $document->saveHTML();
-                        $data['action_plan_id'] = $actionPlan->id;
-                        $data['action_plan_order'] = null;
-                        $newFreeContent = FreeContent::create($data);
+                }
+            }
 
-                        foreach ($images_array as $key => $image) {
-                            $newFreeContent->images()->save($image);
+            $actions = $request->action;
+            //Envio notificaciones
+            foreach ($configuration->users as $user) {
+
+                $existNot = Notification::where(array('user_id' => $user->id, 'entity_id' => $configuration->id, 'entity_type' => 'App\ActionPlanConfiguration'))
+                            ->get();
+
+                if($existNot->isEmpty()) {
+                    $notification = new Notification();
+                    $notification->user_id = $user->id;
+                    $notification->entity_id = $configuration->id;
+                    $notification->entity_type = ActionPlanConfiguration::class;
+                    $notification->type = Notification::NEW;
+                    $notification->save();
+
+                    if($actions) {
+                        foreach ($actions as $key => $data) {
+
+                            $microContents = [];
+                            if(array_key_exists('micro_content', $data)) {
+                                $microContents = $data['micro_content'];
+                            }
+
+                            for ($i=0; $i < sizeof($microContents) ; $i++) {
+                                $exist = DB::table('micro_content_user')->where(array('micro_content_id' => $microContents[$i], 'user_id' => $user->id))->first();
+
+                                if (!$exist) {
+
+                                    DB::table('micro_content_user')->insert(
+                                        [
+                                            'micro_content_id' => $microContents[$i],
+                                            'user_id' => $user->id
+                                        ]
+                                    );
+                                }
+                            }
                         }
-
-                        $images_array = [];
                     }
                 }
             }
         }
-
-        $actions = $request->action;
-        //Envio notificaciones
-        foreach ($configuration->users as $user) {
-
-            $existNot = Notification::where(array('user_id' => $user->id, 'entity_id' => $configuration->id, 'entity_type' => 'App\ActionPlanConfiguration'))
-                        ->get();
-
-            if($existNot->isEmpty()) {
-                $notification = new Notification();
-                $notification->user_id = $user->id;
-                $notification->entity_id = $configuration->id;
-                $notification->entity_type = ActionPlanConfiguration::class;
-                $notification->type = Notification::NEW;
-                $notification->save();
-
-                if($actions) {
-                    foreach ($actions as $key => $data) {
-
-                        $microContents = [];
-                        if(array_key_exists('micro_content', $data)) {
-                            $microContents = $data['micro_content'];
-                        }
-
-                        for ($i=0; $i < sizeof($microContents) ; $i++) {
-                            $exist = DB::table('micro_content_user')->where(array('micro_content_id' => $microContents[$i], 'user_id' => $user->id))->first();
-
-                            if (!$exist) {
-
-                                DB::table('micro_content_user')->insert(
-                                    [
-                                        'micro_content_id' => $microContents[$i],
-                                        'user_id' => $user->id
-                                    ]
-                                );
-                            }
-                        }
-                    }
-                }
-            }
+        else{
+            return Redirect::to('ActionPlanController.index')->withErrors('La sumatoria de los porcientos de las acciones debe ser igual a 100%');
         }
         return $configuration;
     }
