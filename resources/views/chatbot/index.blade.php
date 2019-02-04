@@ -93,6 +93,11 @@
         </div>
         @endforeach
     </div>
+    <div class="row d-flex justify-content-between mb-3 ">
+        <div class="col-md-12 pr-3 ">
+            {{ $chatbots->links() }}
+        </div>
+    </div>
 
     @include('components.modal_delete', [
         'modal_id'  => 'delete-modal',

@@ -24,6 +24,7 @@ class CreateInterestsTable extends Migration
             $table->string('objectives')->nullable();
             $table->boolean('public')->nullable();
             $table->boolean('reminders')->nullable();
+            $table->bigInteger('reminders_value')->nullable();
             $table->smallInteger('reminders_period')->nullable();
             $table->timestamps();
         });

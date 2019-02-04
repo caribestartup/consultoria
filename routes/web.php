@@ -27,6 +27,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/training/create/{id}', 'TrainingController@show_training' );
     Route::post('training/{id}/evaluation', 'TrainingController@evaluation' );
 
+    Route::resource('interests', 'InterestController');
+
     Route::resource('action_plans', 'ActionPlanController');
     Route::get('action_plans_coach/', 'ActionPlanController@index_coach' );
 
@@ -52,8 +54,6 @@ Route::group(['middleware' => 'admin'], function () {
     Route::resource('departments', 'DepartmentController');
     Route::resource('groups', 'GroupController');
     Route::resource('topics', 'TopicController');
-
-    Route::resource('interests', 'InterestController');
 
     Route::resource('chatbot', 'ChatbotController');
     Route::get('/chatbot/design/{id}', 'ChatbotController@design' );

@@ -208,6 +208,8 @@ class MicroContentController extends Controller
     }
 
     private function processForm(Request $request, $microContent) {
+        // dd($request->page);
+
         $data = $request->micro_content;
         $data['user_id'] = Auth::user()->id;
 
@@ -276,6 +278,8 @@ class MicroContentController extends Controller
         $pages = $request->page;
         $images_array = [];
 
+        
+
         //Para que DOM lea HTML 5
         libxml_use_internal_errors(true);
         if($pages) {
@@ -283,8 +287,9 @@ class MicroContentController extends Controller
                 $document = new \DOMDocument();
                 $newPage = new Page();
                 try {
-                    $document->loadHTML($page['content']);
-                    $document->encoding = 'utf-8';
+                    $document->loadHTML('<meta http-equiv="Content-Type" content="text/html; charset=utf-8">' . $page['content']);
+                    // $document->encoding = 'utf-8';
+                    // dd($document);
                     $images = $document->getElementsByTagName('img');
                     foreach ($images as $image) {
                         if ($image->hasAttributes()) {
@@ -336,10 +341,12 @@ class MicroContentController extends Controller
                 finally {
                     $data = $page;
                     $html = $document->saveHTML();
+                
                     $body = '';
                     if (preg_match('/(?:<body[^>]*>)(.*)<\/body>/isU', $html, $matches)) {
                         $body = $matches[1];
                     }
+                    
                     $data['content'] = $body;
                     $data['micro_content_id'] = $microContent->id;
                     $newPage->fill($data);

@@ -11,7 +11,7 @@
 @section('content')
  <div class="row title-page-buttom">
         <div class="col-xs-12 col-sm-6">
-          @include('components.index_create', [
+          @include('interest.index_create', [
             'title' => trans_choice('common.interest', 2),
             'url'   => route('interests.create'),
             'create'=> __('interest.create_interest')
@@ -187,7 +187,7 @@
     </div>
     <div class="row d-flex justify-content-between mb-3 ">
         <div class="col-md-12 pr-3 ">
-
+            {{ $interests->links() }}
         </div>
     </div>
 

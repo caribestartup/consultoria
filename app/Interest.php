@@ -18,6 +18,7 @@ class Interest extends Model
         'objectives',
         'public',
         'reminders',
+        'reminders_value',
         'reminders_period',
         'user_id'
     ];
@@ -32,5 +33,19 @@ class Interest extends Model
     public function topics()
     {
         return $this->belongsToMany(Topic::class);
+    }
+
+    public function hasTopic($id)
+    {
+        $found = false;
+        $array = $this->topics;
+        $i = 0;
+        while(!$found && ($i < sizeof($array))){
+            if($id == $array[$i]->id){
+                $found = true;
+            }
+            $i++;
+        }
+        return $found;
     }
 }

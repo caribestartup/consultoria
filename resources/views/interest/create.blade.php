@@ -10,6 +10,7 @@
 @endsection
 
 @section('css')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.css">
     <style>
         /* The switch - the box around the slider */
         .switch {
@@ -292,12 +293,22 @@
                                 <label>{{ __('interest.expiration_date') }}</label>
                             </div>
                             <div class="col-md-9">
-                                <div class="input-group date" data-date-format='yy-mm-dd'  data-provide="datepicker">
-                                    <input type="text"  name="expiration_date" class="form-control graywithout" placeholder="Fecha Fin" value="">
+                                <div class="input-group date">
+                                    <input type="text"  name="expiration_date" class="form-control graywithout datepicker" placeholder="Fecha Fin" value="">
                                     <div class="input-group-addon">
                                         <span class="glyphicon glyphicon-th"></span>
                                     </div>
                                 </div>
+                                {{-- <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                                    <label for="start-date">{{ __('common.start_date') }}</label>
+                                    <input class="form-control datepicker"
+                                        name="configuration[start_date]"
+                                        @isset($actionPConfig)
+                                        value="{{ $actionPConfig->start_date }}"
+                                        @endisset
+                                        autocomplete="off"
+                                    >
+                                </div> --}}
                             </div>
                         </div>
                     </div>
@@ -336,7 +347,7 @@
                                     <div class="custom-control custom-radio" >
                                         <input class="custom-control-input" type="radio" name="reminders_period" id="diarioRadio" @if( (isset($interest) and $interest->reminders_period == 1)
                                                            or !isset($interest))
-                                        checked
+                                                
                                                @endif
                                                value="1" onclick="show1off();" >
                                         <label class="custom-control-label" for="diarioRadio">{{ __('common.daily') }}
@@ -347,7 +358,7 @@
                                     <div class="custom-control custom-radio" >
                                         <input class="custom-control-input" type="radio" name="reminders_period" id="semanalRadio" @if( (isset($interest) and $interest->reminders_period == 2)
                                                            or !isset($interest))
-                                        checked
+                                                    
                                                @endif
                                                value="2" onclick="show1off();" >
                                         <label class="custom-control-label" for="semanalRadio">{{ __('common.weekly') }}
@@ -358,7 +369,7 @@
                                     <div class="custom-control custom-radio">
                                         <input class="custom-control-input" type="radio" name="reminders_period" id="mensualRadio" @if( (isset($interest) and $interest->reminders_period == 3)
                                                            or !isset($interest))
-                                        checked
+                                                
                                                @endif
                                                value="3" onclick="show1off();" >
                                         <label class="custom-control-label" for="mensualRadio">{{ __('common.monthly') }}
@@ -369,9 +380,9 @@
                                     <div class="custom-control custom-radio">
                                         <input class="custom-control-input" type="radio" name="reminders_period" id="anualRadio" @if( (isset($interest) and $interest->reminders_period == 4)
                                                            or !isset($interest))
-                                        checked
-                                               @endif
-                                               value="4" onclick="show1off();" >
+                                            
+                                            @endif
+                                            value="4" onclick="show1off();" >
                                         <label class="custom-control-label" for="anualRadio">Anual
                                         </label>
                                     </div>
@@ -379,44 +390,37 @@
                             </ul>
                         </div>
                         <div class="col-md-9 ">
-                            <div class="input-group clockpicker  px-3 " id="clock" data-placement="bottom" data-align="top" data-autoclose="true">
-                                <input type="text" class="form-control graywithout" value="13:14">
+
+                            <div class="input-group px-3 clockpicker col-md-3" id="clock" data-placement="bottom" data-align="top" data-autoclose="true">
+                                <input type="text" name="reminders_value_hour" class="form-control graywithout" value="">
                                 <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-time"></span>
-                                        </span>
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </span>
                             </div>
 
-                            <select name="filter_type" id="filter_type1"  class="custom-select  mx-3" style="display: none">
-                                <option value="">Lunes</option>
-                                <option value="date">Martes</option>
-                                <option value="popularity">Miercoles</option>
-                                <option value="like_count">Jueves</option>
-                                <option value="comment_count">Viernes</option>
-                                <option value="like_count">Sabado</option>
-                                <option value="comment_count">Domingo</option>
-                            </select>
+                            <div class="col-md-3">
+                                <div class="input-group fg-float">
+                                    <div class="fg-line">
+                                        <input id='day' type='text' name="reminders_value_day" value="" class="form-control material fg-input">
+                                    </div>
+                                </div>
+						    </div>
 
-                            <select name="filter_type" id="filter_type2" class="custom-select  mx-3" style="display: none">
-                                <option value="">1</option>
-                                <option value="date">2</option>
-                                <option value="popularity">3</option>
-                                <option value="like_count">4</option>
-                            </select>
-
-                            <select name="filter_type" id="filter_type3" class="custom-select  mx-3" style="display: none">
-                                <option value="">Enero</option>
-                                <option value="date">Febrero</option>
-                                <option value="popularity">Marzo</option>
-                                <option value="like_count">Abril</option>
-                                <option value="">Mayo</option>
-                                <option value="date">Junio</option>
-                                <option value="popularity">Julio</option>
-                                <option value="like_count">Agosto</option>
-                                <option value="">Septiembre</option>
-                                <option value="date">Octubre</option>
-                                <option value="popularity">Noviembre</option>
-                                <option value="like_count">Diciembre</option>
-                            </select>
+                            <div class="col-md-3">
+                                <div class="input-group fg-float">
+                                    <div class="fg-line">
+                                        <input id='month' type='text' name="reminders_value_month" value="" class="form-control material fg-input">
+                                    </div>
+                                </div>
+                            </div> 
+                            
+                            <div class="col-md-3">
+                                <div class="input-group fg-float">
+                                    <div class="fg-line">
+                                        <input id='year' type='text' name="reminders_value_year" value="" class="form-control material fg-input">
+                                    </div>
+                                </div>
+						    </div> 
                         </div>
 
                     </div>
@@ -438,16 +442,36 @@
 @endsection
 @section('js')
     <script src="{{ asset('/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
-    <script src="{{ asset('/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.es.min.js') }}"></script>
+    {{-- <script src="{{ asset('/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.es.min.js') }}"></script> --}}
     <script src="{{ asset('/plugins/moment/moment.min.js') }}"></script>
     <script src="{{ asset('/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
+            $("#clock").hide();
+            $("#day").hide();
+            $("#month").hide();
+            $("#year").hide();
+
             $('.clockpicker').clockpicker();
 
             $('.datepicker').datepicker({
-                format: 'mm/dd/yyyy',
-                startDate: '-3d'
+                language: 'es',
+                startDate: 'now',
+                setDate: new Date(),
+                format: 'yyyy-mm-dd'
+            });
+
+            $('#day').datetimepicker({
+                format: 'DD'
+            });
+
+            $('#month').datetimepicker({
+                format: 'MM'
+            });
+
+            $('#year').datetimepicker({
+                format: 'YYYY'
             });
 
             var $star_rating = $('.star-rating .fa');
@@ -471,29 +495,26 @@
         });
 
         function show1off(){
-            $("input[name='reminders_period']").click(function () {
-                if ($("#diarioRadio").is(":checked")) {
-                    $("#clock").show();
-                } else {
-                    $("#clock").hide();
-                }
-                if ($("#semanalRadio").is(":checked")) {
-                    $("#filter_type1").show();
-                } else {
-                    $("#filter_type1").hide();
-                }
-                if ($("#mensualRadio").is(":checked")) {
-                    $("#filter_type2").show();
-                } else {
-                    $("#filter_type2").hide();
-                }
-                if ($("#anualRadio").is(":checked")) {
-                    $("#filter_type3").show();
-                } else {
-                    $("#filter_type3").hide();
-                }
-
-            });
+            if ($("#diarioRadio").is(":checked")) {
+                $("#clock").show();
+            } else {
+                $("#clock").hide();
+            }
+            if ($("#semanalRadio").is(":checked")) {
+                $("#day").show();
+            } else {
+                $("#day").hide();
+            }
+            if ($("#mensualRadio").is(":checked")) {
+                $("#month").show();
+            } else {
+                $("#month").hide();
+            }
+            if ($("#anualRadio").is(":checked")) {
+                $("#year").show();
+            } else {
+                $("#year").hide();
+            }
         }
 
     </script>

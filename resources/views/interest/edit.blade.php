@@ -1,70 +1,76 @@
 @extends('default')
 
+@section('css')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.css">
+    <style>
+        
+        /* The switch - the box around the slider */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        /* Hide default HTML checkbox */
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        /* The slider */
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: #F15A21;
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #F15A21;
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+    </style>
+@endsection
+
 @section('content')
-<style>
-    /* The switch - the box around the slider */
-    .switch {
-        position: relative;
-        display: inline-block;
-        width: 50px;
-        height: 24px;
-    }
 
-    /* Hide default HTML checkbox */
-    .switch input {
-        opacity: 0;
-        width: 0;
-        height: 0;
-    }
-
-    /* The slider */
-    .slider {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: #ccc;
-        -webkit-transition: .4s;
-        transition: .4s;
-    }
-
-    .slider:before {
-        position: absolute;
-        content: "";
-        height: 16px;
-        width: 16px;
-        left: 4px;
-        bottom: 4px;
-        background-color: white;
-        -webkit-transition: .4s;
-        transition: .4s;
-    }
-
-    input:checked + .slider {
-        background-color: #F15A21;
-    }
-
-    input:focus + .slider {
-        box-shadow: 0 0 1px #F15A21;
-    }
-
-    input:checked + .slider:before {
-        -webkit-transform: translateX(26px);
-        -ms-transform: translateX(26px);
-        transform: translateX(26px);
-    }
-
-    /* Rounded sliders */
-    .slider.round {
-        border-radius: 34px;
-    }
-
-    .slider.round:before {
-        border-radius: 50%;
-    }
-</style>
 @include('components.index_top', ['indexes' => [
             trans_choice('common.interest', 2),	__('common.edit')
             ]])
@@ -235,13 +241,15 @@
                                                         @endif
                                                         ">
                                                     <div class="row">
-
                                                         @for($j=0;$j<$cantVer;$j++)
                                                             @if($index<$cantTopic)
                                                                 <div class="col-md-2 col-sm-2 col-xs-2 mx-2" style="height: 100px; width:100px; background-image: url('{{asset('images/Temas-0-01.png')}}');background-repeat: no-repeat ;background-size: 100% 100%">
-
                                                                     <div class="row d-flex justify-content-end">
-                                                                        <input type="checkbox" class="checkbox" value="true">
+                                                                        <input type="checkbox" class="checkbox" value="{{$topics[$index]->id}}" name="topic[]"
+                                                                            @if($interests->hasTopic($topics[$index]->id))
+                                                                                checked
+                                                                            @endif
+                                                                        >
                                                                     </div>
                                                                     <div class="row  d-flex justify-content-center mt-5" style="background-color: #336372">
                                                                         <label class="mt-1" style="color: white">{{$topics[$index]->value}}</label>
@@ -332,7 +340,7 @@
                     </div>
 
                     <div class="row mb-4">
-                        <div class="col-md-2 col-sm-2 col-xs-2">
+                        <div class="col-md-3">
 
                             <ul class="pl-0" style="list-style: none" >
                                 <li><label>Periodo</label>
@@ -421,46 +429,38 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="col-md-10 col-sm-8 col-xs-8 ">
+                        <div class="col-md-9 ">
 
-                            <div class="input-group clockpicker  px-3 " id="clock" data-placement="bottom" data-align="top" data-autoclose="true">
-                                <input type="text" class="form-control graywithout" value="13:14">
+                            <div class="input-group px-3 clockpicker col-md-3" id="clock" data-placement="bottom" data-align="top" data-autoclose="true">
+                                <input type="text" autocomplete="off" name="reminders_value_hour" class="form-control graywithout" value="">
                                 <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-time"></span>
-                                        </span>
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </span>
                             </div>
 
-                            <select name="filter_type" id="filter_type1"  class="form-control graywithout mx-3" style="display: none">
-                                <option value="">Lunes</option>
-                                <option value="date">Martes</option>
-                                <option value="popularity">Miercoles</option>
-                                <option value="like_count">Jueves</option>
-                                <option value="comment_count">Viernes</option>
-                                <option value="like_count">Sabado</option>
-                                <option value="comment_count">Domingo</option>
-                            </select>
+                            <div class="col-md-3">
+                                <div class="input-group fg-float">
+                                    <div class="fg-line">
+                                        <input id='day' autocomplete="off" type='text' name="reminders_value_day" value="" class="form-control material fg-input">
+                                    </div>
+                                </div>
+						    </div>
 
-                            <select name="filter_type" id="filter_type2" class="form-control graywithout mx-3" style="display: none">
-                                <option value="">1</option>
-                                <option value="date">2</option>
-                                <option value="popularity">3</option>
-                                <option value="like_count">4</option>
-                            </select>
-
-                            <select name="filter_type" id="filter_type3" class="form-control graywithout mx-3" style="display: none">
-                                <option value="">Enero</option>
-                                <option value="date">Febrero</option>
-                                <option value="popularity">Marzo</option>
-                                <option value="like_count">Abril</option>
-                                <option value="">Mayo</option>
-                                <option value="date">Junio</option>
-                                <option value="popularity">Julio</option>
-                                <option value="like_count">Agosto</option>
-                                <option value="">Septiembre</option>
-                                <option value="date">Octubre</option>
-                                <option value="popularity">Noviembre</option>
-                                <option value="like_count">Diciembre</option>
-                            </select>
+                            <div class="col-md-3">
+                                <div class="input-group fg-float">
+                                    <div class="fg-line">
+                                        <input id='month' type='text' autocomplete="off" name="reminders_value_month" value="" class="form-control material fg-input">
+                                    </div>
+                                </div>
+                            </div> 
+                            
+                            <div class="col-md-3">
+                                <div class="input-group fg-float">
+                                    <div class="fg-line">
+                                        <input id='year' type='text' autocomplete="off" name="reminders_value_year" value="" class="form-control material fg-input">
+                                    </div>
+                                </div>
+						    </div> 
                         </div>
 
                     </div>
@@ -483,7 +483,10 @@
 </form>
 @section('js')
     <script src="{{ asset('/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
-    <script src="{{ asset('/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.es.min.js') }}"></script>
+    {{-- <script src="{{ asset('/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.es.min.js') }}"></script> --}}
+    <script src="{{ asset('/plugins/moment/moment.min.js') }}"></script>
+    <script src="{{ asset('/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
     <script type="text/javascript">
         $('.clockpicker').clockpicker();
     </script>
@@ -536,12 +539,54 @@
                 }
                 alert(msg);
             });
+
+            $("#clock").hide();
+            $("#day").hide();
+            $("#month").hide();
+            $("#year").hide();
+
+            $('.clockpicker').clockpicker();
+
+            $('.datepicker').datepicker({
+                language: 'es',
+                startDate: 'now',
+                setDate: new Date(),
+                format: 'yyyy-mm-dd'
+            });
+
+            $('#day').datetimepicker({
+                format: 'DD'
+            });
+
+            $('#month').datetimepicker({
+                format: 'MM'
+            });
+
+            $('#year').datetimepicker({
+                format: 'YYYY'
+            });
+
+            var $star_rating = $('.star-rating .fa');
+
+            var SetRatingStar = function() {
+                return $star_rating.each(function() {
+                    if (parseInt($star_rating.siblings('input.rating-value').val()) >= parseInt($(this).data('rating'))) {
+                        return $(this).removeClass('fa-star-o').addClass('fa-star');
+                    } else {
+                        return $(this).removeClass('fa-star').addClass('fa-star-o');
+                    }
+                });
+            };
+
+            $star_rating.on('click', function() {
+                $star_rating.siblings('input.rating-value').val($(this).data('rating'));
+                return SetRatingStar();
+            });
+
+            SetRatingStar();
         });
 
-        $('.datepicker').datepicker({
-            format: 'mm/dd/yyyy',
-            startDate: '-3d'
-        });
+        
 
 
 
@@ -549,29 +594,26 @@
 
 <script>
     function show1off(){
-        $("input[name='reminders_period']").click(function () {
-            if ($("#diarioRadio").is(":checked")) {
+        if ($("#diarioRadio").is(":checked")) {
                 $("#clock").show();
             } else {
                 $("#clock").hide();
             }
             if ($("#semanalRadio").is(":checked")) {
-                $("#filter_type1").show();
+                $("#day").show();
             } else {
-                $("#filter_type1").hide();
+                $("#day").hide();
             }
             if ($("#mensualRadio").is(":checked")) {
-                $("#filter_type2").show();
+                $("#month").show();
             } else {
-                $("#filter_type2").hide();
+                $("#month").hide();
             }
             if ($("#anualRadio").is(":checked")) {
-                $("#filter_type3").show();
+                $("#year").show();
             } else {
-                $("#filter_type3").hide();
+                $("#year").hide();
             }
-
-        });
     }
 
 </script>

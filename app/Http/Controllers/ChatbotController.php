@@ -14,7 +14,7 @@ class ChatbotController extends Controller
 {
     public function index(Request $request)
     {
-        $chatbots = Chatbot::all();
+        $chatbots = Chatbot::paginate(12);
         return view('chatbot.index', compact('chatbots'));
 
     }

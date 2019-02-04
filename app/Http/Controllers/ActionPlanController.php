@@ -53,7 +53,7 @@ class ActionPlanController extends Controller
                                         'action_plan_configurations.coach_id',
                                         'action_plan_configurations.start_date',
                                         'action_plan_configurations.ending_date')
-                                ->paginate(15);
+                                ->paginate(12);
 
             // $actionPConfigs = ActionPlanConfiguration::find($microContents1->id)->simplePaginate(1);
         }

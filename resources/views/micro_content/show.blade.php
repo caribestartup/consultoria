@@ -74,7 +74,11 @@
         <ul>
             @foreach($microContent->pages as $page)
                 <li>
-                    <a href="#{{ $page->titleSlug() }}">{{ $page->littleTitle() }}</a>
+                    {{-- {{dd($page->titleSlug())}} --}}
+                    
+                    <a href="#{{ mb_strtolower($page->titleSlug(), 'UTF-8') }}">{{ $page->littleTitle() }}</a>
+                    {{-- <a href="#{{mb_strtolower('hoja-de-contenido-didáctico-uno', 'UTF-8')}}">{{ $page->littleTitle() }}</a> --}}
+                    
                 </li>
             @endforeach
             {{-- @if(count($micro_content->pages)) --}}
@@ -94,9 +98,12 @@
         </ul>
         <div>
             @foreach($microContent->pages as $page)
-                <div id="{{ strtolower(str_replace(' ', '-', $page->title)) }}" class="p-20">
+            
+                {{-- <div id="{{ strtolower(str_replace(' ', '-', $page->title)) }}" class="p-20"> --}}
+                <div id="{{ mb_strtolower($page->titleSlug(), 'UTF-8') }}" class="p-20">
                     <section>
-                        <h2>{{ $page->title }}</h2>
+                        {{-- {{dd(mb_strtolower($page->title, 'UTF-8'))}} --}}
+                        <h2>{{ mb_strtolower($page->title, 'UTF-8')}}</h2>
                         <div>{!! $page->content !!}</div>
                     </section>
                 </div>

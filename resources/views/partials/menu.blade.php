@@ -45,6 +45,15 @@
 
 @endif
 
+    <li class="nav-item {{ request()->is('interests*') ? 'bgc-blue-50' : '' }} border " style="font-family:Comfortaa">
+        <a class='sidebar-link' href="{{ route('interests.index') }}">
+            <span class="img-menu">
+                <img src="{{ asset('/images/assets/2da-29.png') }}" height="35px" width="35px" />
+            </span>
+            <span class="title  pL-20">{{ trans_choice('interest.interest', 2) }}</span>
+        </a>
+    </li>
+
 @if(auth()->check() && auth()->user()->rol == 'Administrador')
 
 
@@ -54,15 +63,6 @@
                 <img src="{{ asset('/images/assets/users.png') }}" height="35px" width="35px" />
             </span>
             <span class="title  pL-20">{{ trans_choice('common.user', 2) }}</span>
-        </a>
-    </li>
-
-    <li class="nav-item {{ request()->is('interests*') ? 'bgc-blue-50' : '' }} border " style="font-family:Comfortaa">
-        <a class='sidebar-link' href="{{ route('interests.index') }}">
-            <span class="img-menu">
-                <img src="{{ asset('/images/assets/2da-29.png') }}" height="35px" width="35px" />
-            </span>
-            <span class="title  pL-20">{{ trans_choice('interest.interest', 2) }}</span>
         </a>
     </li>
 
