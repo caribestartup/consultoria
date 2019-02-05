@@ -122,12 +122,22 @@
                                             </div>
                                             <div class="row text-center">
                                                 <div class="col-md-12 col-xs-12 col-sm-12 ">
-                                                    <form action="{{route('interests.destroy',$interest->id)}}" method="post">
+                                                    {!! Form::open([
+                                                            'class'=>'deleteuserform',
+                                                            'url'  => route('interests.destroy',$interest->id),
+                                                            'method' => 'DELETE',
+                                                            'id' => 'delete_form_'.$interest->id,
+                                                            ])
+                                                    !!}
+                                                        <button type="button" id="{{ $interest->id }}" class="btn btn-light btn-sm fsz-md text-danger" title="{{ trans('common.delete') }}"><i class="ti-trash"></i></button>
+                                                    {!! Form::close() !!}
+
+                                                    {{-- <form action="{{route('interests.destroy',$interest->id)}}" method="post">
                                                         <button class="btn btn-light btn-sm fsz-md text-danger" type="submit"> <a type="submit" href="{{ route('interests.edit',$interest->id) }}"><i class="fa fa-trash"></i></a></button>
                                                         @csrf
                                                         @method('DELETE')
 
-                                                    </form>
+                                                    </form> --}}
 
                                                 </div>
                                             </div>
@@ -191,6 +201,14 @@
         </div>
     </div>
 
+    @include('components.modal_delete', [
+        'modal_id'  => 'delete-modal',
+        'title'     => __('common.attention!'),
+        'content'   => __('common.delete_entity'),
+        'accept'    => __('common.yes'),
+        'cancel'    => __('common.no')
+    ])
+
     <!--<canvas id="myChart"></canvas>-->
 @endsection
 
@@ -201,6 +219,30 @@
     <script>
 
         $(document).ready(function () {
+            var currentForm;
+            $(document).on('click', 'form.deleteuserform button', function() {
+                var id = this.getAttribute("id");
+                alertify.defaults.transition = "slide";
+                alertify.defaults.theme.ok = "btn btn-primary";
+                alertify.defaults.theme.cancel = "btn btn-danger";
+                alertify.defaults.theme.input = "form-control";
+
+                var header = document.createElement('modal-title');
+                header.appendChild(document.getElementsByClassName('modal-title')[0]);
+
+                var body = document.createElement('modal-content-alert');
+                body.appendChild(document.getElementsByClassName('modal-content-alert')[0]);
+
+                alertify.confirm(header, body, function(){
+                        alertify.success('Eliminado');
+                        currentForm = $('#delete_form_'+id);
+                        // currentForm = $('#delete_form').closest("form");
+                        currentForm.submit();
+                    },function(){
+                        alertify.error('Cancelado');
+                    }).set({labels:{ok:'Elimanar', cancel: 'Cancelar'}, padding: false});
+            });
+
             $('.datepicker').datepicker({
                 dateFormat: 'dd-mm-yy',
                 startDate: '-3d'
