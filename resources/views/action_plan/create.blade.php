@@ -55,7 +55,7 @@
         .micro-c-image {
             max-height: 150px;
         }
-        
+
     </style>
 @endsection
 
@@ -71,7 +71,7 @@
         </h1>
 
     </div>
- 
+
     @include('action_plan.form.form')
 
     @include('components.modal', [
@@ -217,7 +217,6 @@
                     e.preventDefault();
                 });
             }
-
 
             imageToCheck();
             convertDatePicker($('.datepicker'));

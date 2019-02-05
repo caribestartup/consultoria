@@ -21,14 +21,6 @@ class User extends Authenticatable
 
     protected $primaryKey = 'id';
 
-//    public function __construct()
-//    {
-//        parent::__construct();
-////        var_dump("Model User");
-////        var_dump($this->connection);die;
-//        $this->connection = Session::get('selected.database');
-//    }
-
     /**
      * The attributes that are mass assignable.
      *
@@ -55,71 +47,9 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-//    public function roles()
-//    {
-//        return $this->belongsToMany(Role::class);
-//    }
-    // public function roles_custom()
-    // {
-    //     return $this->morphToMany(
-    //         config('permission.models.role'),
-    //         'model',
-    //         config('permission.table_names.model_has_roles'),
-    //         'model_id',
-    //         'role_id'
-    //     )->select('id','name');
-    // }
-
-    // function
-
     public function boss()
     {
         return $this->belongsTo(User::class, 'boss_id');
-    }
-
-    /*public function notifications()
-    {
-        return $this->hasMany(Notification::class);
-    }
-
-    public function userVisibilities()
-    {
-        return $this->hasMany(UserVisibility::class);
-    }
-
-    public function boss()
-    {
-        return $this->hasOne(User::class);
-    }
-
-    public function interestUsers()
-    {
-        return $this->belongsToMany(Interest::class);
-    }
-
-    public function collaborations()
-    {
-        return $this->belongsToMany(ActionPlanConfiguration::class);
-    }
-
-    public function evaluations()
-    {
-        return $this->belongsToMany(EvaluationConfiguration::class );
-    }
-
-    public function actionPlanConfigurations()
-    {
-        return $this->hasMany(ActionPlanConfiguration::class);
-    }
-
-    public function coach()
-    {
-        return $this->hasMany(ActionPlanConfiguration::class);
-    }
-
-    public function interests()
-    {
-        return $this->hasMany(Interest::class);
     }
 
     /*
@@ -200,5 +130,4 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(MicroContent::class);
     }
-
 }

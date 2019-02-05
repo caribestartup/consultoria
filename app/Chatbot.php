@@ -17,7 +17,6 @@ class Chatbot extends Model
         'description',
         'approach',
         'launch'
-        // 'user_id'
     ];
 
     protected $hidden = ['created_at', 'updated_at'];
@@ -48,9 +47,9 @@ class Chatbot extends Model
     public function firstQuestion()
     {
         $first = null;
-       
+
         foreach ($this->questions as $question) {
-        
+
             $exist = QuestionChatbot::join("chatbot_design", "chatbot_design.question_id", "=", "chatbot_questions.id")->where('chatbot_design.question_id', '=', $question->id)->get();
             if(!$exist->isEmpty()){
                 $first = $question;
@@ -59,5 +58,4 @@ class Chatbot extends Model
         }
         return $first;
     }
-
 }

@@ -83,7 +83,7 @@
     <script src="{{ asset('/plugins/bootstrap-multiselect/js/bootstrap-multiselect.js') }}"></script>
     <script>
         $(document).ready(function () {
-            
+
             {{-- Evento para paginas --}}
             function createPageEvents() {
                 let textEditor = $('.text-editor:visible');
@@ -181,7 +181,7 @@
             function removeAnswerEvents() {
                 let questionCount = $('#question-form .panel-wrapper').length;
                 if($(this).closest('.panel-wrapper').find('.answer').length > 1) {
-            
+
                     {{-- Guardo el id de la respuesta a eliminar --}}
                     @isset($microContent)
                         let id = $(this).prop('id').replace('answer-', '');
@@ -239,7 +239,7 @@
                 newQuestion.find('.correct-i').attr('id', 'correct-' + id +'0');
                 newQuestion.find('.correct-i').attr('question', id);
                 newQuestion.find('.custom-control-label').attr('for', 'correct-' + id +'0');
-                
+
                 newQuestion.removeAttr('id');
                 $('#question-form').append(newQuestion);
                 createQuestionEvents(newQuestion);
@@ -421,8 +421,7 @@
                 alertify.confirm(header, body, function(){
                         alertify.success('Eliminado');
                         currentForm = $('#delete_form_'+id);
-                        // currentForm = $('#delete-form')
-                        // currentForm = $('#delete-form').closest("form")
+
                         currentForm.submit();
                     },function(){
                         alertify.error('Cancelado');

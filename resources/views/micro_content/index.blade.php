@@ -69,15 +69,6 @@
                             </div>
                         </div>
                     </div>
-                    <!--<div class="
-                        @if($microContent->type == 0)
-                            bgc-orange-400
-                        @else
-                            bgc-green-500
-                        @endif
-                            pT-20"></div>-->
-
-
 
                 </div>
             </div>

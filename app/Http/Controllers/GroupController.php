@@ -40,20 +40,14 @@ class GroupController extends Controller
     {
         $this->validate($request, [
             'value' => 'required'
-
         ]);
-
 
         $group =  new Group();
         $group->value=$request->get('value');
 
-
         $group->save();
 
-//
-
         return redirect()->route('groups.index')->withSuccess(trans('app.success_store'));
-//        return back()->withSuccess(trans('app.success_store'));
     }
 
     /**
@@ -96,13 +90,10 @@ class GroupController extends Controller
         //validate post data
         $this->validate($request, [
             'value' => 'required'
-
-
         ]);
         $group= Group::find($id);
         $group->value=$request->get('value');
         $group->save();
-
 
         //store status message
         Session::flash('success_msg', 'Group updated successfully!');
@@ -119,32 +110,19 @@ class GroupController extends Controller
     public function destroy($id)
     {
         $group =  Group::find($id);
-       // $group->micro_contents()->detach();
-        //$group->interests()->detach();
-
 
         $group->delete();
-
-        //store status message
-
 
         return redirect()->route('groups.index')->with('success','Group deleted successfully');
     }
 
     public function search(Request $request) {
         $search = $request->search;
-        // $coach = $request->get('coach', 0);
         $but = $request->get('but', null);
 
         $whereName = [
             ['value', 'like', "%$search%"]
         ];
-
-        // $whereLName = [
-        //     ['last_name', 'like', "%$search%"]
-        // ];
-
-        // $whereFullName = 'CONCAT(users.name," ", users.last_name) like \'%' . $search . '%\'';
 
         if($but) {
             $butId = ['id', '<>', $but];
@@ -153,18 +131,7 @@ class GroupController extends Controller
             $whereFullName .= " AND id <> $but";
         }
 
-        // if($coach == 1) {
-        //     $isCoach = ['is_coach', '=', 1];
-        //     $whereName[] = $isCoach;
-        //     $whereLName[] = $isCoach;
-        //     $whereFullName .= " AND is_coach = 1";
-        // }
-
-        $groups = Group::where($whereName)
-            // ->orWhere($whereLName)
-            // ->orWhereRaw($whereFullName)
-            ->get(['id', 'value']);
-
+        $groups = Group::where($whereName)->get(['id', 'value']);
 
         return view('components.group-dropdown-item', compact('groups'));
     }

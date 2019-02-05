@@ -44,15 +44,12 @@ class TrainingController extends Controller
         foreach ($emails as $email) {
             $exist_user = User::where(array('email' => $email))->get();
 
-            // return($exist_user);
             if (sizeof($exist_user) > 0) {
                 // sacarselo por una notificacion
                 Mail::send('mail.index', ['email' => 'suyo', 'name' => 'su contraseña', 'url' => $url], function ($m) use ($email) {
                     $m->from('carmec634@gmail.com', 'Your Application');
                     $m->to($email)->subject('Evaluar entrenamiento!');
                 });
-
-
             } else {
 
                 // crear usuario nuevo
@@ -61,13 +58,11 @@ class TrainingController extends Controller
                 $pass = $name;
                 $rol = 'Evaluador';
 
-                // $dataUser = new User();
                 $dataUser = array();
                 $dataUser['name']= $name;
                 $dataUser['email'] = $email;
                 $dataUser['password'] = $pass;
                 $dataUser['rol'] = $rol;
-                // $dataUser->save();
                 $user = User::create($dataUser);
 
                 Mail::send('mail.index', ['email' => $email, 'name' => $name, 'url' => $url], function ($m) use ($email) {
@@ -88,7 +83,6 @@ class TrainingController extends Controller
             return view('training.assigned.assigned', compact('actionPConfig'));
         else
             return view( 'error.404');
-
     }
 
     public function evaluation(Request $request, $id)

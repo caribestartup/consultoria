@@ -22,7 +22,4 @@ class AnswerChatbot extends Model
     {
         return $this->belongsTo(QuestionChatbot::class);
     }
-
-
-
 }

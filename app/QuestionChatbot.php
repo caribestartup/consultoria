@@ -27,5 +27,4 @@ class QuestionChatbot extends Model
     {
         return $this->hasMany(AnswerChatbot::class);
     }
-
 }

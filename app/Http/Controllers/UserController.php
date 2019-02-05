@@ -138,8 +138,6 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::findOrFail($id);
-        // $roles = Role::all();
-        // $userRoleId = $user->roles[0]->id;
         $roles = array('' => 'Sin selecionar', 'Administrador' => 'Administrador', 'Jefe' => 'Jefe', 'Empleado' => 'Empleado');
         $departments = Department::all();
         $groups = Group::all();
@@ -203,7 +201,6 @@ class UserController extends Controller
             delete_avatar_file($user->avatar);
         }
 
-        // User::destroy($id);
         $user->delete();
 
         return back()->withSuccess(trans('users.user_success_delete'));

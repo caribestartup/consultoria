@@ -133,5 +133,4 @@ class Notification extends Model
         }
         return $change;
     }
-
 }

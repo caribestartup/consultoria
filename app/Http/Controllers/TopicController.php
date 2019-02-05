@@ -15,8 +15,13 @@ class TopicController extends Controller
      */
     public function index()
     {
-        $topics=Topic::all();
-        return view('topic.index',compact('topics'));
+        if (Auth::user()->rol == "Administrador") {
+            $topics=Topic::all();
+            return view('topic.index',compact('topics'));
+        }
+        else {
+            return view('error.403');
+        }
     }
 
     /**
@@ -26,7 +31,12 @@ class TopicController extends Controller
      */
     public function create()
     {
-        return view('topic.create');
+        if (Auth::user()->rol == "Administrador") {
+            return view('topic.create');
+        }
+        else {
+            return view('error.403');
+        }
     }
 
     /**
@@ -37,22 +47,22 @@ class TopicController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'value' => 'required'
+        if (Auth::user()->rol == "Administrador") {
+            $this->validate($request, [
+                'value' => 'required'
+            ]);
 
-        ]);
+            $topic =  new Topic();
+            $topic->value=$request->get('value');
 
+            $topic->save();
+            $topic->interests()->sync($request->id);
 
-        $topic =  new Topic();
-        $topic->value=$request->get('value');
-
-
-        $topic->save();
-        $topic->interests()->sync($request->id);
-//
-
-        return redirect()->route('topics.index')->withSuccess(trans('app.success_store'));
-//        return back()->withSuccess(trans('app.success_store'));
+            return redirect()->route('topics.index')->withSuccess(trans('app.success_store'));
+        }
+        else {
+            return view('error.403');
+        }
     }
 
     /**
@@ -63,11 +73,16 @@ class TopicController extends Controller
      */
     public function show($id)
     {
-        //fetch post data
-        $topic =  Topic::find($id);
+        if (Auth::user()->rol == "Administrador") {
+            //fetch post data
+            $topic =  Topic::find($id);
 
-        //pass posts data to view and load list view
-        return view('topic.show', compact('topic','id'));
+            //pass posts data to view and load list view
+            return view('topic.show', compact('topic','id'));
+        }
+        else {
+            return view('error.403');
+        }
     }
 
     /**
@@ -78,10 +93,14 @@ class TopicController extends Controller
      */
     public function edit($id)
     {
-        $topic=Topic::find($id);
+        if (Auth::user()->rol == "Administrador") {
+            $topic=Topic::find($id);
 
-        return view('topic.edit', compact('topic','id'));
-
+            return view('topic.edit', compact('topic','id'));
+        }
+        else {
+            return view('error.403');
+        }
     }
 
     /**
@@ -93,21 +112,25 @@ class TopicController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //validate post data
-        $this->validate($request, [
-            'value' => 'required'
+        if (Auth::user()->rol == "Administrador") {
+            //validate post data
+            $this->validate($request, [
+                'value' => 'required'
 
 
-        ]);
-        $topic= Topic::find($id);
-        $topic->value=$request->get('value');
-        $topic->save();
+            ]);
+            $topic= Topic::find($id);
+            $topic->value=$request->get('value');
+            $topic->save();
 
+            //store status message
+            Session::flash('success_msg', 'Topic updated successfully!');
 
-        //store status message
-        Session::flash('success_msg', 'Topic updated successfully!');
-
-        return redirect()->route('topics.index')->with('success','Topic updated successfully');
+            return redirect()->route('topics.index')->with('success','Topic updated successfully');
+        }
+        else {
+            return view('error.403');
+        }
     }
 
     /**
@@ -118,8 +141,13 @@ class TopicController extends Controller
      */
     public function destroy($id)
     {
-        $topic =  Topic::find($id);
-        $topic->delete();
-        return redirect()->route('topics.index')->with('success','Product deleted successfully');
+        if (Auth::user()->rol == "Administrador") {
+            $topic =  Topic::find($id);
+            $topic->delete();
+            return redirect()->route('topics.index')->with('success','Product deleted successfully');
+        }
+        else {
+            return view('error.403');
+        }
     }
 }

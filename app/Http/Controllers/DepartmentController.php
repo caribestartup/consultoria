@@ -39,22 +39,14 @@ class DepartmentController extends Controller
     {
         $this->validate($request, [
             'value' => 'required'
-
         ]);
-
 
         $department =  new Department();
         $department->value=$request->get('value');
 
         $department->save();
-//
-
-
-
-
 
         return redirect()->route('departments.index')->withSuccess(trans('app.success_store'));
-//        return back()->withSuccess(trans('app.success_store'));
     }
 
     /**
@@ -97,13 +89,10 @@ class DepartmentController extends Controller
         //validate post data
         $this->validate($request, [
             'value' => 'required'
-
-
         ]);
         $department= Department::find($id);
         $department->value=$request->get('value');
         $department->save();
-
 
         //store status message
         Session::flash('success_msg', 'Department updated successfully!');
@@ -121,12 +110,7 @@ class DepartmentController extends Controller
     {
         $department = Department::find($id);
 
-
-
         $department->delete();
-
-        //store status message
-
 
         return redirect()->route('departments.index')->with('success','Department deleted successfully');
     }

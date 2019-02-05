@@ -54,9 +54,8 @@ class ActionPlanController extends Controller
                                         'action_plan_configurations.start_date',
                                         'action_plan_configurations.ending_date')
                                 ->paginate(12);
-
-            // $actionPConfigs = ActionPlanConfiguration::find($microContents1->id)->simplePaginate(1);
         }
+
         return view('action_plan.index', ['actionPConfigs' => $actionPConfigs]);
     }
 
@@ -111,7 +110,7 @@ class ActionPlanController extends Controller
         }
     }
 
-    
+
 
     private function processForm(Request $request, $actionPlan, $configuration = null)
     {
@@ -233,7 +232,7 @@ class ActionPlanController extends Controller
                                 'action_plan_configuration_group.id' => $value->id
                             ]
                         )->delete();
-                    }    
+                    }
                 }
             }
 
@@ -249,8 +248,8 @@ class ActionPlanController extends Controller
             foreach ($oldUsers as $old) {
                 if (!in_array($old->user_id, $resultado)){
                     Notification::where(
-                                        array('user_id' => $old->user_id, 
-                                                'entity_id' => $configuration->id, 
+                                        array('user_id' => $old->user_id,
+                                                'entity_id' => $configuration->id,
                                                 'entity_type' => 'App\ActionPlanConfiguration'
                                             )
                                         )
@@ -575,11 +574,9 @@ class ActionPlanController extends Controller
      */
     public function destroy($id)
     {
-        // dd($id);
         if (Auth::user()->rol == "Administrador") {
             $configuration = ActionPlanConfiguration::find($id);
             if(isset($configuration)) {
-                // dd($configuration);
                 $actionPlan = $configuration->actionPlan;
                 $configuration->delete();
                 if ($actionPlan->configurations()->count() == 0) {

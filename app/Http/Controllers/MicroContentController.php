@@ -27,7 +27,6 @@ class MicroContentController extends Controller
      */
     public function index()
     {
-
         $microContents = null;
 
         if (Auth::user()->rol == "Administrador") {
@@ -66,6 +65,7 @@ class MicroContentController extends Controller
             }
             $microContents = MicroContent::hydrate($micro);
         }
+
         return view('micro_content.index', ['microContents' => $microContents]);
     }
 
@@ -278,7 +278,7 @@ class MicroContentController extends Controller
         $pages = $request->page;
         $images_array = [];
 
-        
+
 
         //Para que DOM lea HTML 5
         libxml_use_internal_errors(true);
@@ -341,12 +341,12 @@ class MicroContentController extends Controller
                 finally {
                     $data = $page;
                     $html = $document->saveHTML();
-                
+
                     $body = '';
                     if (preg_match('/(?:<body[^>]*>)(.*)<\/body>/isU', $html, $matches)) {
                         $body = $matches[1];
                     }
-                    
+
                     $data['content'] = $body;
                     $data['micro_content_id'] = $microContent->id;
                     $newPage->fill($data);

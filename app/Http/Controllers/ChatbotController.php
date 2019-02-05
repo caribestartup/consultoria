@@ -14,9 +14,13 @@ class ChatbotController extends Controller
 {
     public function index(Request $request)
     {
-        $chatbots = Chatbot::paginate(12);
-        return view('chatbot.index', compact('chatbots'));
-
+        if (Auth::user()->rol == "Administrador") {
+            $chatbots = Chatbot::paginate(12);
+            return view('chatbot.index', compact('chatbots'));
+        }
+        else {
+            return view('error.403');
+        }
     }
 
     public function next(Request $request)
@@ -43,7 +47,7 @@ class ChatbotController extends Controller
                         ->update(array('read' => true));
             return 0;
         }
-        
+
     }
 
     public static function unread()
@@ -54,9 +58,6 @@ class ChatbotController extends Controller
                         ->where('chatbot_user.user_id', '=', Auth::user()->id)
                         ->get();
 
-    
-        
-        
         if(sizeof($chatbot) > 0){
             return Chatbot::find($chatbot[0]->chatbot_id);
         }
@@ -67,47 +68,60 @@ class ChatbotController extends Controller
 
     public function children($childrens, $id)
     {
+        // recursividad para entrar las posiciones de las preguntas en el chatbot
         foreach ($childrens as $child) {
             if ($child["type"] == "answer" && sizeof($child) == 4) {
                 if (isset($child["children"])){
                     DB::table('chatbot_design')
                         ->insert(
-                            array('chatbot_id' => $id, 
-                                'question_id' => $child["children"][0]["id"], 
+                            array('chatbot_id' => $id,
+                                'question_id' => $child["children"][0]["id"],
                                 'trigger_answer_id' => $child["db"]
                             )
-                        );      
+                        );
                     $this->children($child["children"][0]["children"], $id);
                 }
             }
         }
+
         return;
     }
 
     public function design_store(Request $request)
     {
-        $datas = $request->data;
-        $id = $request->id;
-        
-        $oldDisegn = DB::table('chatbot_design')->where('chatbot_id', '=', $id)->get();
-       
-        if(!$oldDisegn->isEmpty()) { 
-            DB::table('chatbot_design')->where('chatbot_id', '=', $id)->delete();
-        }
+        if (Auth::user()->rol == "Administrador") {
+            $datas = $request->data;
+            $id = $request->id;
 
-        foreach ($datas as $data) {
-            if(isset($data["children"])){
-               $this->children($data["children"], $id);
+            $oldDisegn = DB::table('chatbot_design')->where('chatbot_id', '=', $id)->get();
+
+            if(!$oldDisegn->isEmpty()) {
+                DB::table('chatbot_design')->where('chatbot_id', '=', $id)->delete();
             }
+
+            foreach ($datas as $data) {
+                if(isset($data["children"])){
+                   $this->children($data["children"], $id);
+                }
+            }
+
+            return;
         }
-        return;
+        else {
+            return view('error.403');
+        }
     }
 
     public function design($id)
     {
-        $questions = QuestionChatbot::where('chatbot_questions.chatbot_id', $id)->get();
-        // dd($questions);
-        return view('chatbot.design', compact('questions'));
+        if (Auth::user()->rol == "Administrador") {
+            $questions = QuestionChatbot::where('chatbot_questions.chatbot_id', $id)->get();
+
+            return view('chatbot.design', compact('questions'));
+        }
+        else {
+            return view('error.403');
+        }
     }
 
     /**
@@ -117,9 +131,15 @@ class ChatbotController extends Controller
      */
     public function create()
     {
-        // $approachOptions = ['Plan de acción',  'Intereses', 'Microcontenidos', 'Grupos', 'Reuniones'];
-        $approachOptions = ['Grupos'];
-        return view('chatbot.create', compact('approachOptions'));
+        if (Auth::user()->rol == "Administrador") {
+            // $approachOptions = ['Plan de acción',  'Intereses', 'Microcontenidos', 'Grupos', 'Reuniones'];
+            $approachOptions = ['Grupos'];
+
+            return view('chatbot.create', compact('approachOptions'));
+        }
+        else {
+            return view('error.403');
+        }
     }
 
     /**
@@ -130,19 +150,29 @@ class ChatbotController extends Controller
      */
     public function edit($id)
     {
-        // $approachOptions = ['Plan de acción', 'Intereses', 'Microcontenidos', 'Grupos', 'Reuniones'];
-        $approachOptions = ['Grupos'];
-        $chatbot=Chatbot::find($id);
-        // return view('chatbot.edit', compact('chatbot','id', 'approachOptions'));
-        return view('chatbot.create', compact('chatbot', 'approachOptions'));
+        if (Auth::user()->rol == "Administrador") {
+            // $approachOptions = ['Plan de acción', 'Intereses', 'Microcontenidos', 'Grupos', 'Reuniones'];
+            $approachOptions = ['Grupos'];
+            $chatbot=Chatbot::find($id);
+
+            return view('chatbot.create', compact('chatbot', 'approachOptions'));
+        }
+        else {
+            return view('error.403');
+        }
     }
 
     public function show($id)
     {
-        //fetch post data
-        $chatbot =  Chatbot::find($id);
-        //pass posts data to view and load list view
-        return view('chatbot.show', compact('chatbot','id'));
+        if (Auth::user()->rol == "Administrador") {
+            //fetch post data
+            $chatbot =  Chatbot::find($id);
+            //pass posts data to view and load list view
+            return view('chatbot.show', compact('chatbot','id'));
+        }
+        else {
+            return view('error.403');
+        }
     }
 
     /**
@@ -153,25 +183,6 @@ class ChatbotController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request['chatbot']);
-        // $this->validate($request['chatbot'], [
-        //     'name' => 'required',
-        //     'description' => 'required',
-        //     'approach' => 'required'
-        // ]);
-
-
-        //$chatbot =  new chatbot();
-        //$chatbot->name=$request->get('name');
-        //$chatbot->description=$request->get('description');
-        //$chatbot->approach=$request->get('approach');
-        //$chatbot->default_response=$request->get('default_response');
-
-        //$chatbot->save();
-
-        //return redirect()->route('chatbot.index')->withSuccess(trans('app.success_store'));
-//        return back()->withSuccess(trans('app.success_store'));
-
         if (Auth::user()->rol == "Administrador") {
             $newChatbot = $this->processForm($request, $chatbot = new Chatbot());
             return redirect()->route('chatbot.index')->withSuccess(trans('app.success_store'));
@@ -191,21 +202,6 @@ class ChatbotController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
-        // $this->validate($request, [
-        //     'name' => 'required',
-        //     'description' => 'required',
-        //     'approach' => 'required',
-        // ]);
-
-        // $data = $request->all();
-
-        // $chatbot= Chatbot::find($id);
-        // $chatbot->update($data);
-
-        // return redirect()->route('chatbot.index')->with('success','Chatbot updated successfully');
-
-
         if (Auth::user()->rol == "Administrador") {
             $chatbot = Chatbot::find($id);
             if($chatbot) {
@@ -228,30 +224,27 @@ class ChatbotController extends Controller
      */
     public function destroy($id)
     {
-        $chatbot=  Chatbot::find($id);
+        if (Auth::user()->rol == "Administrador") {
+            $chatbot=  Chatbot::find($id);
 
-        $chatbot->delete();
+            $chatbot->delete();
 
-        //store status message
-
-        // return redirect()->route('chatbot.index')->withSuccess(trans('app.success_store'));
-        return redirect()->route('chatbot.index')->with('success','Chatbot deleted successfully');
+            return redirect()->route('chatbot.index')->with('success','Chatbot deleted successfully');
+        }
+        else {
+            return view('error.403');
+        }
     }
 
     private function processForm(Request $request, $chatbot) {
         $chat = $request->chatbot;
-        // $data['user_id'] = Auth::user()->id;
 
-        // if(!array_key_exists('public', $data))
-        //     $data['public'] = false;
-
-        
         $chatbot->fill($chat);
         $chatbot->save();
 
         //Sinconizar grupos de usuario
         $userInsert = array();
-        
+
         if(isset($request->groups)) {
             foreach ($request->groups as $group) {
 
@@ -261,9 +254,9 @@ class ChatbotController extends Controller
                         'group_id' => $group
                     )
                     )->get();
-                
+
                 if($insertGroup->isEmpty()) {
-                    
+
                     DB::table('chatbot_group')->insert(
                         [
                             'chatbot_id' => $chatbot->id,
@@ -273,7 +266,7 @@ class ChatbotController extends Controller
                 }
 
                 $usuarios = DB::table('group_user')->where(array('group_id' => $group))->select('user_id')->get();
-                
+
                 if(!$usuarios->isEmpty()) {
                     foreach ($usuarios as $user) {
                         array_push($userInsert, $user->user_id);
@@ -296,11 +289,10 @@ class ChatbotController extends Controller
                             'chatbot_group.id' => $value->id
                         ]
                     )->delete();
-                }    
+                }
             }
         }
 
-        // dd($request->users);
         if(isset($request->users)) {
             foreach ($request->users as $user) {
                 array_push($userInsert, $user);
@@ -309,12 +301,10 @@ class ChatbotController extends Controller
 
         $resultado = array_unique($userInsert);
 
-        // dd($resultado);
         //Sincronizo los usuarios
         $chatbot->users()->sync($resultado);
 
         //Envio notificaciones a los usuarios con esas acciones
-
 
         //Elimino las preguntas y respuestas a eliminar
         $toRemoveQuestions = $request->deleted['questions'];
@@ -343,12 +333,11 @@ class ChatbotController extends Controller
 
                 $qAnswers = $question->answers;
                 $answerCount = count($qAnswers);
-                // $correct_index = $data['is_correct'];
-                // dd($data['answers']);
+
                 foreach ($data['answers'] as $key => $answerData) {
-                    // dd($answerData);
+
                     $answerData['question_chatbot_id'] = $question->id;
-                    // $answerData['is_correct'] = $key == $correct_index;
+
                     if($key < $answerCount) {
                         $answer = $qAnswers[$key];
                         $answer->update($answerData);

@@ -15,61 +15,8 @@ class InterestController extends Controller
 
     public function index(Request $request)
     {
-    //     $cantInterest= Interest::where('user_id','>',0)->count();
-    //     $interests = new Interest();
-    //     $request->session()->put('search', $request->has('search') ? $request->get('search') : ($request->session()->has('search') ? $request->session()->get('search') : ''));
-    //     $request->session()->put('importancia', $request->has('importancia') ? $request->get('importancia') : ($request->session()->has('importancia') ? $request->session()->get('importancia') : ''));
-    //     $request->session()->put('conocimiento', $request->has('conocimiento') ? $request->get('conocimiento') : ($request->session()->has('conocimiento') ? $request->session()->get('conocimiento') : ''));
-
-    //     $importancia = $request->session()->get('importancia');
-    //     if (empty($importancia)){
-    //         $importancia='1,5';
-    //     }
-
-    //     $rangeI = explode(",",$importancia);
-    //     $minI=$rangeI[0];
-    //     $maxI=$rangeI[1];
-    //     $minI= $importancia;
-
-    //     $conocimiento = $request->session()->get('conocimiento');
-    //     if (empty($conocimiento)){
-    //         $conocimiento='Bajo,Alto';
-    //     }
-
-    //     $rangeC = explode(",",$conocimiento);
-
-    //     if ($rangeC[0] ==='Bajo'){
-    //         $minC=0;
-    //     }
-    //     elseif ($rangeC[0] ==='Medio'){
-    //         $minC=1;
-    //     }
-    //     elseif ($rangeC[0] ==='Alto'){
-    //         $minC=2;
-    //     }
-    //     if ($rangeC[1] ==='Bajo'){
-    //         $maxC=0;
-    //    }
-    //     elseif ($rangeC[1] ==='Medio'){
-    //         $maxC=1;
-    //     }
-    //     elseif ($rangeC[1] ==='Alto'){
-    //         $maxC=2;
-    //     }
-
-
-
-
-
-        // $interests = $interests->whereRaw('interests.title like \'%' . $request->session()->get('search') . '%\'')
-        //                             ->where('interests.importance_level','>=',$minI)
-        //                             ->where('interests.importance_level','<=',$maxI)
-        //                             ->where('interests.knowledge_valuation','>=',$minC)
-        //                             ->where('interests.knowledge_valuation','<=',$maxC)
-
         $interests = Interest::paginate(12);
         return view('interest.index', compact('interests'));
-
     }
 
     /**
@@ -81,6 +28,7 @@ class InterestController extends Controller
     {
         $interests = Interest::all();
         $topics=Topic::all();
+
         return view('interest.create', compact('interests'),compact('topics'));
     }
 
@@ -92,7 +40,7 @@ class InterestController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         $this->validate($request, [
             'title' => 'required',
             'importance_level',
@@ -126,7 +74,7 @@ class InterestController extends Controller
                 $interests->reminders_value = $request->get('reminders_value_year');
             }
         }
-        
+
         $interests->reminders_period=$request->get('reminders_period');
         $interests->user_id=Auth::user()->id;
         $interests->save();
@@ -140,7 +88,6 @@ class InterestController extends Controller
         $interests->topics()->sync($request->topic);
 
         return redirect()->route('interests.index')->withSuccess(trans('app.success_store'));
-
     }
 
     /**
@@ -159,13 +106,9 @@ class InterestController extends Controller
      */
     public function edit($id)
     {
-        //get post data by id
-       // $cantInterest= Interest::where('user_id','>',0)->count();
         $interests =  \App\Interest::find($id);
         $interestss = Interest::all();
         $topics = Topic::all();
-
-
 
         //load form view
         return view('interest.edit', compact('topics'), compact('interests','id'),compact('interestss'));
@@ -200,8 +143,8 @@ class InterestController extends Controller
             'public' => '',
             'reminders' => '',
             'reminders_period' => ''
-
         ]);
+
         $interests= Interest::find($id);
         $interests->title=$request->get('title');
         $interests->expiration_date=$request->get('expiration_date');
@@ -209,7 +152,7 @@ class InterestController extends Controller
         $interests->knowledge_valuation=$request->get('knowledge_valuation');
         $interests->importance_level=$request->get('importance_level');
         $interests->reminders=$request->get('reminders');
-        
+
         if($interests->reminders == true){
             if($request->get('reminders_period') == 1){
                 $interests->reminders_value = \DateTime::createFromFormat('H:i', $request->get('reminders_value_hour'))->getTimestamp();
@@ -224,7 +167,7 @@ class InterestController extends Controller
                 $interests->reminders_value = $request->get('reminders_value_year');
             }
         }
-        
+
         $interests->reminders_period=$request->get('reminders_period');
         $interests->user_id=Auth::user()->id;
         $interests->save();
@@ -236,8 +179,6 @@ class InterestController extends Controller
         ]);
 
         $interests->topics()->sync($request->topic);
-
-        
 
         //store status message
         Session::flash('success_msg', 'Interest updated successfully!');
@@ -258,9 +199,6 @@ class InterestController extends Controller
         $interests->topics()->detach();
 
         $interests->delete();
-
-        //store status message
-
 
         return redirect()->route('interests.index')->with('success','Product deleted successfully');
     }

@@ -26,6 +26,7 @@ class NotificationController extends Controller
                 return $notifications;
             }
         }
+
         return $notifications;
     }
 
@@ -83,15 +84,6 @@ class NotificationController extends Controller
     public function show($id)
     {
         $notificacion = Notification::findOrFail($id);
-
-        // notificacion
-        // $notification = new Notification();
-        // $notification->user_id = $coach[0]->coach_id;
-        // $notification->entity_id = $user_id;
-        // $notification->entity_type = User::class;
-        // $notification->micro_content_id = $microContent->id;
-        // $notification->type = Notification::NEW;
-        // $notification->save();
 
         if ($notificacion->user_id == Auth::user()->id) {
             $microContentUser = DB::table('micro_content_user')

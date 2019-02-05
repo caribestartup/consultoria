@@ -45,6 +45,4 @@ class Question extends Model
     public function userCanAnswer(User $user) {
         return $this->userAnswers()->where('user_id', $user->id)->count() < 1;
     }
-
 }
-

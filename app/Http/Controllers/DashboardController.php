@@ -22,15 +22,6 @@ class DashboardController extends Controller
         $nInterest = Interest::all()->count();
         $nActionPlan = ActionPlan::all()->count();
 
-        // $results = DB::select('SELECT COUNT(coach_id) as amount, users.email from action_plan_configurations JOIN users on users.id = action_plan_configurations.coach_id GROUP BY users.email');
-        //
-        // $coachs = '';
-        // $amounts = '';
-        // foreach ($results as $value) {
-        //     $coachs .= "'".$value->email."'".", ";
-        //     $amounts .= $value->amount.", ";
-        // }
-
         $list_coachs = User::where(array('is_coach' => true))->get();
 
         $coachs = '';
@@ -85,8 +76,6 @@ class DashboardController extends Controller
             $dataResult['sinComerzar'] .= $sinComerzar.", ";
             $dataResult['sinTerminar'] .= $sinTerminar.", ";
         }
-
-        //chatbot
 
         return view('dashboard.index', compact('nUser', 'nMicroContent', 'nInterest', 'nActionPlan', 'coachs', 'dataResult'));
     }
