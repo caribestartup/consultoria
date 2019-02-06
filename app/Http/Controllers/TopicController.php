@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Topic;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 
 class TopicController extends Controller
 {

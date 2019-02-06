@@ -51,7 +51,7 @@ class Chatbot extends Model
         foreach ($this->questions as $question) {
 
             $exist = QuestionChatbot::join("chatbot_design", "chatbot_design.question_id", "=", "chatbot_questions.id")->where('chatbot_design.question_id', '=', $question->id)->get();
-            if(!$exist->isEmpty()){
+            if($exist->isEmpty()){
                 $first = $question;
                 break;
             }
