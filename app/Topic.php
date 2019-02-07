@@ -14,6 +14,16 @@ class Topic extends Model
         'value'
     ];
 
+    public function concat()
+    {
+        if(strlen($this->value) > 13) {
+            return substr($this->value, 0, 13).' ...';
+        }
+        else{
+            return $this->value;
+        }
+    }
+
     public function interests()
     {
         return $this->belongsToMany(Interest::class);

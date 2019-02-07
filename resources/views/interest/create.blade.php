@@ -239,8 +239,6 @@
                                                     active
                                                          @endif">
 
-
-
                                                 <div class="row">
 
                                                     @for($j=0;$j<$cantVer;$j++)
@@ -253,7 +251,7 @@
                                                                     <input type="checkbox" class="checkbox" value="{{$topics[$index]->id}}" name="topic[]">
                                                                 </div>
                                                                 <div class="row d-flex justify-content-center mt-5" style="background-color: #336372">
-                                                                    <label class="mt-1" style="color: white">{{$topics[$index]->value}}</label>
+                                                                    <label class="mt-1" style="color: white">{{$topics[$index]->concat()}}</label>
                                                                 </div>
 
 
