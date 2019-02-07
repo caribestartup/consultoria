@@ -10,6 +10,11 @@
             height: 24px;
         }
 
+        .margin-carrousel{
+            margin-right: 30px;
+            margin-left: 30px;
+        }
+
         /* Hide default HTML checkbox */
         .switch input {
             opacity: 0;
@@ -75,7 +80,7 @@
 
             <div class="row">
                 <!--LEFT CONTENT-->
-                <div class="col-md-8 bg-white">
+                <div class="col-md-12 bg-white">
                     <h4 class="ml-2 mt-2">
                         General
                     </h4>
@@ -224,7 +229,7 @@
                             <div class="row>">
                                 <div class="col-md-12">
                                     <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-                                        <div class="carousel-inner">
+                                        <div class="carousel-inner margin-carrousel">
 
                                             @for($i=0;$i<$cantSlide;$i++)
                                                 <div class="carousel-item
@@ -236,16 +241,18 @@
 
                                                         @for($j=0;$j<$cantVer;$j++)
                                                             @if($index<$cantTopic)
-                                                                <div class="col-md-2 col-sm-2 col-xs-2 mx-2" style="height: 100px; width:100px; background-image: url('{{asset('images/Temas-0-01.png')}}');background-repeat: no-repeat ;background-size: 100% 100%">
+                                                                @if($interests->hasTopic($topics[$index]->id))
+                                                                    <div class="col-md-2 col-sm-2 col-xs-2 mx-2" style="height: 100px; width:100px; background-image: url('{{asset('images/Temas-0-01.png')}}');background-repeat: no-repeat ;background-size: 100% 100%">
 
-                                                                    <div class="row d-flex justify-content-end">
-                                                                        <input type="checkbox" class="checkbox" value="true" disabled>
+                                                                        <div class="row d-flex justify-content-end">
+                                                                            <input type="checkbox" class="checkbox" value="true" disabled checked/>
+                                                                        </div>
+                                                                        <div class="row d-flex justify-content-center mt-5" style="background-color: #336372">
+                                                                            <label class="mt-1" style="color: white">{{$topics[$index]->concat()}}</label>
+                                                                        </div>
                                                                     </div>
-                                                                    <div class="row  d-flex justify-content-center mt-5" style="background-color: #336372">
-                                                                        <label class="mt-1" style="color: white">{{$topics[$index]->value}}</label>
-                                                                    </div>
-                                                                </div>
 
+                                                                @endif
                                                             @endif
                                                             <?php $index = $index + 1?>
                                                         @endfor
@@ -277,7 +284,7 @@
         </div>
     <div class="container mt-4">
         <div class="row">
-            <div class="col-md-8 bg-white px-3">
+            <div class="col-md-12 bg-white px-3">
                 <h4 class="ml-2 mt-2">
                     Seguimiento
                 </h4>
@@ -460,16 +467,31 @@
                                 <option value="like_count">Diciembre</option>
                             </select>
                         </div>
-
                     </div>
-
-
                 </div>
             </div>
         </div>
     </div>
         </div>
-
-    <script src="/js/jquery.js"></script>
-
 @endsection
+
+@section('js')
+    <script>
+        var $star_rating = $('.star-rating .fa');
+
+        var SetRatingStar = function() {
+            return $star_rating.each(function() {
+                if (parseInt($star_rating.siblings('input.rating-value').val()) >= parseInt($(this).data('rating'))) {
+                    return $(this).removeClass('fa-star-o').addClass('fa-star');
+                } else {
+                    return $(this).removeClass('fa-star').addClass('fa-star-o');
+                }
+            });
+        };
+
+        SetRatingStar();
+    </script>
+@endsection
+    
+
+

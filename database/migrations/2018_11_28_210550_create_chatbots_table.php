@@ -20,6 +20,7 @@ class CreateChatbotsTable extends Migration
             $table->text('description')->nullable();
             $table->string('approach');
             $table->date('launch')->nullable();
+            $table->boolean('is_design')->default(0);
             $table->timestamps();
         });
     }

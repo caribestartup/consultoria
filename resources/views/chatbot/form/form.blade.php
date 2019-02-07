@@ -8,6 +8,14 @@
     <div class="row">
         <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-2">
             <fieldset class="mT-10 bgc-white p-20 border-form">
+
+                <input type="hidden" name="chatbot[is_design]"
+                    @if(isset($chatbot))
+                        value="{{ $chatbot->is_design }}"
+                    @else
+                        value="0"
+                    @endif
+                >
                 
                 <h2>{{ __('chatbot.general') }}</h2>
                 <div class="row">

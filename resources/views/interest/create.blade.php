@@ -20,6 +20,11 @@
             height: 24px;
         }
 
+        .margin-carrousel{
+            margin-right: 18px;
+            margin-left: 18px;
+        }
+
         /* Hide default HTML checkbox */
         .switch input {
             opacity: 0;
@@ -230,7 +235,7 @@
                     <div class="row>">
                         <div class="col-md-12">
                             <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-                                <div class="carousel-inner">
+                                <div class="carousel-inner margin-carrousel">
                                     <div class="col-md-12 col-sm-12 col-xs-12">
                                         @for($i=0;$i<$cantSlide;$i++)
 

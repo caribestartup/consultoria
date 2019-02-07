@@ -23,7 +23,8 @@
                 </div>
                 <div class="error-actions">
                     <a href="{{ route('dash') }}" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-home"></span>
-                        Regrezar a Inicio </a><a href="#" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-envelope"></span> Contacto </a>
+                        Regrezar a Inicio </a>
+                        {{-- <a href="#" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-envelope"></span> Contacto </a> --}}
                 </div>
             </div>
         </div>

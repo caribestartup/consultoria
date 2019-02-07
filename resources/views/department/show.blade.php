@@ -2,19 +2,22 @@
 
 @section('content')
 
+@include('components.index_top', ['indexes' => [
+                  trans_choice('common.department', 2),	$department->value
+                  ]])
 
     <!--Breadcrum-->
-    <div class="row ">
+    {{-- <div class="row ">
         <nav aria-label="breadcrumb"  role="navigation">
             <ol class="breadcrumb" style="background-color: #E6E6E6">
                 <li class="breadcrumb-item"><a href="{{ route('departments.index') }}">Department</a></li>
                 <li class="breadcrumb-item"><a href="#">Create</a></li>
             </ol>
         </nav>
-    </div>
-    <form method="post" action="{{action('DepartmentController@update',$id)}}">
+    </div> --}}
+    {{-- <form method="post" action="{{action('DepartmentController@update',$id)}}">
         @csrf
-        <input name="_method" type="hidden" value="PATCH">
+        <input name="_method" type="hidden" value="PATCH"> --}}
 
         <div class="row ">
             <div class="col-md-6 bg-white">
@@ -33,7 +36,7 @@
         </div>
 
 
-    </form>
+    {{-- </form> --}}
 
 
 

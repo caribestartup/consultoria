@@ -16,7 +16,8 @@ class Chatbot extends Model
         'name',
         'description',
         'approach',
-        'launch'
+        'launch',
+        'is_design'
     ];
 
     protected $hidden = ['created_at', 'updated_at'];

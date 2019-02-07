@@ -28,7 +28,8 @@
                 </thead>
                 <tbody>
 
-                    @foreach($departments as $department)
+
+                    @foreach($departments as $key => $department)
                         {!! Form::open([
                             'class'=>'deletetopicform',
                             'url'  => route('departments.destroy', $department->id),
@@ -37,7 +38,7 @@
                             ])
                         !!}
                             <tr>
-                                <td>{{$department->id}}</td>
+                                <td>{{$key + 1}}</td>
                                 <td>{{$department->value}}</td>
                                 <td>
                                     <a href="{{ route('departments.show',$department->id) }}"><i class="fa fa-eye"></i></a>

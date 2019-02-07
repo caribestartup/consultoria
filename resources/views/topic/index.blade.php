@@ -27,7 +27,7 @@
                 </thead>
                 <tbody>
 
-                @foreach($topics as $topic)
+                @foreach($topics as $key => $topic)
                     
                     {!! Form::open([
                         'class'=>'deletetopicform',
@@ -38,7 +38,7 @@
                     !!}
                            
                         <tr class="tr_form">
-                            <td>{{$topic->id}}</td>
+                            <td>{{$key + 1}}</td>
                             <td>{{$topic->value}}</td>
                             <td class="td_form">
                                 <a href="{{ route('topics.show',$topic->id) }}"><i class="fa fa-eye"></i></a>

@@ -56,6 +56,7 @@ class ChatbotController extends Controller
                         ->where('launch', '<=', date("Y-m-d"))
                         ->where('chatbot_user.read', '=', false)
                         ->where('chatbot_user.user_id', '=', Auth::user()->id)
+                        ->where('chatbots.is_design', '=', true)
                         ->get();
 
         if(sizeof($chatbot) > 0){
@@ -102,6 +103,20 @@ class ChatbotController extends Controller
             foreach ($datas as $data) {
                 if(isset($data["children"])){
                    $this->children($data["children"], $id);
+                }
+            }
+
+            $chatbot = Chatbot::find($id);
+            $chatbot_users = DB::table('chatbot_user')->where('chatbot_id', '=', $id)->get();
+            if(isset($chatbot)){
+                $chatbot->is_design = true;
+                $chatbot->save();
+            }
+            if(!$chatbot_users->isEmpty()){
+                foreach ($chatbot_users as $chatbot_user) {
+                    DB::table('chatbot_user')->where('id', '=', $chatbot_user->id)->update(
+                            array('read' => false)
+                    );
                 }
             }
 
@@ -154,8 +169,12 @@ class ChatbotController extends Controller
             // $approachOptions = ['Plan de acción', 'Intereses', 'Microcontenidos', 'Grupos', 'Reuniones'];
             $approachOptions = ['Grupos'];
             $chatbot=Chatbot::find($id);
-
-            return view('chatbot.create', compact('chatbot', 'approachOptions'));
+            if (isset($chatbot)) {
+                return view('chatbot.create', compact('chatbot', 'approachOptions'));
+            }
+            else {
+                return view('error.404');
+            }
         }
         else {
             return view('error.403');
@@ -167,8 +186,13 @@ class ChatbotController extends Controller
         if (Auth::user()->rol == "Administrador") {
             //fetch post data
             $chatbot =  Chatbot::find($id);
-            //pass posts data to view and load list view
-            return view('chatbot.show', compact('chatbot','id'));
+            if (isset($chatbot)) {
+                //pass posts data to view and load list view
+                return view('chatbot.show', compact('chatbot','id'));
+            }
+            else {
+                return view('error.404');
+            }
         }
         else {
             return view('error.403');
@@ -204,9 +228,9 @@ class ChatbotController extends Controller
     {
         if (Auth::user()->rol == "Administrador") {
             $chatbot = Chatbot::find($id);
-            if($chatbot) {
+            if(isset($chatbot)) {
                 $this->processForm($request, $chatbot);
-                return redirect()->route('chatbot.index')->with('success','Chatbot updated successfully');
+                return redirect()->route('chatbot.index')->with('success','Chatbot actualizado con éxito');
             }
             else
                 return view('error.404');
@@ -226,10 +250,13 @@ class ChatbotController extends Controller
     {
         if (Auth::user()->rol == "Administrador") {
             $chatbot=  Chatbot::find($id);
-
-            $chatbot->delete();
-
-            return redirect()->route('chatbot.index')->with('success','Chatbot deleted successfully');
+            if (isset($chatbot)) {
+                $chatbot->delete();
+                return redirect()->route('chatbot.index')->with('success','Chatbot eliminado con éxito');
+            }
+            else {
+                return view('error.404');
+            }
         }
         else {
             return view('error.403');

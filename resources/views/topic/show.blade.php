@@ -15,7 +15,7 @@
                     <label>Nombre del Tema</label>
                 </div>
                 <div class="col-md-8 pl-0  bg-white pt-2">
-                    <input type="text" class="border-0 graywithout " name="value" value="{{$topic->value}}" placeholder="Introduzca el nombre del tema" style="width: 100%">
+                    <input type="text" class="border-0 graywithout " disabled name="value" value="{{$topic->value}}" placeholder="Introduzca el nombre del tema" style="width: 100%">
                 </div>
 
             </div>

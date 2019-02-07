@@ -12,6 +12,11 @@
             height: 24px;
         }
 
+        .margin-carrousel{
+            margin-right: 30px;
+            margin-left: 30px;
+        }
+
         /* Hide default HTML checkbox */
         .switch input {
             opacity: 0;
@@ -232,7 +237,7 @@
                             <div class="row>">
                                 <div class="col-md-12">
                                     <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-                                        <div class="carousel-inner">
+                                        <div class="carousel-inner margin-carrousel">
 
                                             @for($i=0;$i<$cantSlide;$i++)
                                                 <div class="carousel-item
@@ -251,8 +256,8 @@
                                                                             @endif
                                                                         >
                                                                     </div>
-                                                                    <div class="row  d-flex justify-content-center mt-5" style="background-color: #336372">
-                                                                        <label class="mt-1" style="color: white">{{$topics[$index]->value}}</label>
+                                                                    <div class="row d-flex justify-content-center mt-5" style="background-color: #336372">
+                                                                        <label class="mt-1" style="color: white">{{$topics[$index]->concat()}}</label>
                                                                     </div>
                                                                 </div>
 
@@ -299,14 +304,21 @@
                                     <label>{{ __('interest.expiration_date') }}</label>
                                 </div>
 
-                            <div class="col-md-9">
+                        <!--    <div class="col-md-9">
                                 <div class="input-group date" data-date-format='yy-mm-dd'  data-provide="datepicker">
                                     <input type="text"  name="expiration_date" class="form-control graywithout" placeholder="Fecha Fin" value="{{$interests->expiration_date}}">
                                     <div class="input-group-addon">
                                         <span class="glyphicon glyphicon-th"></span>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
+
+                            <div class="input-group date col-md-9">
+                                    <input type="text" autocomplete="off"  name="expiration_date" class="form-control graywithout datepicker" placeholder="Fecha Fin" value="{{$interests->expiration_date}}">
+                                    <div class="input-group-addon">
+                                        <span class="glyphicon glyphicon-th"></span>
+                                    </div>
+                                </div>
                         </div>
                     </div>
 
@@ -473,7 +485,8 @@
 <div class="container">
     <div class="row ">
         <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-2  d-flex justify-content-end pr-0 mt-2">
-            <button type="submit" class="btn btn-primary border-bot" style="background-color: #003C4F">Finalizar</button>
+            <button type="submit" class="btn btn-app-primary mr-3">Guardar</button>
+            {{-- <button type="submit" class="btn btn-primary border-bot" style="background-color: #003C4F">Finalizar</button> --}}
         </div>
 
     </div>

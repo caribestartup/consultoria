@@ -43,7 +43,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                    @foreach($groups as $group)
+                    @foreach($groups as $key => $group)
                         {!! Form::open([
                             'class'=>'deletetopicform',
                             'url'  => route('groups.destroy', $group->id),
@@ -52,7 +52,7 @@
                             ])
                         !!}
                             <tr>
-                                <td>{{$group->id}}</td>
+                                <td>{{$key + 1}}</td>
                                 <td>{{$group->value}}</td>
                                 <td>
                                     <a href="{{ route('groups.show',$group->id) }}"><i class="fa fa-eye"></i></a>
