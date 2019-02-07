@@ -82,13 +82,13 @@
                     </div>
                     <div class="mB-15">
                         <div class="d-inline mR-10">{{ __('action_plan.value_your_knowledge_about_this_action') }}</div>
-                        <div class="star-rating d-inline">
-                            <span class="fa fa-star-o" data-rating="1" style="cursor: pointer"></span>
-                            <span class="fa fa-star-o" data-rating="2" style="cursor: pointer"></span>
-                            <span class="fa fa-star-o" data-rating="3" style="cursor: pointer"></span>
-                            <span class="fa fa-star-o" data-rating="4" style="cursor: pointer"></span>
-                            <span class="fa fa-star-o" data-rating="5" style="cursor: pointer"></span>
-                            <input name="action[{{ $actionConfig->id }}][knowledge_level]" type="hidden" class="rating-value"
+                        <div class="star-rating d-inline" id="{{ $actionConfig->id }}">
+                            <span class="fa fa-star-o" id="{{ $actionConfig->id }}" data-rating="1" style="cursor: pointer"></span>
+                            <span class="fa fa-star-o" id="{{ $actionConfig->id }}" data-rating="2" style="cursor: pointer"></span>
+                            <span class="fa fa-star-o" id="{{ $actionConfig->id }}" data-rating="3" style="cursor: pointer"></span>
+                            <span class="fa fa-star-o" id="{{ $actionConfig->id }}" data-rating="4" style="cursor: pointer"></span>
+                            <span class="fa fa-star-o" id="{{ $actionConfig->id }}" data-rating="5" style="cursor: pointer"></span>
+                            <input name="action[{{ $actionConfig->id }}][knowledge_level]" id="{{ $actionConfig->id }}" type="hidden" class="rating-value"
                                    value="{{ $actionConfig->knowledge_level }}"/>
                         </div>
                     </div>
@@ -136,7 +136,7 @@
                                 <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3 col-xl-3 mB-15">
                                     <a href="{{ action('MicroContentController@show', ['id' => $microContent->id]) }}" target="_blank">
 
-                                        <img class="img-responsive h-100 of-cv bdrsT-4" src="
+                                        <img class="img-responsive bdrsT-4" src="
                                     @if($microContent->images->count() > 0)
                                         {{ asset($microContent->images[0]->url) }}
                                         @else
@@ -161,10 +161,11 @@
                     </div>
                 @endif --}}
 
+                
                 <hr class="mB-15 mT-25">
                 {{-- <strong>Resultados del {{ __('common.training') }}</strong> --}}
                 <div class="row">
-                    @include('action_plan.assigned.training_result', ['questions' => $actionConfig->action->questions])
+                    @include('action_plan.assigned.training_result', ['questions' => $actionConfig->action->questions])  
                 </div>
             </div>
         </div>

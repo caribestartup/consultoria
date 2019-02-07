@@ -36,10 +36,10 @@
                 name: 'Terminados',
                 data: [<?php echo $dataResult['terminados']; ?>]
             }, {
-                name: 'Sin Terminar', // aquí la serie seria diferente en ves de los amount aquí es los sin terminar para cada coachs
+                name: 'Comenzados', // aquí la serie seria diferente en ves de los amount aquí es los sin terminar para cada coachs
                 data: [<?php echo $dataResult['sinTerminar']; ?>]
             }, {
-                name: 'Sin empezar',    // aquí la serie seria diferente en ves de los amount aquí es los totales para cada coachs
+                name: 'Sin comenzar',    // aquí la serie seria diferente en ves de los amount aquí es los totales para cada coachs
                 data: [<?php echo $dataResult['sinComerzar']; ?>]
             }]
         });

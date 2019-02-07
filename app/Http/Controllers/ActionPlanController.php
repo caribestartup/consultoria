@@ -607,53 +607,53 @@ class ActionPlanController extends Controller
                 $actionConfig = ActionConfiguration::find($actionId);
                 $actionConfig->fill($action);
                 $actionConfig->save();
-                $questions = $action['question'];
-                foreach ($questions as $questionId => $question) {
-                    $questionO = $actionConfig->action->questions()->where('id', $questionId)->get()->first();
-                    if($questionO) {
-                        PlanAnswer::where('user_id', Auth::user()->id)
-                            ->where('action_configuration_id', $actionId)
-                            ->where('plan_question_id', $questionId)->delete();
+                // $questions = $action['question'];
+                // foreach ($questions as $questionId => $question) {
+                //     $questionO = $actionConfig->action->questions()->where('id', $questionId)->get()->first();
+                //     if($questionO) {
+                //         PlanAnswer::where('user_id', Auth::user()->id)
+                //             ->where('action_configuration_id', $actionId)
+                //             ->where('plan_question_id', $questionId)->delete();
 
-                        if($questionO->type == PlanQuestion::SINGLE ||
-                            $questionO->type == PlanQuestion::MULTIPLE) {
-                            $questionOptions = $questionO->options()->where('id', $questionId)->get();
-                            if(!$questionOptions->isEmpty()) {
-                                if(is_array($question['value'])) {
-                                    foreach ($question['value'] as $value) {
-                                        $questionOption = PlanQuestionOption::where('id', $value)->first();
-                                        if ($questionOption) {
-                                            PlanAnswer::create([
-                                                'plan_question_id' => $questionId,
-                                                'action_configuration_id' => $actionId,
-                                                'value' => $questionOption->id,
-                                                'user_id'   => Auth::user()->id
-                                            ]);
-                                        }
-                                    }
-                                }else{
-                                    $questionOption = PlanQuestionOption::where('id', $question['value'])->first();
-                                    if ($questionOption) {
-                                        PlanAnswer::create([
-                                            'plan_question_id' => $questionId,
-                                            'action_configuration_id' => $actionId,
-                                            'value' => $question['value'],
-                                            'user_id'   => Auth::user()->id
-                                        ]);
-                                    }
-                                }
-                            }
-                        }
-                        else{
-                            PlanAnswer::create([
-                                'plan_question_id' => $questionId,
-                                'action_configuration_id' => $actionId,
-                                'value' => $question['value'],
-                                'user_id'   => Auth::user()->id
-                            ]);
-                        }
-                    }
-                }
+                //         if($questionO->type == PlanQuestion::SINGLE ||
+                //             $questionO->type == PlanQuestion::MULTIPLE) {
+                //             $questionOptions = $questionO->options()->where('id', $questionId)->get();
+                //             if(!$questionOptions->isEmpty()) {
+                //                 if(is_array($question['value'])) {
+                //                     foreach ($question['value'] as $value) {
+                //                         $questionOption = PlanQuestionOption::where('id', $value)->first();
+                //                         if ($questionOption) {
+                //                             PlanAnswer::create([
+                //                                 'plan_question_id' => $questionId,
+                //                                 'action_configuration_id' => $actionId,
+                //                                 'value' => $questionOption->id,
+                //                                 'user_id'   => Auth::user()->id
+                //                             ]);
+                //                         }
+                //                     }
+                //                 }else{
+                //                     $questionOption = PlanQuestionOption::where('id', $question['value'])->first();
+                //                     if ($questionOption) {
+                //                         PlanAnswer::create([
+                //                             'plan_question_id' => $questionId,
+                //                             'action_configuration_id' => $actionId,
+                //                             'value' => $question['value'],
+                //                             'user_id'   => Auth::user()->id
+                //                         ]);
+                //                     }
+                //                 }
+                //             }
+                //         }
+                //         else{
+                //             PlanAnswer::create([
+                //                 'plan_question_id' => $questionId,
+                //                 'action_configuration_id' => $actionId,
+                //                 'value' => $question['value'],
+                //                 'user_id'   => Auth::user()->id
+                //             ]);
+                //         }
+                //     }
+                // }
             }
         }
         else

@@ -430,9 +430,11 @@
         </div>
     </div>
 
+    <hr class="mT-30 mB-30">
+
     <div class="row ">
-        <div class="col-md-8 d-flex justify-content-end pr-0 mt-2">
-            <button type="submit" class="btn btn-primary" style="background-color: #003C4F">Finalizar</button>
+        <div class="col-md-8 d-flex pr-0 mt-2">
+            <button type="submit" class="btn btn-app-primary mr-3">Guardar</button>
         </div>
 
     </div>

@@ -91,7 +91,7 @@
                                     {{ asset($microContent->images[0]->url) }}
                                     @endif" />
                                 @else
-                                    <img class="img-responsive h-100 w-100 of-cv bdrsT-4 micro-c-image" src="{{ asset('images/no_image.png') }}"/>
+                                    <img class="img-responsive h-100 w-100 of-cv bdrsT-4 micro-c-image" src="{{ asset('images/noimage.png') }}"/>
                                 @endif
                                 <input type="hidden" value="{{ $microContent->id }}" class="micro-content-i" name="action[{{ $index }}][micro_content][]" />
                                 <i class="fa fa-close"></i>

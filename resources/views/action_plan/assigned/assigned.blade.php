@@ -105,7 +105,7 @@
 @endsection
 
 @section('js')
-    <script src="{{ asset('plugins/bootstrap-star-rating/js/star-rating.min.js') }}"></script>
+    {{-- <script src="{{ asset('plugins/bootstrap-star-rating/js/star-rating.min.js') }}"></script> --}}
     <script>
         $(document).ready(function () {
             let hideButton = $('.minimize');

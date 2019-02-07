@@ -154,6 +154,7 @@
     </div>
 
     {{ $actionPConfigs->links() }}
+    
 @endsection
 
 @section('js')
